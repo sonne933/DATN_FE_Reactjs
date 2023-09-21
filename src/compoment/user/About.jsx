@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import "./About.css"
-import { about_slide,intro} 
-    from"../../assets/listImage";
+import "./css/About.css"
+import { about_slide, intro }
+    from "../../assets/listImage";
 // import "./script.js"
 
 class about extends Component {
@@ -13,8 +13,8 @@ class about extends Component {
                 { id: 'bar_2', iconClass: 'fas fa-hiking', number: 6564, type: 'Khách hàng quay lại', year: '2021', tooltip: 'Giảm 50%' },
                 { id: 'bar_3', iconClass: 'fas fa-umbrella-beach', number: 906, type: 'Hoạt động', year: '2021', tooltip: 'Giảm 25%' },
                 { id: 'bar_4', iconClass: 'fas fa-globe-asia', number: 1320, type: 'Số lượng tour', year: '2021', tooltip: 'Tăng 15%' }
-            ],
-            imageUrl: about_slide
+            ]
+            
         };
     }
 
@@ -37,7 +37,7 @@ class about extends Component {
             }
         }
     }
-   
+
 
     handleChangeImage = () => {
         this.setState({
@@ -47,16 +47,18 @@ class about extends Component {
     render() {
         return (
             <div className="main">
-               <div className="main__slide_offers">
-  <div className="home_slide__item">
-    <div className="home_slide__background" style={{backgroundImage: `url(${this.state.imageUrl})`}} />
-    <div className="home__content">
-      <div className="home__title animated bounceInDown">
-        Giới thiệu
-      </div>
-    </div>
-  </div>
-</div>
+                <div className="main__slide_offers">
+                    <div className="home_slide__item">
+                        <div className="home_slide__background" style={{ backgroundImage: `url(${this.state.imageUrl})` }} />
+                        <div className="home__content">
+                            <div className="home__title animated bounceInDown">
+                                Giới thiệu
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+               
 
                 {/*        About us*/}
                 <div className="about">
@@ -147,30 +149,30 @@ class about extends Component {
                     </div>
                 </div> */}
                 <div className="statistic">
-                <div className="box statistic__box">
-                    <h2>Thống kê theo năm</h2>
-                    <p className="statistic__text">Thống kê số lượng khách hàng, khách hàng quay lại, các hoạt động và số
-                        lượng tour giữa năm 2021 và 2022 của chúng tôi</p>
-                    <div className="statistic__content">
-                        {this.state.bars.map(bar => (
-                            <div className="statistic__item" key={bar.id}>
-                                <div className="stats">
-                                    <div className="stats__icon"><i className={bar.iconClass} /></div>
-                                    <div className="stats__content">
-                                        <div className="stats__number">{bar.number}</div>
-                                        <div className="stats__type">{bar.type}</div>
+                    <div className="box statistic__box">
+                        <h2>Thống kê theo năm</h2>
+                        <p className="statistic__text">Thống kê số lượng khách hàng, khách hàng quay lại, các hoạt động và số
+                            lượng tour giữa năm 2021 và 2022 của chúng tôi</p>
+                        <div className="statistic__content">
+                            {this.state.bars.map(bar => (
+                                <div className="statistic__item" key={bar.id}>
+                                    <div className="stats">
+                                        <div className="stats__icon"><i className={bar.iconClass} /></div>
+                                        <div className="stats__content">
+                                            <div className="stats__number">{bar.number}</div>
+                                            <div className="stats__type">{bar.type}</div>
+                                        </div>
+                                    </div>
+                                    <div className="stats__bar">
+                                        <div className="stats__year">{bar.year} <i className="fas fa-level-down-alt" /></div>
+                                        <div className="stats__bar1" />
+                                        <div className={`tooltip ${bar.id} stats__bar2`} title={bar.tooltip} />
                                     </div>
                                 </div>
-                                <div className="stats__bar">
-                                    <div className="stats__year">{bar.year} <i className="fas fa-level-down-alt" /></div>
-                                    <div className="stats__bar1" />
-                                    <div className={`tooltip ${bar.id} stats__bar2`} title={bar.tooltip} />
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
 
         );

@@ -4045,6 +4045,7 @@ h6 {
 
 .search__item i {
     color: #FFffff;
+    font-size: 20px;
 }
 
 .input_search {
@@ -4324,7 +4325,7 @@ h6 {
   cursor: pointer;
  
 }
-/* end user */
+end user
 .main__slide_offers {
     display: grid;
     grid-template-columns: repeat(12, 1fr);

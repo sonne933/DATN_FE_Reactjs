@@ -35,21 +35,15 @@
 	opacity: 0;
 	pointer-events: none;
 }
-header{
-	font-size: 28px;
-	font-weight: 600;
-	color: #232836;
-	text-align: center;
-	text-transform: uppercase;
-}
-form{
+
+/* form{
 	margin-top: 30px;
-}
+} */
 .form .field{
 	position: relative;
 	height: 50px;
 	width: 100%;
-	margin-top: 20px;
+	margin-top: 10px;
 	border-radius: 6px;
 }
 .field input,

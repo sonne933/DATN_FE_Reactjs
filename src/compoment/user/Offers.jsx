@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./Offers.css"
+import "./css/Offers.css"
 import { offers_1, offers_2, offers_3, offers_4, offers_slide } from '../../assets/listImage';
 // import offers_slide from "../../assets/images/offers_slide.jpg"
 class Offers extends Component {

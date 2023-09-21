@@ -1,5 +1,12 @@
-
+.main {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column: 1/13;
+    grid-row: 2;
+   
+}
 .contact_form_container {
+    margin-top: 60px;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-column: 1/13;
@@ -25,6 +32,7 @@
 }
 
 .contact__form {
+    
     margin-top: 52px;
     font-size: 0;
     text-align: center;

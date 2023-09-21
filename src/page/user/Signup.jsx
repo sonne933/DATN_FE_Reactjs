@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./Signup.css";
+import "./css/Signup.css";
 import { Link } from 'react-router-dom';
 class Register extends Component {
   render() {
@@ -32,6 +32,9 @@ class Register extends Component {
             </form>
             <div className="form-link">
               <span>Bạn đã có tài khoản? <Link to="/signin">Đăng nhập</Link></span>
+            </div>
+            <div className="form-link">
+            <Link to="/">Thoát</Link>
             </div>
           </div>
           <div className="line" />

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import "./Blog.css"
-import { blog_1, blog_2, blog_3, gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6, latest_1, offers_slide } from '../../assets/listImage';
-
+import "./css/Blog.css"
+import { blog_1, blog_2, blog_3, gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6, latest_1  } from '../../assets/listImage';
+import offers_slide from '../../assets/images/offers_slide.jpg';
 class Blog extends Component {
     render() {
         return (
             <div className="main">
                 <div className="main__slide_offers">
                     <div className="home_slide__item">
-                        <div className="home_slide__background" style={{ backgroundImage: `url(${offers_slide})` }} />
+                        <div className="home_slide__background" style={{ backgroundImage: `url"(${offers_slide})"` }} />
                         <div className="home__content">
                             <div className="home__title animated bounceInDown">
                                 Tin tức

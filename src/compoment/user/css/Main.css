@@ -1,4 +1,4 @@
-
+/* 
 .main {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -65,7 +65,7 @@
 
 .home_slider__button {
     margin-top: 70px;
-}
+} */
 
 .main_slide__nav {
     position: absolute;

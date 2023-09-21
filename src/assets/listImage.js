@@ -36,6 +36,8 @@ import gallery_6 from "./images/gallery_6.jpg"
 
 
 
+
+
 import footer_blog_1 from "./images/footer_blog_1.jpg"
 
 

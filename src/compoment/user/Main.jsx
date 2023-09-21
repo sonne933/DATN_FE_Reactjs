@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./Main.css";
+import "./css/Main.css";
 import { bana, hoian, phuquoc, intro1, intro2, intro3, offers1, offers2, offers3, offers4, hotel2, hotel1, hotel3, hotel4 }
     from "../../assets/listImage";
 

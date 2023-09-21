@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 class Header extends Component {
     constructor(props) {
         super(props);
-
+        this.state = {
+            isLoggedIn: false, };
         // Tạo references
         this.menuRef = React.createRef();
         this.userMenuRef = React.createRef();
@@ -27,8 +28,11 @@ class Header extends Component {
         // Dọn dẹp listener khi component unmount
         document.removeEventListener('click', this.handleClickOutside);
     }
+    handleLoginSuccess = () => {
+        this.setState({ isLoggedIn: true });
+    };
     render() {
-
+        const { isLoggedIn } = this.state;
         // user
         function toggleMenu() {
             // const topBar  = document.querySelector(".top_bar");
@@ -38,23 +42,14 @@ class Header extends Component {
             // topBar.style.display = 'none' ;
         }
 
-        // Đóng menu khi nhấp vào bất kỳ nơi nào trên trang
-        // document.addEventListener('click', function (event) {
-        //     const menu = document.querySelector(".dropdown-menu");
-        //     const userMenu = document.querySelector(".user-menu");
-
-        //     if (menu && userMenu && !userMenu.contains(event.target)) {
-        //         menu.style.display = 'none';
-        //     }
-        // });
-        // end
+       
 
 
         
         return (
             <header className="header">
                 {/* Top Bar */}
-                <div className="top_bar">
+               {!isLoggedIn && ( <div className="top_bar">
                     <div className="bar__info">
                         <div className="phone">+84 79 292 9292</div>
                         <div className="social">
@@ -70,6 +65,7 @@ class Header extends Component {
                         <div className="bar__user-regis"><Link to="/signup">Đăng ký</Link></div>
                     </div>
                 </div>
+                )}
                 <div className="main_nav">
                     <div className="main_nav__logo"><Link to="/"><img src={logo} alt="logo" /> TOUR VIET</Link>
                     </div>
@@ -87,9 +83,9 @@ class Header extends Component {
                         <div className="user-menu">
                             <img src={user} alt="User" className="user-image" onClick={toggleMenu} />
                             <div className="dropdown-menu">
-                                <a href="tourManagement.html">Quản lý tour</a>
-                                <a href="historyBooking.html">Lịch sử tour</a>
-                                <a href="personalInformation.html">Quản lý thông tin cá nhân</a>
+                                <Link to="/tourManagement">Quản lý tour</Link>
+                                <Link to="/historyBooking">Lịch sử tour</Link>
+                                <Link to="/personalInformation">Quản lý thông tin cá nhân</Link>
                                 <a href="#">Đăng xuất</a>
                             </div>
                         </div>
