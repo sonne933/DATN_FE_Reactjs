@@ -1,69 +1,115 @@
-import React, { Component } from 'react';
+import React, { Component ,useState,useEffect} from 'react';
 import "./css/Signup.css";
 import { Link ,useNavigate} from 'react-router-dom';
 
-import firebaseConfig from '../../firebaseConfig'
-import {GoogleAuthProvider, FacebookAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
+import firebaseConfig, { auth, db } from '../../firebaseConfig'
+import { doc, getDoc } from 'firebase/firestore';
+import {
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  getAuth,
+  signInWithPopup,
 
-class Signup extends Component {
-  state = {
-    isLoggedIn: false
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword
+} from 'firebase/auth';
+
+import { useDispatch } from 'react-redux';
+import { loginSuccess ,logout} from '../../redux/actions';
+
+
+
+function Signin() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const Signin = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                dispatch(loginSuccess());
+            } else {
+                dispatch(logout());
+            }
+        });
+
+        return () => unsubscribe(); // Dọn dẹp listener khi component unmount
+    }, [dispatch]);
+  }
+
+  const handleLoginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(getAuth(), provider);
+      navigate("/");
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
-  // đăng nhập fb
-  LoginWithFacebook = () => {
-    const auth = getAuth();
-    const facebookProvider = new FacebookAuthProvider();
-
-    signInWithPopup(auth, facebookProvider)
-      .then((result) => {
-        console.log(result.user);
-        // Lưu thông tin người dùng hoặc thực hiện bất kỳ thao tác nào bạn muốn tại đây
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log("Đăng nhập thành công với UID:", userCredential.user.uid);
+      dispatch(loginSuccess());  // Update the login state
+      navigate("/");
+      alert('Đăng nhập thành công');
+    } catch (error) {
+      console.error("Error during email sign-in:", error);
+      alert(error.message);
+    }
+  };
+  const handleForgotPassword = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("Vui lòng kiểm tra email của bạn để đặt lại mật khẩu.");
       })
-      .catch((error) => {
-        console.error("Error during Facebook sign-in:", error);
+      .catch(error => {
+        alert(error.message);
       });
   };
-  // đăng nhập google
-  signInWithGoogle = () => {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-    
-    signInWithPopup(auth,provider)
-        .then(result => {
-            // Lấy token
-            var token = result.credential.accessToken;
-            window.location='/';
-            // Lấy thông tin người dùng
-            var user = result.user;
-            console.log(user);
-            
-        })
-        .catch(error => {
-            console.error("Error during Google Sign-In", error);
-        });
-}
-  render() {
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        // Người dùng đã đăng nhập
+        console.log('User is logged in:', user.uid);
+        dispatch(loginSuccess());
+      } else {
+        // Người dùng đã đăng xuất hoặc chưa đăng nhập
+        console.log('User is not logged in');
+        // Bạn có thể dispatch một action khác ở đây nếu muốn
+      }
+    });
+
+    // Hủy lắng nghe khi component unmount để tránh memory leak
+    return () => unsubscribe();
+  }, [dispatch]);
+  
+     
     
     return (
       <section className="container forms">
         
           <div className="form login">
           <div className="form-content">
-            <header>Đăng nhập</header>
+            <header className='form-content-title'>Đăng nhập</header>
             <form action="#">
               <div className="field input-field">
-                <input type="email" placeholder="Email" className="input" />
+                <input type="email" placeholder="Email" className="input" onChange={e => setEmail(e.target.value)} />
               </div>
               <div className="field input-field">
-                <input type="password" placeholder="Mật khẩu" className="password" />
+                <input type="password" placeholder="Mật khẩu" className="password" onChange={e => setPassword(e.target.value)} />
                 <i className="bx bx-hide eye-icon" />
               </div>
               <div className="form-link">
-                <a href="#" className="forgot-pass">Quên mật khẩu?</a>
+                <a href="#" className="forgot-pass" onClick={handleForgotPassword}>Quên mật khẩu?</a>
               </div>
               <div className="field button-field">
-                <button>Đăng nhập</button>
+                <button  onClick={handleLogin}>Đăng nhập</button>
               </div>
             </form>
             <div className="form-link">
@@ -75,13 +121,13 @@ class Signup extends Component {
           </div>
           <div className="line" />
           <div className="media-options">
-            <a href="#" className="field facebook" onClick={this.LoginWithFacebook}>
+            <a href="#" className="field facebook" >
               <i className="bx bxl-facebook facebook-icon" />
               <span>Đăng nhập với Facebook</span>
             </a>
           </div>
           <div className="media-options">
-            <a href="#" className="field google" onClick={this.signInWithGoogle}>
+            <a href="#" className="field google" onClick={handleLoginWithGoogle}>
             <i class='bx bxl-google google-icon'></i>
               <span>Đăng nhập với Google</span>
             </a>
@@ -95,6 +141,6 @@ class Signup extends Component {
 
     );
   }
-}
 
-export default Signup;
+
+export default Signin;

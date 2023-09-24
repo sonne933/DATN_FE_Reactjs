@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import logo from "../../assets/images/logo.png"
 import user from "../../assets/images/admin.jpg"
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../../redux/actions';
+import { auth } from '../../firebaseConfig';
+
+
+
 
 class Header extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isLoggedIn: false, };
+       
         // Tạo references
         this.menuRef = React.createRef();
         this.userMenuRef = React.createRef();
@@ -31,8 +36,20 @@ class Header extends Component {
     handleLoginSuccess = () => {
         this.setState({ isLoggedIn: true });
     };
+    // hàm đăng xuất
+    handleLogout = () => {
+        const { dispatch } = this.props;
+    
+        auth.signOut().then(() => {
+            Navigate("/");
+            dispatch(logout());
+           
+        }).catch((error) => {
+            console.error("Error signing out: ", error);
+        });
+    };
     render() {
-        const { isLoggedIn } = this.state;
+        const { isLoggedIn } = this.props;
         // user
         function toggleMenu() {
             // const topBar  = document.querySelector(".top_bar");
@@ -42,14 +59,13 @@ class Header extends Component {
             // topBar.style.display = 'none' ;
         }
 
-       
 
 
-        
+
         return (
             <header className="header">
                 {/* Top Bar */}
-               {!isLoggedIn && ( <div className="top_bar">
+                {!isLoggedIn ? (<div className="top_bar">
                     <div className="bar__info">
                         <div className="phone">+84 79 292 9292</div>
                         <div className="social">
@@ -64,8 +80,8 @@ class Header extends Component {
                         <div className="bar__user-login"><Link to="/signin">Đăng nhập</Link></div>
                         <div className="bar__user-regis"><Link to="/signup">Đăng ký</Link></div>
                     </div>
-                </div>
-                )}
+                </div> ): null
+                }
                 <div className="main_nav">
                     <div className="main_nav__logo"><Link to="/"><img src={logo} alt="logo" /> TOUR VIET</Link>
                     </div>
@@ -80,15 +96,15 @@ class Header extends Component {
                         </ul>
                     </div>
                     <div className="main_nav__search">
-                        <div className="user-menu">
+                        {isLoggedIn ? (<div className="user-menu">
                             <img src={user} alt="User" className="user-image" onClick={toggleMenu} />
                             <div className="dropdown-menu">
-                                <Link to="/tourManagement">Quản lý tour</Link>
+                                <Link to="/mytour">Quản lý tour</Link>
                                 <Link to="/historyBooking">Lịch sử tour</Link>
                                 <Link to="/personalInformation">Quản lý thông tin cá nhân</Link>
-                                <a href="#">Đăng xuất</a>
+                                <a href="#"onClick={this.handleLogout}>Đăng xuất</a>
                             </div>
-                        </div>
+                        </div> ) : null}
                         <form action><input className="input_search" type="text" /></form>
                         <div className="search__item"><Link to="/search"><i className="fas fa-search" /> </Link></div>
                         {/* <div className="search__item"><i className="fas fa-search" onclick="location.href='search.html'" /></div> */}
@@ -99,5 +115,7 @@ class Header extends Component {
         );
     }
 }
-
-export default Header;
+const mapStateToProps = state => ({
+    isLoggedIn: state.isLoggedIn
+});
+export default connect(mapStateToProps)(Header);

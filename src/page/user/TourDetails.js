@@ -24,9 +24,9 @@ export default function TourDetails() {
     }, [currentSlide]);
     return (
         <div className="main">
-            <div className="main_offers">
-                <div className="tour-container">
-                    <div className="tour-details">
+            <div className="main_offers_tour-details">
+                <div className="tour-container_tour-details">
+                    <div className="tour-details_tour-details">
                         {/* <img src="./images/hoian-slide.jpg" alt="Ảnh tour du lịch"> */}
                         <div className="slider-container">
                             <div className="main-slider" style={{ height: '270px' }}>
@@ -69,7 +69,7 @@ export default function TourDetails() {
                             <div className="rating">⭐⭐⭐⭐☆</div> {/* Số sao có thể thay đổi */}
                         </div>
                     </div>
-                    <div className="booking-details">
+                    <div className="booking-details_tour-details">
                         <h3>Giá tour: 1.000.000 VND</h3>
                         <h3>1 Ngày</h3>
                         <label>Ngày khởi hành:</label>

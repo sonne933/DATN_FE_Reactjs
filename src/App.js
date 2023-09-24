@@ -1,5 +1,8 @@
 import { BrowserRouter as Switch, Route, Routes, Router, useLocation } from "react-router-dom";
+import { Provider } from 'react-redux';
 import './App.css';
+import store from "./redux/store";
+
 import Header from './compoment/user/Header';
 import Home from './compoment/user/Home';
 import Footer from "./compoment/user/Footer";
@@ -17,6 +20,7 @@ import TourDetails from "./page/user/TourDetails";
 import PersonalInformation from "./page/user/PersonalInformation";
 import Booking from "./page/user/Booking";
 import HistoryBooking from "./page/user/HistoryBooking";
+import MyTour from "./page/user/MyTour";
 
 
 
@@ -26,7 +30,7 @@ function App() {
   const isAuthPage = ['/signin', '/signup'].includes(location.pathname);
 
   return (
-
+    <Provider store={store}>
 
       <div id="wrapper">
        {!isAuthPage && <Header />}
@@ -41,6 +45,7 @@ function App() {
         <Route path="/personalInformation"element={<PersonalInformation/>}/>
         <Route path="/booking"element={<Booking/>}/>
         <Route path="/historyBooking"element={<HistoryBooking/>}/>
+        <Route path="/mytour"element={<MyTour/>}/>
 
         <Route path="/blog"element={<Blog/>}/>
         <Route path="/contact"element={<Contact/>}/>
@@ -61,7 +66,7 @@ function App() {
 
 
 
-
+    </Provider>
 
   );
 }

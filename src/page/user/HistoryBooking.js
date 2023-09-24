@@ -1,10 +1,56 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './css/HistoryBooking.css'
+
+
 export default function HistoryBooking() {
+
+    const [showModal, setShowModal] = useState(false);
+    useEffect(() => {
+        const rowsPerPage = 5;
+        const rows = document.querySelectorAll("tbody tr");
+        const paginationBtns = document.querySelectorAll(".pagination-btn");
+
+        function showPage(pageNumber) {
+            for (let i = 0; i < rows.length; i++) {
+                if (i >= (pageNumber - 1) * rowsPerPage && i < pageNumber * rowsPerPage) {
+                    rows[i].style.display = "table-row";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+
+            paginationBtns.forEach(btn => {
+                if (parseInt(btn.dataset.page) === pageNumber) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        paginationBtns.forEach(btn => {
+            btn.addEventListener("click", function () {
+                showPage(parseInt(btn.dataset.page));
+            });
+        });
+
+        // Mặc định hiển thị trang đầu tiên
+        showPage(1);
+    }, []); // [] là dependency array để đảm bảo mã JavaScript chỉ chạy một lần sau khi component được tạo
+
+    function handleCancelClick() {
+        setShowModal(true);
+    }
+    function confirmCancel() {
+        // Đây là nơi bạn thực hiện hành động hủy
+        setShowModal(false); // Đóng cửa sổ modal sau khi xác nhận
+    }
+
     return (
+        
         <div className="main">
-            <div className="main_offers">
-                <div className="left_main">
+            <div className="main_offers-HistoryBooking">
+                <div className="left_main-HistoryBooking">
                     <div className="tours-table">
                         <h2>Danh sách tour đã đặt</h2>
                         <table>
@@ -43,7 +89,7 @@ export default function HistoryBooking() {
                                         <button>Xem chi tiết</button>
                                     </td>
                                     <td>
-                                        <span className="cancel-icon">X</span>
+                                    <span className="cancel-icon" onClick={() => setShowModal(true)}>X</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -68,7 +114,7 @@ export default function HistoryBooking() {
                                         <button>Xem chi tiết</button>
                                     </td>
                                     <td>
-                                        <span className="cancel-icon">X</span>
+                                    <span className="cancel-icon" onClick={() => setShowModal(true)}>X</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -93,7 +139,7 @@ export default function HistoryBooking() {
                                         <button>Xem chi tiết</button>
                                     </td>
                                     <td>
-                                        <span className="cancel-icon">X</span>
+                                    <span className="cancel-icon" onClick={() => setShowModal(true)}>X</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -118,7 +164,7 @@ export default function HistoryBooking() {
                                         <button>Xem chi tiết</button>
                                     </td>
                                     <td>
-                                        <span className="cancel-icon">X</span>
+                                    <span className="cancel-icon" onClick={() => setShowModal(true)}>X</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -143,7 +189,7 @@ export default function HistoryBooking() {
                                         <button>Xem chi tiết</button>
                                     </td>
                                     <td>
-                                        <span className="cancel-icon">X</span>
+                                    <span className="cancel-icon" onClick={() => setShowModal(true)}>X</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -168,7 +214,7 @@ export default function HistoryBooking() {
                                         <button>Xem chi tiết</button>
                                     </td>
                                     <td>
-                                        <span className="cancel-icon">X</span>
+                                    <span className="cancel-icon" onClick={() => setShowModal(true)}>X</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -193,7 +239,8 @@ export default function HistoryBooking() {
                                         <button>Xem chi tiết</button>
                                     </td>
                                     <td>
-                                        <span className="cancel-icon">X</span>
+                                        <span className="cancel-icon" onClick={() => setShowModal(true)}>X</span>
+                                        
                                     </td>
                                 </tr>
                             </tbody>
@@ -207,84 +254,16 @@ export default function HistoryBooking() {
                     </div>
                 </div>
             </div>
-            <footer className="footer">
-                <button onclick="topFunction()" id="back_top" title="Go to top"><i className="fas fa-rocket" /></button>
-                <div className="box footer__box">
-                    <div className="footer__about">
-                        <div className="footer__logo">
-                            <div className="logo">
-                                <a href="#"><img src="./images/logo.png" alt="" />TOUR VIET</a>
-                            </div>
-                        </div>
-                        <p className="footer_about__text">
-                            TOUR VIET tự hào là một đơn vị tiêu biểu trong lĩnh vực tour du lịch đón nhận giải thưởng uy
-                            tín
-                            nhất dành cho cộng đồng doanh nghiệp Việt Nam.
-                        </p>
-                        <ul className="footer_social_list">
-                            <li className="footer_social_item"><a href="#"><i className="fab fa-facebook-f" /></a></li>
-                            <li className="footer_social_item"><a href="#"><i className="fa-brands fa-google" /></a></li>
-                            <li className="footer_social_item"><a href="#"><i className="fab fa-youtube" /></a></li>
-                        </ul>
-                    </div>
-                    <div className="footer__blog">
-                        <div className="footer_title">bản tin</div>
-                        <div className="footer_blog__item">
-                            <div className="footer_blog__image"><img src="./images/footer_blog_1.jpg" alt="" /></div>
-                            <div className="footer_blog__content">
-                                <div className="footer_blog__title"><a href="#">Địa điểm du lịch Hè 2023</a></div>
-                                <div className="footer_blog__date">30/07/2023</div>
-                            </div>
-                        </div>
-                        <div className="footer_blog__item">
-                            <div className="footer_blog__image"><img src="./images/footer_blog_1.jpg" alt="" /></div>
-                            <div className="footer_blog__content">
-                                <div className="footer_blog__title"><a href="#">Địa điểm du lịch Hè 2023</a></div>
-                                <div className="footer_blog__date">30/07/2023</div>
-                            </div>
-                        </div>
-                        <div className="footer_blog__item">
-                            <div className="footer_blog__image"><img src="./images/footer_blog_1.jpg" alt="" /></div>
-                            <div className="footer_blog__content">
-                                <div className="footer_blog__title"><a href="#">Địa điểm du lịch Hè 2023</a></div>
-                                <div className="footer_blog__date">30/07/2023</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="footer__tags">
-                        <div className="footer_title">Tags</div>
-                        <ul className="tags_list">
-                            <li className="tags_item"><a href="#">Miền Bắc</a></li>
-                            <li className="tags_item"><a href="#">Miền Trung</a></li>
-                            <li className="tags_item"><a href="#">Miền Nam</a></li>
-                            <li className="tags_item"><a href="#">Đà Nẵng</a></li>
-                            <li className="tags_item"><a href="#">Quảng Nam</a></li>
-                            <li className="tags_item"><a href="#">Huế</a></li>
-                        </ul>
-                    </div>
-                    <div className="footer__contact">
-                        <div className="footer_title">Liên hệ</div>
-                        <ul className="contact_list">
-                            <li className="contact_item">
-                                <div className="contact_icon"><i className="fas fa-map-marker-alt" /></div>
-                                <div className="contact_text">64 Dũng sĩ thannh khê, Thanh Khê Tây, Thanh Khê, Đà Nẵng</div>
-                            </li>
-                            <li className="contact_item">
-                                <div className="contact_icon"><i className="fas fa-phone-square" /></div>
-                                <div className="contact_text">+84 79 292 9292</div>
-                            </li>
-                            <li className="contact_item">
-                                <div className="contact_icon"><i className="fas fa-envelope" /></div>
-                                <div className="contact_text">tourviet01@gmail.com</div>
-                            </li>
-                            <li className="contact_item">
-                                <div className="contact_icon"><i className="fas fa-globe-asia" /></div>
-                                <div className="contact_text">www.tourviet.com</div>
-                            </li>
-                        </ul>
+            {
+                showModal && 
+                <div className="confirmation-modal">
+                    <div className="modal-content">
+                        <p>Bạn có muốn hủy không?</p>
+                        <button onClick={confirmCancel}>Hủy</button>
+                        <button onClick={() => setShowModal(false)}>Thoát</button>
                     </div>
                 </div>
-            </footer>
+            }
         </div>
 
     )
