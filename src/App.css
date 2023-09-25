@@ -4298,7 +4298,7 @@ h6 {
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  z-index: 1;
+  z-index: 100;
   left: -80px;
 }
 
@@ -4325,7 +4325,7 @@ h6 {
   cursor: pointer;
  
 }
-end user
+/* end user */
 .main__slide_offers {
     display: grid;
     grid-template-columns: repeat(12, 1fr);

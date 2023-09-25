@@ -1,10 +1,10 @@
 import React, { Component, useState } from 'react';
 import "./css/Signup.css";
-import { Link ,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth, db } from '../../firebaseConfig'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
-
+// import { collection, addDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 
 function Register() {
@@ -15,26 +15,38 @@ function Register() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();  // Gọi hook
 
-  const handleRegister = async () => {
+  
+  const handleSignup = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      await addDoc(collection(db, "users"), {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
+
+      // Lưu trữ thông tin người dùng lên Firestore
+      const userData = {
         name,
         email,
         phone,
         address,
-        status: 0 // Thêm trường status cho người dùng mới
-      });
-      alert("Đăng ký thành công!");
-      navigate('/signin');
-    } catch (error) {
+        // ... other user data you might want to store
+        status: 0, // for example, default user role
+      };
+      const userRef = doc(db, 'users', uid);
+      await setDoc(userRef, userData);
+
+      console.log('User registered with UID:', uid);
+
+      // Redirect user to a different page or show a success message
+      alert('Đăng ký thành công!');
+      navigate('/signin'); // navigate to sign-in page after successful registration
+    }  catch (error) {
+      console.error('Error during sign up:', error);
       if (error.code === 'auth/email-already-in-use') {
-        alert('Địa chỉ email này đã được sử dụng. Vui lòng chọn một địa chỉ email khác.');
+          alert('Email này đã được sử dụng. Vui lòng chọn một email khác hoặc đăng nhập.');
       } else {
-        alert(error.message);
+          alert(error.message);
       }
-    }
   }
+  };
 
 
 
@@ -44,21 +56,21 @@ function Register() {
       <div className="form signup">
         <div className="form-content">
           <header className='form-content-title'>Đăng ký</header>
-          <form action="#" onSubmit={(e) => { e.preventDefault(); handleRegister(); }} >
+          <form action="#" onSubmit={(e) => { e.preventDefault(); handleSignup(); }} >
             <div className="field input-field">
               <input type="text" placeholder="Tên" name='name' className="input" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
             <div className="field input-field">
-              <input type="email" placeholder="Email" name='email' className="input" value={email} onChange={(e) => setEmail(e.target.value)}/>
+              <input type="email" placeholder="Email" name='email' className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="field input-field">
-              <input type="number" placeholder="Số điện thoại" name='phone' className="input" value={phone} onChange={(e) => setPhone(e.target.value)}/>
+              <input type="number" placeholder="Số điện thoại" name='phone' className="input" value={phone} onChange={(e) => setPhone(e.target.value)} />
             </div>
             <div className="field input-field">
-              <input type="text" placeholder="Địa chỉ" name='address' className="input"value={address} onChange={(e) => setAddress(e.target.value)} />
+              <input type="text" placeholder="Địa chỉ" name='address' className="input" value={address} onChange={(e) => setAddress(e.target.value)} />
             </div>
             <div className="field input-field">
-              <input type="password" placeholder="Nhập mật khẩu" name='password' className="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+              <input type="password" placeholder="Nhập mật khẩu" name='password' className="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               <i className="bx bx-hide eye-icon" />
             </div>
             <div className="field button-field">

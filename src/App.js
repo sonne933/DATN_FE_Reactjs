@@ -1,5 +1,5 @@
 import { BrowserRouter as Switch, Route, Routes, Router, useLocation } from "react-router-dom";
-import { Provider } from 'react-redux';
+import { Provider,useSelector } from 'react-redux';
 import './App.css';
 import store from "./redux/store";
 
@@ -21,13 +21,16 @@ import PersonalInformation from "./page/user/PersonalInformation";
 import Booking from "./page/user/Booking";
 import HistoryBooking from "./page/user/HistoryBooking";
 import MyTour from "./page/user/MyTour";
+import HomeAdmin from "./compoment/admin/HomeAdmin";
 
 
 
 function App() {
   const location = useLocation();
+  // const isLoggedIn = useSelector(state => state.isLoggedIn);
+  // const userRole = useSelector(state => state.userRole);
 
-  const isAuthPage = ['/signin', '/signup'].includes(location.pathname);
+  const isAuthPage = ['/signin', '/signup','/admin'].includes(location.pathname);
 
   return (
     <Provider store={store}>
@@ -54,6 +57,9 @@ function App() {
         <Route path="/signup"element={<Signup/>}/>
 
 
+{/* Admin */}
+        <Route path="/admin"element={<HomeAdmin/>}/>
+        <Route path="/seller"element={<MyTour/>}/>
       </Routes>
 
 

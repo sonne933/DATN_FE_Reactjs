@@ -1,63 +1,35 @@
-import React, { Component } from 'react';
+import React, {   useState } from 'react';
 import logo from "../../assets/images/logo.png"
 import user from "../../assets/images/admin.jpg"
-import { Link, Navigate } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { Link,  useNavigate } from 'react-router-dom';
+import { connect, useDispatch } from 'react-redux';
 import { logout } from '../../redux/actions';
 import { auth } from '../../firebaseConfig';
 
 
 
-
-class Header extends Component {
-    constructor(props) {
-        super(props);
-       
-        // Tạo references
-        this.menuRef = React.createRef();
-        this.userMenuRef = React.createRef();
-    }
-
-    handleClickOutside = (event) => {
-        if (this.menuRef.current && this.userMenuRef.current && !this.userMenuRef.current.contains(event.target)) {
-            this.menuRef.current.style.display = 'none';
-        }
-    }
-
-    componentDidMount() {
-        // Thêm listener khi component mount
-        document.addEventListener('click', this.handleClickOutside);
-    }
-
-    componentWillUnmount() {
-        // Dọn dẹp listener khi component unmount
-        document.removeEventListener('click', this.handleClickOutside);
-    }
-    handleLoginSuccess = () => {
-        this.setState({ isLoggedIn: true });
-    };
-    // hàm đăng xuất
-    handleLogout = () => {
-        const { dispatch } = this.props;
+function Header({ isLoggedIn }) {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     
+   
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsOpen(prevState => !prevState);
+    }
+
+    
+   
+
+    const handleLogout = () => {
         auth.signOut().then(() => {
-            Navigate("/");
+            navigate("/");
             dispatch(logout());
-           
         }).catch((error) => {
             console.error("Error signing out: ", error);
         });
     };
-    render() {
-        const { isLoggedIn } = this.props;
-        // user
-        function toggleMenu() {
-            // const topBar  = document.querySelector(".top_bar");
-            const menu = document.querySelector(".dropdown-menu");
-            const isMenuOpen = menu.style.display === 'block';
-            menu.style.display = isMenuOpen ? 'none' : 'block';
-            // topBar.style.display = 'none' ;
-        }
 
 
 
@@ -97,12 +69,12 @@ class Header extends Component {
                     </div>
                     <div className="main_nav__search">
                         {isLoggedIn ? (<div className="user-menu">
-                            <img src={user} alt="User" className="user-image" onClick={toggleMenu} />
-                            <div className="dropdown-menu">
+                            <img src={user} alt="User" className="user-image" onClick={toggleMenu}  />
+                            <div className="dropdown-menu" style={{ display: isOpen ? 'block' : 'none' }} >
                                 <Link to="/mytour">Quản lý tour</Link>
                                 <Link to="/historyBooking">Lịch sử tour</Link>
                                 <Link to="/personalInformation">Quản lý thông tin cá nhân</Link>
-                                <a href="#"onClick={this.handleLogout}>Đăng xuất</a>
+                                <a href="#"onClick={handleLogout}>Đăng xuất</a>
                             </div>
                         </div> ) : null}
                         <form action><input className="input_search" type="text" /></form>
@@ -114,7 +86,7 @@ class Header extends Component {
 
         );
     }
-}
+
 const mapStateToProps = state => ({
     isLoggedIn: state.isLoggedIn
 });
