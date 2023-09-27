@@ -6,16 +6,7 @@ class Blog extends Component {
     render() {
         return (
             <div className="main">
-                <div className="main__slide_offers">
-                    <div className="home_slide__item">
-                        <div className="home_slide__background" style={{ backgroundImage: `url"(${offers_slide})"` }} />
-                        <div className="home__content">
-                            <div className="home__title animated bounceInDown">
-                                Tin tức
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
                 {/*        blog*/}
                 <div className="blog">
                     <div className="box blog__box">

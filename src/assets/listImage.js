@@ -33,6 +33,8 @@ import gallery_3 from "./images/gallery_3.jpg"
 import gallery_4 from "./images/gallery_4.jpg"
 import gallery_5 from "./images/gallery_5.jpg"
 import gallery_6 from "./images/gallery_6.jpg"
+import admin from "./images/admin.jpg"
+import profile from "./images/profile-1.jpg"
 
 
 
@@ -45,5 +47,5 @@ import footer_blog_1 from "./images/footer_blog_1.jpg"
 export {
     logo,bana, hoian,phuquoc,intro1,intro2,intro3,offers1,offers2,offers3,offers4,hotel1,hotel2,hotel3,hotel4,footer_blog_1
     ,about_slide,intro,offers_slide,offers_1,offers_2,offers_3,offers_4,blog_1,blog_2,blog_3,latest_1,gallery_1,gallery_2,gallery_3,gallery_4,
-    gallery_5,gallery_6
+    gallery_5,gallery_6,admin,profile
 };

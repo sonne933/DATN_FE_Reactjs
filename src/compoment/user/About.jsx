@@ -47,16 +47,7 @@ class about extends Component {
     render() {
         return (
             <div className="main">
-                <div className="main__slide_offers">
-                    <div className="home_slide__item">
-                        <div className="home_slide__background" style={{ backgroundImage: `url(${this.state.imageUrl})` }} />
-                        <div className="home__content">
-                            <div className="home__title animated bounceInDown">
-                                Giới thiệu
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
                 
                
 

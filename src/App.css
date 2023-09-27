@@ -3831,10 +3831,10 @@ h6 {
 }
 
 #wrapper {
-    max-width: 200rem;
+    /* max-width: 200rem;
     display: -ms-grid;
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(12, 1fr); */
 }
 
 /* Header */

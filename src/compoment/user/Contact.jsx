@@ -5,16 +5,7 @@ class contact extends Component {
     render() {
         return (
             <div className="main">
-                <div className="main__slide_offers">
-                    <div className="home_slide__item">
-                        <div className="home_slide__background" style={{ backgroundImage: `url(${about_slide})` }} />
-                        <div className="home__content">
-                            <div className="home__title animated bounceInDown">
-                                Liên hệ
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
                 {/*        contact*/}
                 <div className="contact_form_container">
                     <div className="box contact_form__box">

@@ -20,16 +20,7 @@ class Offers extends Component {
       
         return (
             <div className="main">
-                <div className="main__slide_offers">
-                    <div className="home_slide__item">
-                        <div className="home_slide__background" style={{ backgroundImage: `url"(${imageSrc})"` }} />
-                        <div className="home__content">
-                            <div className="home__title animated bounceInLeft">
-                                Ưu đãi
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
                 <div className="offers">
                     {/* <div className="box offers__box1">
                         <div className="offers_sorting_container">

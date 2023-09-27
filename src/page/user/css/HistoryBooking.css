@@ -36,19 +36,19 @@ h2 {
     color: #000;
 }
 
-table {
+.table-HistoryBooking {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
 }
 
-th,td {
+.table-HistoryBooking th,.table-HistoryBooking td {
     border: 1px solid #e0e0e0;
     padding: 8px 12px;
     color: #000;
 }
 
-th {
+ .table-HistoryBooking th {
     background-color: #f9f9f9;
 }
 

@@ -53,7 +53,7 @@ export default function HistoryBooking() {
                 <div className="left_main-HistoryBooking">
                     <div className="tours-table">
                         <h2>Danh sách tour đã đặt</h2>
-                        <table>
+                        <table className='table-HistoryBooking'>
                             <thead>
                                 <tr>
                                     <th>Thông tin người đặt</th>
