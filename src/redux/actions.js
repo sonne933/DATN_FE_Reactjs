@@ -9,3 +9,4 @@ export const loginSuccess = (userRole) => ({
 export const logout = () => ({
   type: LOGOUT,
 });
+

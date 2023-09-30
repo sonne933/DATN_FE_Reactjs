@@ -1,7 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Admin.css'
 import { profile } from '../../assets/listImage'
+
+
 export default function Accountmanage() {
+
+  const [switch1Active, setSwitch1Active] = useState(false); // switch1 ban đầu được bật
+  const [switch2Active, setSwitch2Active] = useState(true); // switch2 ban đầu được tắt
+  const [switch3Active, setSwitch3Active] = useState(true);  // switch3 ban đầu được bật
+  // check trạng thái
+  // check trạng thái
+  const handleSwitch1Click = () => {
+    setSwitch1Active(prevState => !prevState);
+  };
+
+  const handleSwitch2Click = () => {
+    setSwitch2Active(prevState => !prevState);
+  };
+
+  const handleSwitch3Click = () => {
+    setSwitch3Active(prevState => !prevState);
+  };
+
+
+
   return (
     <main>
       <div className="header_admin">
@@ -84,10 +106,12 @@ export default function Accountmanage() {
                 <td>sonnguyen123@gmail.com</td>
                 <td>14-08-2023</td>
                 <td>Admin</td>
-                <td><label className="switch active">
-                  <input type="checkbox" />
-                  <span className="slider_admin" />
-                </label></td>
+                <td>
+                  <label className={`switch ${switch1Active ? 'active-admin' : ''}`} onClick={handleSwitch1Click}>
+
+                    <input type="checkbox" checked={switch1Active} readOnly onClick={e => e.stopPropagation()} />
+                    <span className="slider_admin"></span>
+                  </label></td>
               </tr>
               <tr>
                 <td>
@@ -99,14 +123,15 @@ export default function Accountmanage() {
                 <td>sonnguyen123@gmail.com</td>
                 <td>14-08-2023</td>
                 <td>Admin</td>
-                <td><label className="switch ">
-                  <input type="checkbox" />
-                  <span className="slider_admin" />
-                </label></td>
+                <td>
+                  <label className={`switch ${switch2Active ? 'active-admin' : ''}`} onClick={handleSwitch2Click}>
+                    <input type="checkbox" checked={switch2Active} readOnly onClick={e => e.stopPropagation()} />
+                    <span className="slider_admin"></span>
+                  </label></td>
               </tr>
               <tr>
                 <td>
-                  <img src={profile}/>
+                  <img src={profile} />
                   <p>John Doe</p>
                 </td>
                 <td>0123456789</td>
@@ -114,10 +139,11 @@ export default function Accountmanage() {
                 <td>sonnguyen123@gmail.com</td>
                 <td>14-08-2023</td>
                 <td>Admin</td>
-                <td><label className="switch active">
-                  <input type="checkbox" />
-                  <span className="slider_admin" />
-                </label></td>
+                <td>
+                  <label className={`switch ${switch3Active ? 'active-admin' : ''}`} onClick={handleSwitch3Click}>
+                    <input type="checkbox" checked={switch3Active} readOnly onClick={e => e.stopPropagation()} />
+                    <span className="slider_admin"></span>
+                  </label></td>
               </tr>
             </tbody>
           </table>

@@ -4,13 +4,16 @@ export default function ServiceManage() {
     const [showAddForm, setShowAddForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-   
+    const [switch1Active, setSwitch1Active] = useState(true);  // Ví dụ switch1 ban đầu được bật
+    const [switch2Active, setSwitch2Active] = useState(false); // Ví dụ switch2 ban đầu được tắt
+    const [switch3Active, setSwitch3Active] = useState(true);  // Ví dụ switch3 ban đầu được bật
+
     // Event handlers
     const openAddForm = () => {
         setShowAddForm(true);
     };
 
-   
+
 
     const openEditForm = () => {
         setShowEditForm(true);
@@ -27,7 +30,7 @@ export default function ServiceManage() {
     };
 
     const handleWindowClick = (event) => {
-        if (event.target.id === 'addForm'||event.target.id === 'editForm' || event.target.id === 'deleteModal') {
+        if (event.target.id === 'addForm' || event.target.id === 'editForm' || event.target.id === 'deleteModal') {
             closeModal();
         }
     };
@@ -38,8 +41,19 @@ export default function ServiceManage() {
             window.removeEventListener('click', handleWindowClick);
         };
     }, []);
-    
-   
+
+    // check trạng thái
+    const handleSwitch1Click = () => {
+        setSwitch1Active(prevState => !prevState);
+    };
+
+    const handleSwitch2Click = () => {
+        setSwitch2Active(prevState => !prevState);
+    };
+
+    const handleSwitch3Click = () => {
+        setSwitch3Active(prevState => !prevState);
+    };
     return (
         <main>
             <div className="header_admin">
@@ -85,32 +99,32 @@ export default function ServiceManage() {
             {/* End of Insights */}
             {/* model edit and delete */}
             {/* Form Edit */}
-            <div id="editForm" className="modal"style={{display: showEditForm ? 'block' : 'none'}}>
+            <div id="editForm" className="modal" style={{ display: showEditForm ? 'block' : 'none' }}>
                 <div className="modal-content">
-                    <span className="close-btn"onClick={closeModal}>×</span>
+                    <span className="close-btn" onClick={closeModal}>×</span>
                     <h2>Sửa Thông Tin</h2>
                     <form>
                         Tên dịch vụ: <input type="text" id="name" placeholder="Tên" /><br /><br />
                         Nội dung: <textarea id="details" placeholder="Chi tiết" defaultValue={""} /><br /><br />
                         <button type="submit" className="btnluu">Lưu</button>
-                        <button type="button" className="close-btn"onClick={closeModal}>Thoát</button>
+                        <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
                     </form>
                 </div>
             </div>
             {/* Modal Delete Confirmation */}
-            <div id="deleteModal" className="modal"style={{display: showDeleteModal ? 'block' : 'none'}}>
+            <div id="deleteModal" className="modal" style={{ display: showDeleteModal ? 'block' : 'none' }}>
                 <div className="modal-content">
-                    <span className="close-btn"onClick={closeModal}>×</span>
+                    <span className="close-btn" onClick={closeModal}>×</span>
                     <h2>Bạn có muốn xóa không?</h2>
                     <button className="btnxoa">Xóa</button>
-                    <button type="button" className="close-btn"onClick={closeModal}>Thoát</button>
+                    <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
                 </div>
             </div>
             {/*end model edit and delete */}
             {/* model newitem */}
-            <div id="addForm" className="modal"style={{display: showAddForm ? 'block' : 'none'}}>
+            <div id="addForm" className="modal" style={{ display: showAddForm ? 'block' : 'none' }}>
                 <div className="modal-content">
-                    <span className="close-btn"onClick={closeModal}>×</span>
+                    <span className="close-btn" onClick={closeModal}>×</span>
                     <h2>Thêm Mới Dịch Vụ</h2>
                     <form>
                         Tên dịch vụ: <input type="text" id="category" placeholder="Tên dịch vụ" /><br /><br />
@@ -125,7 +139,7 @@ export default function ServiceManage() {
                 <div className="orders_admin">
                     <div className="header_admin">
                         <i className="bx bx-receipt" />
-                        <h3>Danh Sách Danh Mục</h3>
+                        <h3>Danh Sách Dịch Vụ</h3>
                         <i className="bx bx-filter" />
                         <button className="btn add-new-btn " onClick={openAddForm}>
                             Thêm mới
@@ -147,15 +161,16 @@ export default function ServiceManage() {
                                 <td>Khách sạn</td>
                                 <td>Khách sạn Tú Tam kỳ</td>
                                 <td>
-                                    <label className="switch active">
-                                    <input type="checkbox" />
-                                    <span className="slider_admin" />
-                                </label></td>
+                                    <label className={`switch ${switch3Active ? 'active-admin' : ''}`} onClick={handleSwitch3Click}>
+                                        <input type="checkbox" checked={switch3Active} readOnly onClick={e => e.stopPropagation()} />
+                                        <span className="slider_admin"></span>
+                                    </label>
+                                </td>
                                 <td>
-                                    <button className="btn edit-btn"onClick={openEditForm}>
+                                    <button className="btn edit-btn" onClick={openEditForm}>
                                         <i className="bx bx-edit" />
                                     </button>
-                                    <button className="btn delete-btn"onClick={openDeleteModal}>
+                                    <button className="btn delete-btn" onClick={openDeleteModal}>
                                         <i className="bx bx-trash" />
                                     </button>
                                 </td>
