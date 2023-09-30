@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { profile } from '../../assets/listImage';
-import { collection, getDocs, addDoc,doc,updateDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from '../../firebaseConfig';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
@@ -15,6 +15,9 @@ export default function CatalogManage() {
     const [newCatalogName, setNewCatalogName] = useState('');
     const [newCatalogContent, setNewCatalogContent] = useState('');
     const [newCatalogImg, setNewCatalogImg] = useState(null); // Để lưu file, chúng ta sẽ sử dụng null thay vì chuỗi rỗng
+    // sửa xóa catalog
+    const [editingCatalogId, setEditingCatalogId] = useState(null);
+    const [deletingCatalogId, setDeletingCatalogId] = useState(null);
 
     const addNewCatalog = async (e) => {
         e.preventDefault();
@@ -35,6 +38,7 @@ export default function CatalogManage() {
             setNewCatalogContent('');
             setNewCatalogImg(null);
             closeAddForm();
+            window.location.reload();
         } catch (error) {
             console.error("Lỗi khi thêm danh mục mới:", error);
             alert("Có lỗi xảy ra khi thêm mới. Vui lòng thử lại.");
@@ -97,13 +101,9 @@ export default function CatalogManage() {
         setShowAddForm(false);
     };
 
-    const openEditForm = () => {
-        setShowEditForm(true);
-    };
+   
 
-    const openDeleteModal = () => {
-        setShowDeleteModal(true);
-    };
+    
 
     const closeModal = () => {
         setShowEditForm(false);
@@ -122,13 +122,61 @@ export default function CatalogManage() {
             window.removeEventListener('click', handleWindowClick);
         };
     }, []);
-
+    const openEditForm = (id) => {
+        setEditingCatalogId(id);
+        const catalog = catalogs.find(c => c.id === id);
+        // Set dữ liệu của catalog lên form
+        setNewCatalogName(catalog.name);
+        setNewCatalogContent(catalog.content);
+        setNewCatalogImg(catalog.image); // Bạn cần chỉnh sửa code để xử lý trường hợp này nếu image là URL, không phải file.
+        setShowEditForm(true);
+    };
+    const openDeleteModal = (id) => {
+        setDeletingCatalogId(id);
+        setShowDeleteModal(true);
+    };
+    // hàm sửa catalog
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            let imageURL = newCatalogImg;
+            if (typeof newCatalogImg !== 'string') {  // Kiểm tra nếu newCatalogImg không phải là URL
+                imageURL = await uploadImageAndGetURL(newCatalogImg);
+            }
+            const updatedCatalog = {
+                name: newCatalogName,
+                content: newCatalogContent,
+                image: imageURL,
+            };
+            const catalogRef = doc(db, "catalogs", editingCatalogId);
+            await updateDoc(catalogRef, updatedCatalog);
+            alert("Danh mục đã được cập nhật thành công!");
+            closeModal();
+            window.location.reload();
+        } catch (error) {
+            console.error("Lỗi khi cập nhật danh mục:", error);
+            alert("Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.");
+        }
+    };
+    // hàm xóa catalog
+    const handleDelete = async () => {
+        try {
+            const catalogRef = doc(db, "catalogs", deletingCatalogId);
+            await deleteDoc(catalogRef);
+            alert("Danh mục đã được xóa thành công!");
+            closeModal();
+            window.location.reload();
+        } catch (error) {
+            console.error("Lỗi khi xóa danh mục:", error);
+            alert("Có lỗi xảy ra khi xóa. Vui lòng thử lại.");
+        }
+    };
     // check trạng thái
     const handleSwitchClick = async (id) => {
         const catalogRef = doc(db, "catalogs", id);
         const catalog = catalogs.find(c => c.id === id);
         const newStatus = !catalog.status;
-    
+
         try {
             await updateDoc(catalogRef, {
                 status: newStatus
@@ -198,10 +246,10 @@ export default function CatalogManage() {
                     <span className="close-btn" onClick={closeModal}>×</span>
                     <h2>Sửa Thông Tin</h2>
                     <form>
-                        Tên danh mục: <input type="text" id="name" placeholder="Tên" /><br /><br />
-                        Nội dung: <textarea id="details" placeholder="Chi tiết" defaultValue={""} /><br /><br />
-                        Hình ảnh: <input type="file" id="image" /><br /><br />
-                        <button type="submit" className="btnluu">Lưu</button>
+                        Tên danh mục: <input type="text" id="name"  value={newCatalogName} onChange={(e) => setNewCatalogName(e.target.value)} /><br /><br />
+                        Nội dung: <textarea id="details"  defaultValue={""} value={newCatalogContent} onChange={(e) => setNewCatalogContent(e.target.value)}/><br /><br />
+                        Hình ảnh: <input type="file" id="image" onChange={handleImageChange} /><br /><br />
+                        <button type="submit" className="btnluu" onClick={handleEditSubmit}>Lưu</button>
                         <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
                     </form>
                 </div>
@@ -211,7 +259,7 @@ export default function CatalogManage() {
                 <div className="modal-content">
                     <span className="close-btn" onClick={closeModal}>×</span>
                     <h2>Bạn có muốn xóa không?</h2>
-                    <button className="btnxoa">Xóa</button>
+                    <button className="btnxoa"onClick={handleDelete}>Xóa</button>
                     <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
                 </div>
             </div>
@@ -259,7 +307,9 @@ export default function CatalogManage() {
                                     <td>{index + 1}</td>
                                     <td>{catalog.name}</td>
                                     <td id='noidungTour'>{catalog.content}</td>
-                                    <td id='hinhanhTour'>{catalog.image}</td>
+                                    <td id='hinhanhTour'>
+                                        <img src={catalog.image} alt={`Hình ảnh của ${catalog.name}`} width="100" />
+                                    </td>
                                     <td>
 
                                         <label className={`switch ${catalog.status ? 'active-admin' : ''}`} onClick={() => handleSwitchClick(catalog.id)}>
@@ -268,10 +318,10 @@ export default function CatalogManage() {
                                         </label>
                                     </td>
                                     <td>
-                                        <button className="btn edit-btn" onClick={openEditForm}>
+                                        <button className="btn edit-btn" onClick={() => { openEditForm(catalog.id) }}>
                                             <i className="bx bx-edit" />
                                         </button>
-                                        <button className="btn delete-btn" onClick={openDeleteModal}>
+                                        <button className="btn delete-btn" onClick={() => { openDeleteModal(catalog.id) }}>
                                             <i className="bx bx-trash" />
                                         </button>
                                     </td>

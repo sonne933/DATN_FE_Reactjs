@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { profile } from '../../assets/listImage';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebaseConfig';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 export default function TourManage() {
 
@@ -7,14 +10,145 @@ export default function TourManage() {
     const [showEditForm, setShowEditForm] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    const [switch1Active, setSwitch1Active] = useState(false); // switch1 ban đầu được bật
-    const [switch2Active, setSwitch2Active] = useState(false); // switch2 ban đầu được tắt
-    const [switch3Active, setSwitch3Active] = useState(true);  // switch3 ban đầu được bật
 
 
+    const [catalogs, setCatalogs] = useState([]);
 
 
+    const [newTourName, setNewTourName] = useState('');
+    const [newTourLocation, setNewTourLocation] = useState('');
+    const [newTourContent, setNewTourContent] = useState('');
+    const [newTourPrice, setNewTourPrice] = useState('');
+    const [newTourDiscount, setNewTourDiscount] = useState('5');
+    const [newTourImages, setNewTourImages] = useState([]);
+    const [newTourDepartureDate, setNewTourDepartureDate] = useState('');
+    const [newTourSchedule, setNewTourSchedule] = useState('1day');
+    const [newTourDetailedSchedule, setNewTourDetailedSchedule] = useState('');
+    const [newTourCatalog, setNewTourCatalog] = useState('');  // Dựa trên các danh mục bạn có
+    const [tours, setTours] = useState([]);
 
+    const [selectedImageNames, setSelectedImageNames] = useState([]);
+    const [editingTour, setEditingTour] = useState(null);
+
+    //   hàm xử lý upload ảnh
+    // Hàm tải 1 ảnh và trả về URL của ảnh sau khi tải lên thành công
+    const uploadImageAndGetURL = async (file) => {
+        const storage = getStorage();
+        const storageRef = ref(storage, 'path/to/upload/' + file.name);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        return new Promise((resolve, reject) => {
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    // Có thể thêm mã ở đây để hiển thị tiến trình tải lên
+                },
+                (error) => {
+                    reject(error);
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        resolve(downloadURL);
+                    });
+                }
+            );
+        });
+    };
+    // Hàm tải nhiều ảnh và trả về mảng URL của các ảnh
+    const uploadImagesAndGetURLs = async (files) => {
+        const uploadPromises = files.map(file => uploadImageAndGetURL(file));
+        const urls = await Promise.all(uploadPromises);
+        return urls;
+    };
+    const addNewTour = async (e) => {
+        e.preventDefault();
+
+        let imageUrls = [];
+        if (newTourImages.length) {
+            imageUrls = await uploadImagesAndGetURLs(newTourImages);
+        }
+
+        const newTour = {
+            name: newTourName,
+            location: newTourLocation,
+            content: newTourContent,
+            price: newTourPrice,
+            discount: newTourDiscount,
+            images: imageUrls,
+            departureDate: newTourDepartureDate,
+            schedule: newTourSchedule,
+            detailedSchedule: newTourDetailedSchedule,
+            catalog: newTourCatalog,
+            status: true
+        };
+
+        try {
+            await addDoc(collection(db, "tours"), newTour);
+            alert("Tour mới đã được thêm thành công!");
+            // Reset state
+            setNewTourName('');
+            setNewTourLocation('');
+            setNewTourContent('');
+            setNewTourPrice('');
+            setNewTourDiscount('5');
+
+            setNewTourDepartureDate('');
+            setNewTourSchedule('1day');
+            setNewTourDetailedSchedule('');
+            setNewTourCatalog('');
+            closeModal();
+            window.location.reload();
+        } catch (error) {
+            console.error("Lỗi khi thêm tour mới:", error);
+            alert("Có lỗi xảy ra khi thêm mới. Vui lòng thử lại.");
+        }
+    };
+
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            let imageUrls = editingTour.images;
+            if (newTourImages.length) {
+                imageUrls = await uploadImagesAndGetURLs(newTourImages);
+            }
+
+            const updatedTour = {
+                name: newTourName,
+                location: newTourLocation,
+                content: newTourContent,
+                price: newTourPrice,
+                discount: newTourDiscount,
+                images: imageUrls,
+                departureDate: newTourDepartureDate,
+                schedule: newTourSchedule,
+                detailedSchedule: newTourDetailedSchedule,
+                catalog: newTourCatalog,
+            };
+
+            const tourRef = doc(db, "tours", editingTour.id);
+            await updateDoc(tourRef, updatedTour);
+
+            alert("Tour đã được cập nhật thành công!");
+            closeModal();
+            window.location.reload();
+        } catch (error) {
+            console.error("Lỗi khi cập nhật tour:", error);
+            alert("Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.");
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            const tourRef = doc(db, "tours", editingTour.id);
+            await deleteDoc(tourRef);
+
+            alert("Tour đã được xóa thành công!");
+            closeModal();
+            window.location.reload();
+        } catch (error) {
+            console.error("Lỗi khi xóa tour:", error);
+            alert("Có lỗi xảy ra khi xóa. Vui lòng thử lại.");
+        }
+    };
 
     // Event handlers
     const openAddForm = () => {
@@ -23,11 +157,25 @@ export default function TourManage() {
 
 
 
-    const openEditForm = () => {
+    const openEditForm = (tourId) => {
+        const selectedTour = tours.find(tour => tour.id === tourId);
+        setNewTourName(selectedTour.name);
+        setNewTourLocation(selectedTour.location);
+        setNewTourContent(selectedTour.content);
+        setNewTourPrice(selectedTour.price);
+        setNewTourDiscount(selectedTour.discount);
+        setNewTourDepartureDate(selectedTour.departureDate);
+        setNewTourSchedule(selectedTour.schedule);
+        setNewTourDetailedSchedule(selectedTour.detailedSchedule);
+        setNewTourCatalog(selectedTour.catalog);
+        setEditingTour(selectedTour);
         setShowEditForm(true);
     };
 
-    const openDeleteModal = () => {
+
+    const openDeleteModal = (tourId) => {
+        const selectedTour = tours.find(tour => tour.id === tourId);
+        setEditingTour(selectedTour);
         setShowDeleteModal(true);
     };
 
@@ -44,24 +192,59 @@ export default function TourManage() {
     };
 
     useEffect(() => {
+        const fetchCatalogs = async () => {
+            const catalogsCollection = collection(db, "catalogs");
+            const catalogsSnapshot = await getDocs(catalogsCollection);
+            const catalogsList = catalogsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setCatalogs(catalogsList);
+        };
+
+        fetchCatalogs();
+
+        const fetchTours = async () => {
+            const toursCollection = collection(db, "tours");
+            const toursSnapshot = await getDocs(toursCollection);
+            const toursList = toursSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setTours(toursList);
+        };
+
+        fetchTours();
+
         window.addEventListener('click', handleWindowClick);
         return () => {
             window.removeEventListener('click', handleWindowClick);
         };
+
+
+
+
     }, []);
 
-    // check trạng thái
-    const handleSwitch1Click = () => {
-        setSwitch1Active(prevState => !prevState);
+    const handleSwitchClick = async (tourId, newStatus) => {
+        try {
+            const tourRef = doc(db, "tours", tourId);
+            await updateDoc(tourRef, {
+                status: newStatus
+            });
+
+            // Cập nhật state trên client
+            setTours(prevTours => {
+                return prevTours.map(tour => {
+                    if (tour.id === tourId) {
+                        return { ...tour, status: newStatus };
+                    }
+                    return tour;
+                });
+            });
+        } catch (error) {
+            console.error("Error updating tour status:", error);
+            alert("Có lỗi xảy ra khi cập nhật trạng thái. Vui lòng thử lại.");
+        }
     };
 
-    const handleSwitch2Click = () => {
-        setSwitch2Active(prevState => !prevState);
-    };
 
-    const handleSwitch3Click = () => {
-        setSwitch3Active(prevState => !prevState);
-    };
+
+
 
     return (
         <main>
@@ -87,26 +270,26 @@ export default function TourManage() {
                     <h2>Sửa Thông Tin</h2>
                     <form>
                         <label>Danh mục:</label>
-                        <select id="categorySelection">
-                            {/* Đặt các options cho danh mục ở đây */}
-                            <option value="cat1">Danh mục 1</option>
-                            <option value="cat2">Danh mục 2</option>
+                        <select id="categorySelection" value={editingTour ? editingTour.catalog : ''} onChange={(e) => { /* Cập nhật giá trị editingTour.catalog ở đây */ }}>
+                            {catalogs.map(catalog => (
+                                <option key={catalog.id} value={catalog.id}>{catalog.name}</option>
+                            ))}
                         </select><br /><br />
 
                         <label>Tên Tour:</label>
-                        <input type="text" id="tourName" placeholder="Tên Tour" /><br /><br />
+                        <input type="text" id="tourName" value={newTourName} onChange={(e) => setNewTourName(e.target.value)} /><br /><br />
 
                         <label>Địa điểm:</label>
-                        <input type="text" id="location" placeholder="Địa điểm" /><br /><br />
+                        <input type="text" id="location" value={newTourLocation} onChange={(e) => setNewTourLocation(e.target.value)} /><br /><br />
 
                         <label>Nội dung:</label>
-                        <textarea id="content" placeholder="Nội dung"></textarea><br /><br />
+                        <textarea id="content" value={newTourContent} onChange={(e) => setNewTourContent(e.target.value)}></textarea><br /><br />
 
                         <label>Giá:</label>
-                        <input type="text" id="price" placeholder="VNĐ" /><br /><br />
+                        <input type="text" id="price" value={newTourPrice} onChange={(e) => setNewTourPrice(e.target.value)} /><br /><br />
 
                         <label>Giảm giá:</label>
-                        <select id="discount">
+                        <select id="discount" value={newTourDiscount} onChange={(e) => setNewTourDiscount(e.target.value)}>
                             <option value="5">5%</option>
                             <option value="10">10%</option>
                         </select><br /><br />
@@ -115,18 +298,18 @@ export default function TourManage() {
                         <input type="file" id="image" multiple /><br /><br />
 
                         <label>Ngày xuất phát:</label>
-                        <input type="date" id="departureDate" /><br /><br />
+                        <input type="date" id="departureDate" value={newTourDepartureDate} onChange={(e) => setNewTourDepartureDate(e.target.value)} /><br /><br />
 
                         <label>Lịch trình:</label>
-                        <select id="schedule">
+                        <select id="schedule" value={newTourSchedule} onChange={(e) => setNewTourSchedule(e.target.value)}>
                             <option value="1day">1 ngày 1 đêm</option>
                             <option value="2days">2 ngày 1 đêm</option>
                             <option value="3days">3 ngày 2 đêm</option>
                         </select><br /><br />
 
                         <label>Lịch trình chi tiết:</label>
-                        <textarea id="detailedSchedule" placeholder="Chi tiết lịch trình"></textarea><br /><br />
-                        <button type="submit" className="btnluu">Lưu</button>
+                        <textarea id="detailedSchedule" value={newTourDetailedSchedule} onChange={(e) => setNewTourDetailedSchedule(e.target.value)}></textarea><br /><br />
+                        <button type="submit" className="btnluu" onClick={handleEditSubmit}>Lưu</button>
                         <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
                     </form>
                 </div>
@@ -136,7 +319,7 @@ export default function TourManage() {
                 <div className="modal-content">
                     <span className="close-btn" onClick={closeModal}>×</span>
                     <h2>Bạn có muốn xóa không?</h2>
-                    <button className="btnxoa">Xóa</button>
+                    <button className="btnxoa" onClick={handleDelete}>Xóa</button>
                     <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
                 </div>
             </div>
@@ -146,25 +329,29 @@ export default function TourManage() {
                 <div className="modal-content-additem">
                     <span className="close-btn" onClick={closeModal}>×</span>
                     <h2>Thêm Mới Địa Điểm</h2>
-                    <form>
+                    <form >
                         <label>Danh mục:</label>
-                        <select id="categorySelection">
-                            {/* Đặt các options cho danh mục ở đây */}
-                            <option value="cat1">Danh mục 1</option>
-                            <option value="cat2">Danh mục 2</option>
+                        <select
+                            id="categorySelection"
+                            value={newTourCatalog}
+                            onChange={(e) => setNewTourCatalog(e.target.value)}
+                        >
+                            {catalogs.map(catalog => (
+                                <option key={catalog.id} value={catalog.id}>{catalog.name}</option>
+                            ))}
                         </select><br /><br />
 
                         <label>Tên Tour:</label>
-                        <input type="text" id="tourName" placeholder="Tên Tour" /><br /><br />
+                        <input type="text" id="tourName" placeholder="Tên Tour" value={newTourName} onChange={(e) => setNewTourName(e.target.value)} /><br /><br />
 
                         <label>Địa điểm:</label>
-                        <input type="text" id="location" placeholder="Địa điểm" /><br /><br />
+                        <input type="text" id="location" placeholder="Địa điểm" value={newTourLocation} onChange={(e) => setNewTourLocation(e.target.value)} /><br /><br />
 
                         <label>Nội dung:</label>
-                        <textarea id="content" placeholder="Nội dung"></textarea><br /><br />
+                        <textarea id="content" placeholder="Nội dung" value={newTourContent} onChange={(e) => setNewTourContent(e.target.value)}></textarea><br /><br />
 
                         <label>Giá:</label>
-                        <input type="text" id="price" placeholder="VNĐ" /><br /><br />
+                        <input type="text" id="price" placeholder="VNĐ" value={newTourPrice} onChange={(e) => setNewTourPrice(e.target.value)} /><br /><br />
 
                         <label>Giảm giá:</label>
                         <select id="discount">
@@ -173,22 +360,34 @@ export default function TourManage() {
                         </select><br /><br />
 
                         <label>Hình ảnh:</label>
-                        <input type="file" id="image" multiple /><br /><br />
+                        <input
+                            type="file"
+                            id="images"
+                            multiple
+                            onChange={(e) => {
+                                setNewTourImages(Array.from(e.target.files));
+                                setSelectedImageNames(Array.from(e.target.files).map(file => file.name));
+                            }}
+                        />
+                        {selectedImageNames.map((name, index) => (
+                            <p key={index}>{name}</p>
+                        ))}
+                        <br /><br />
 
                         <label>Ngày xuất phát:</label>
-                        <input type="date" id="departureDate" /><br /><br />
+                        <input type="date" id="departureDate" value={newTourDepartureDate} onChange={(e) => setNewTourDepartureDate(e.target.value)} /><br /><br />
 
                         <label>Lịch trình:</label>
-                        <select id="schedule">
+                        <select id="schedule" value={newTourSchedule} onChange={(e) => setNewTourSchedule(e.target.value)}>
                             <option value="1day">1 ngày 1 đêm</option>
                             <option value="2days">2 ngày 1 đêm</option>
                             <option value="3days">3 ngày 2 đêm</option>
                         </select><br /><br />
 
                         <label>Lịch trình chi tiết:</label>
-                        <textarea id="detailedSchedule" placeholder="Chi tiết lịch trình"></textarea><br /><br />
+                        <textarea id="detailedSchedule" placeholder="Chi tiết lịch trình" value={newTourDetailedSchedule} onChange={(e) => setNewTourDetailedSchedule(e.target.value)}></textarea><br /><br />
 
-                        <button type="submit" className="btnluu">Thêm mới</button>
+                        <button type="submit" className="btnluu" onClick={addNewTour}>Thêm mới</button>
                     </form>
                 </div>
             </div>
@@ -216,82 +415,37 @@ export default function TourManage() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Du Lịch Đà Nẵng</td>
-                                <td id="noidungTour">Du Lịch Miền Trung địa điểm TP Đà Nãng
-                                </td><td>
-                                    <img src={profile} />
-                                </td>
-                                <td>
-                                    920.000 VND
-                                </td>
-                                <td>
-                                    <label className={`switch ${switch1Active ? 'active-admin' : ''}`} onClick={handleSwitch1Click}>
+                            {tours.map((tour, index) => (
 
-                                        <input type="checkbox" checked={switch1Active} readOnly onClick={e => e.stopPropagation()} />
-                                        <span className="slider_admin"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <button className="btn edit-btn" onClick={openEditForm}>
-                                        <i className="bx bx-edit" />
-                                    </button>
-                                    <button className="btn delete-btn" onClick={openDeleteModal}>
-                                        <i className="bx bx-trash" />
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Du Lịch Đà Nẵng</td>
-                                <td id="noidungTour">Du Lịch Miền Trung địa điểm TP Đà Nãng
-                                </td><td>
-                                    <img src={profile} />
-                                </td>
-                                <td>
-                                    920.000 VND
-                                </td>
-                                <td>
-                                    <label className={`switch ${switch2Active ? 'active-admin' : ''}`} onClick={handleSwitch2Click}>
-                                        <input type="checkbox" checked={switch2Active} readOnly onClick={e => e.stopPropagation()} />
-                                        <span className="slider_admin"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <button className="btn edit-btn" onClick={openEditForm}>
-                                        <i className="bx bx-edit" />
-                                    </button>
-                                    <button className="btn delete-btn" onClick={openDeleteModal}>
-                                        <i className="bx bx-trash" />
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Du Lịch Đà Nẵng</td>
-                                <td id="noidungTour">Du Lịch Miền Trung địa điểm TP Đà Nãng
-                                </td><td>
-                                    <img src={profile} />
-                                </td>
-                                <td>
-                                    920.000 VND
-                                </td>
-                                <td>
-                                    <label className={`switch ${switch3Active ? 'active-admin' : ''}`} onClick={handleSwitch3Click}>
-                                        <input type="checkbox" checked={switch3Active} readOnly onClick={e => e.stopPropagation()} />
-                                        <span className="slider_admin"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <button className="btn edit-btn" onClick={openEditForm}>
-                                        <i className="bx bx-edit" />
-                                    </button>
-                                    <button className="btn delete-btn" onClick={openDeleteModal}>
-                                        <i className="bx bx-trash" />
-                                    </button>
-                                </td>
-                            </tr>
+
+                                <tr key={tour.id}>
+                                    <td>{index + 1}</td>
+                                    <td>{tour.name}</td>
+                                    <td id="noidungTour">
+                                        {tour.content}
+                                    </td>
+                                    <td>
+                                        {tour.price}
+                                    </td>
+                                    <td>
+                                        <button>Xem chi tiết</button>
+                                    </td>
+                                    <td>
+                                        <label className={`switch ${tour.status ? 'active-admin' : ''}`} onClick={() => handleSwitchClick(tour.id, !tour.status)}>
+                                            <input type="checkbox" checked={tour.status} readOnly onClick={e => e.stopPropagation()} />
+                                            <span className="slider_admin"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button className="btn edit-btn" onClick={() => openEditForm(tour.id)}>
+                                            <i className="bx bx-edit" />
+                                        </button>
+                                        <button className="btn delete-btn" onClick={() => { openDeleteModal(tour.id) }}>
+                                            <i className="bx bx-trash" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
