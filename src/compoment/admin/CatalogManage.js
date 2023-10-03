@@ -3,6 +3,7 @@ import { profile } from '../../assets/listImage';
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from '../../firebaseConfig';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import BaseUrl from '../../utils/BaseUrl';
 
 export default function CatalogManage() {
 
@@ -77,20 +78,40 @@ export default function CatalogManage() {
 
 
     const [catalogs, setCatalogs] = useState([]);
-    // xuất dữ liệu
-    const fetchCatalogsFromFirebase = async () => {
-        const catalogCollection = collection(db, "catalogs");
-        const catalogSnapshot = await getDocs(catalogCollection);
-        const catalogList = catalogSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        return catalogList;
+    // xuất dữ liệu firebase
+    // const fetchCatalogsFromFirebase = async () => {
+    //     const catalogCollection = collection(db, "catalogs");
+    //     const catalogSnapshot = await getDocs(catalogCollection);
+    //     const catalogList = catalogSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    //     return catalogList;
+    // };
+    // useEffect(() => {
+    //     const loadCatalogs = async () => {
+    //         const catalogsData = await fetchCatalogsFromFirebase();
+    //         setCatalogs(catalogsData);
+    //     };
+
+    //     loadCatalogs();
+    // }, []);
+     // Lấy danh mục từ server
+     const fetchCategoriesFromServer = async () => {
+        try {
+            const response = await fetch(`${BaseUrl}category`);
+            const data = await response.json();
+            return data.content;  // Giả sử dữ liệu categories được trả về trong trường 'content' của đối tượng phản hồi
+        } catch (error) {
+            console.error("Lỗi khi lấy dữ liệu từ server:", error);
+            return [];
+        }
     };
+
     useEffect(() => {
-        const loadCatalogs = async () => {
-            const catalogsData = await fetchCatalogsFromFirebase();
-            setCatalogs(catalogsData);
+        const loadCategories = async () => {
+            const categoriesData = await fetchCategoriesFromServer();
+            setCatalogs(categoriesData);
         };
 
-        loadCatalogs();
+        loadCategories();
     }, []);
     // Event handlers
     const openAddForm = () => {
@@ -135,7 +156,7 @@ export default function CatalogManage() {
         setDeletingCatalogId(id);
         setShowDeleteModal(true);
     };
-    // hàm sửa catalog
+    // hàm sửa catalog của firebase
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -158,7 +179,7 @@ export default function CatalogManage() {
             alert("Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.");
         }
     };
-    // hàm xóa catalog
+    // hàm xóa catalog của firbase
     const handleDelete = async () => {
         try {
             const catalogRef = doc(db, "catalogs", deletingCatalogId);

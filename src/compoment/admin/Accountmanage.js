@@ -1,26 +1,74 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Admin.css'
 import { profile } from '../../assets/listImage'
 
-
+import BaseUrl from "../../utils/BaseUrl"
 export default function Accountmanage() {
+  const [activeStatus, setActiveStatus] = useState({});
 
-  const [switch1Active, setSwitch1Active] = useState(false); // switch1 ban đầu được bật
-  const [switch2Active, setSwitch2Active] = useState(true); // switch2 ban đầu được tắt
-  const [switch3Active, setSwitch3Active] = useState(true);  // switch3 ban đầu được bật
-  // check trạng thái
-  // check trạng thái
-  const handleSwitch1Click = () => {
-    setSwitch1Active(prevState => !prevState);
-  };
+  const [accounts, setAccounts] = useState([]);
 
-  const handleSwitch2Click = () => {
-    setSwitch2Active(prevState => !prevState);
-  };
 
-  const handleSwitch3Click = () => {
-    setSwitch3Active(prevState => !prevState);
-  };
+  
+  useEffect(() => {
+    const fetchAccounts = async () => {
+        try {
+            const response = await fetch(BaseUrl + "account");
+            const data = await response.json();
+            const statusData = {};
+            data.forEach(account => {
+                statusData[account.id] = account.status;
+            });
+            setActiveStatus(statusData);
+            setAccounts(data);
+        } catch (error) {
+            console.error("Lỗi khi fetch dữ liệu:", error);
+        }
+    };
+
+    fetchAccounts();
+}, []);
+
+// điều kiện tài khoản
+const displayAccountType = (type) => {
+  switch(type) {
+    case 0:
+      return 'User';
+    case 1:
+      return 'Admin';
+    case 2:
+      return 'Seller';
+    default:
+      return 'Unknown';
+  }
+};
+// check trạng thái
+const handleSwitchClick = async (accountId) => {
+  const currentStatus = activeStatus[accountId];
+  const updatedStatus = !currentStatus;
+  try {
+      const response = await fetch(`${BaseUrl}account/changestatus`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+              id: accountId,
+              status: updatedStatus
+          })
+      });
+
+      if (response.ok) {
+          setActiveStatus(prevState => ({
+              ...prevState,
+              [accountId]: updatedStatus
+          }));
+      } else {
+          console.error("Error updating status on the server.");
+      }
+  } catch (error) {
+      console.error("Error updating status:", error);
+  }
+};
+
 
 
 
@@ -65,14 +113,7 @@ export default function Accountmanage() {
             <p>Seller</p>
           </span>
         </li>
-        {/* <li><i class='bx bx-dollar-circle'></i>
-              <span class="info">
-                  <h3>
-                      6,742
-                  </h3>
-                  <p>Doanh thu</p>
-              </span>
-          </li> */}
+        
       </ul>
       {/* End of Insights */}
       <div className="bottom-data_admin">
@@ -93,58 +134,38 @@ export default function Accountmanage() {
                 <th>Ngày</th>
                 <th>Loại tài khoản</th>
                 <th>Trạng thái</th>
+                <th>Hoạt động</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
+            {accounts.map(account => (
+              <tr key={account.id}>
                 <td>
                   <img src={profile} />
-                  <p>John Doe</p>
+                  <p>{account.nameAccount}</p>
                 </td>
-                <td>0123456789</td>
-                <td>Đà Nẵng</td>
-                <td>sonnguyen123@gmail.com</td>
-                <td>14-08-2023</td>
-                <td>Admin</td>
+                <td>{account.phoneNumber}</td>
+                <td>{account.address}</td>
+                <td>{account.email}</td>
+                <td>{account.timeLogin}</td>
+                <td>{displayAccountType(account.typeAccount)}</td>
                 <td>
-                  <label className={`switch ${switch1Active ? 'active-admin' : ''}`} onClick={handleSwitch1Click}>
+                  <label className={`switch ${activeStatus[account.id] ? 'active-admin' : ''}`} onClick={() => handleSwitchClick(account.id)}>
 
-                    <input type="checkbox" checked={switch1Active} readOnly onClick={e => e.stopPropagation()} />
+                    <input type="checkbox" checked={activeStatus[account.id]} readOnly onClick={e => e.stopPropagation()} />
                     <span className="slider_admin"></span>
-                  </label></td>
-              </tr>
-              <tr>
-                <td>
-                  <img src={profile} />
-                  <p>John Doe</p>
+                  </label>
                 </td>
-                <td>0123456789</td>
-                <td>Đà Nẵng</td>
-                <td>sonnguyen123@gmail.com</td>
-                <td>14-08-2023</td>
-                <td>Admin</td>
                 <td>
-                  <label className={`switch ${switch2Active ? 'active-admin' : ''}`} onClick={handleSwitch2Click}>
-                    <input type="checkbox" checked={switch2Active} readOnly onClick={e => e.stopPropagation()} />
-                    <span className="slider_admin"></span>
-                  </label></td>
-              </tr>
-              <tr>
-                <td>
-                  <img src={profile} />
-                  <p>John Doe</p>
+                  <button className="btn edit-btn" >
+                    <i className="bx bx-edit" />
+                  </button>
+                  <button className="btn delete-btn">
+                    <i className="bx bx-trash" />
+                  </button>
                 </td>
-                <td>0123456789</td>
-                <td>Đà Nẵng</td>
-                <td>sonnguyen123@gmail.com</td>
-                <td>14-08-2023</td>
-                <td>Admin</td>
-                <td>
-                  <label className={`switch ${switch3Active ? 'active-admin' : ''}`} onClick={handleSwitch3Click}>
-                    <input type="checkbox" checked={switch3Active} readOnly onClick={e => e.stopPropagation()} />
-                    <span className="slider_admin"></span>
-                  </label></td>
               </tr>
+              ))}
             </tbody>
           </table>
         </div>

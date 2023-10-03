@@ -30,6 +30,14 @@ import NavAdmin from "./compoment/admin/NavAdmin";
 import CatalogManage from "./compoment/admin/CatalogManage";
 import TourManage from "./compoment/admin/TourManage";
 import ServiceManage from "./compoment/admin/ServiceManage";
+import SellerLayout from "./layout/SellerLayout";
+import MainSeller from "./compoment/seller/MainSeller";
+import TourManageSeller from "./compoment/seller/TourManageSeller";
+import ScheduleManageSeller from "./compoment/seller/ScheduleManageSeller";
+import RequestTourSeller from "./compoment/seller/RequestTourSeller";
+import BillManageSeller from "./compoment/seller/BillManageSeller";
+import ChatboxSeller from "./compoment/seller/ChatboxSeller";
+import StatisticalSeller from "./compoment/seller/StatisticalSeller";
 
 
 
@@ -39,7 +47,11 @@ function App() {
   // const isLoggedIn = useSelector(state => state.isLoggedIn);
   // const userRole = useSelector(state => state.userRole);
 
-  const isAuthPage = ['/signin', '/signup', '/admin', '/admin/accountmanage' ,'/admin/catalogmanage','/admin/tourmanage','/admin/servicemanage'].includes(location.pathname);
+  const isAuthPage = ['/signin', '/signup',
+   '/admin', '/admin/accountmanage' ,'/admin/catalogmanage','/admin/tourmanage','/admin/servicemanage',
+    '/seller','/seller/tourmanage','/seller/schedulemanage','/seller/requesttour','/seller/billmanage',
+    '/seller/chatbox','/seller/statistical'
+].includes(location.pathname);
 
   return (
     <Provider store={store}>
@@ -80,8 +92,16 @@ function App() {
 
           </Route>
           {/* Seller */}
-          <Route path="/seller" element={<MyTour />} />
-
+          <Route path="/seller" element={<SellerLayout />}>
+            <Route index element={<MainSeller />} />
+            <Route path="tourmanage" element={<TourManageSeller />} />
+            <Route path="schedulemanage" element={<ScheduleManageSeller />} />
+            <Route path="requesttour" element={<RequestTourSeller />} />
+            <Route path="billmanage" element={<BillManageSeller />} />
+            <Route path="chatbox" element={<ChatboxSeller />} />
+            <Route path="statistical" element={<StatisticalSeller />} />
+           
+          </Route>
         </Routes>
         
 
