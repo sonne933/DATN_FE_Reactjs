@@ -129,7 +129,11 @@ const handleLogin =async(e) => {
   }, [dispatch]);
 
   
+  const [isPasswordVisible, setPasswordVisibility] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility(prevVisibility => !prevVisibility);
+  };
   return (
     <section className="container forms">
 
@@ -141,8 +145,8 @@ const handleLogin =async(e) => {
               <input type="email" placeholder="Email" className="input" onChange={e => setEmail(e.target.value)} />
             </div>
             <div className="field input-field">
-              <input type="password" placeholder="Mật khẩu" className="password" onChange={e => setPassword(e.target.value)} />
-              <i className="bx bx-hide eye-icon" />
+              <input type={isPasswordVisible ? "text" : "password"} placeholder="Mật khẩu" className="password" onChange={e => setPassword(e.target.value)} />
+              <i className={isPasswordVisible ? "bx bx-hide eye-icon" : "bx bx-show eye-icon"}  onClick={togglePasswordVisibility}/>
             </div>
             <div className="form-link">
               <a href="#" className="forgot-pass" onClick={handleForgotPassword}>Quên mật khẩu?</a>

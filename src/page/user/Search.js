@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 
 export default function Search() {
-
+    
     const [tours, setTours] = useState([]);
 
     const ITEMS_PER_PAGE = 6;

@@ -15,7 +15,11 @@ function Register() {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();  // Gọi hook
+  const [isPasswordVisible, setPasswordVisibility] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility(prevVisibility => !prevVisibility);
+  };
   // đăng ký firebase
   // const handleSignup = async () => {
   //   try {
@@ -49,30 +53,63 @@ function Register() {
   // }
   // };
 // đăng ký backend
-const handleSignup = async () => {
-  try {
-    const registrationData = {
-      email,
-      password,
-      nameAccount: name,
-      phone,
-      address,
+// const handleSignup = async () => {
+//   try {
+//     const registrationData = {
+//       nameAccount: name,
+//       email:email,
+//       password:password,
+//       phoneNumber:phone,
+//       address:address,
       
-      // ... other necessary fields
-    };
+//       // ... other necessary fields
+//     };
 
-    const response = await axios.post(`${BaseUrl}/register`, registrationData);
+//     const response = await axios.post(`${BaseUrl}/account/register`, registrationData);
 
-    if (response.data.status === "1") {
-      console.log("Đăng ký thành công!");
-      console.log("Thông tin tài khoản:", response.data.account);
-      navigate('/signin'); // navigate to sign-in page after successful registration
+//     if (response.data.status === "1") {
+//       console.log("Đăng ký thành công!");
+//       console.log("Thông tin tài khoản:", response.data.account);
+//       navigate('/signin'); // navigate to sign-in page after successful registration
+//     } else {
+//       console.error(response.data.message);
+//       alert(response.data.message); // Alert message from the server
+//     }
+//   } catch (error) {
+//     console.error("Có lỗi khi gửi request đến backend:", error);
+//     alert("Có lỗi xảy ra!");
+//   }
+// };
+const handleSignup = async () => {
+  // Destructuring để tránh việc lặp lại mã
+  const registrationData = {
+    nameAccount: name,
+    email,
+    password,
+    phoneNumber: phone,
+    address,
+    // ... other necessary fields
+  };
+
+  try {
+    const response = await axios.post(`${BaseUrl}account/register`, registrationData);
+
+    // Kiểm tra sự tồn tại của response trước khi truy cập dữ liệu bên trong
+    if (response && response.data) {
+      const { status, account, message } = response.data;
+
+      if (status === "1") {
+        console.log("Đăng ký thành công!", "Thông tin tài khoản:", account);
+        navigate('/signin'); // navigate to sign-in page after successful registration
+      } else {
+        console.error("Lỗi từ máy chủ:", message);
+        alert(message || "Đăng ký thất bại!"); // Alert message from the server
+      }
     } else {
-      console.error(response.data.message);
-      alert(response.data.message); // Alert message from the server
+      throw new Error("Không có phản hồi từ máy chủ.");
     }
   } catch (error) {
-    console.error("Có lỗi khi gửi request đến backend:", error);
+    console.error("Có lỗi khi gửi request đến backend:", error.message || error);
     alert("Có lỗi xảy ra!");
   }
 };
@@ -98,8 +135,8 @@ const handleSignup = async () => {
               <input type="text" placeholder="Địa chỉ" name='address' className="input" value={address} onChange={(e) => setAddress(e.target.value)} />
             </div>
             <div className="field input-field">
-              <input type="password" placeholder="Nhập mật khẩu" name='password' className="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <i className="bx bx-hide eye-icon" />
+              <input type={isPasswordVisible ? "text" : "password"} placeholder="Nhập mật khẩu" name='password' className="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <i className={isPasswordVisible ? "bx bx-hide eye-icon" : "bx bx-show eye-icon"}  onClick={togglePasswordVisibility} />
             </div>
             <div className="field button-field">
               <button >Đăng ký</button>
