@@ -5,7 +5,8 @@ import { auth, db } from '../../firebaseConfig'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 // import { collection, addDoc } from 'firebase/firestore';
 import { doc, setDoc } from 'firebase/firestore';
-
+import axios from "axios";
+import BaseUrl from '../../utils/BaseUrl';
 
 function Register() {
   const [name, setName] = useState("");
@@ -15,39 +16,66 @@ function Register() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();  // Gọi hook
 
-  
-  const handleSignup = async () => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCredential.user.uid;
+  // đăng ký firebase
+  // const handleSignup = async () => {
+  //   try {
+  //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  //     const uid = userCredential.user.uid;
 
-      // Lưu trữ thông tin người dùng lên Firestore
-      const userData = {
-        name,
-        email,
-        phone,
-        address,
-        // ... other user data you might want to store
-        status: 0, // for example, default user role
-      };
-      const userRef = doc(db, 'users', uid);
-      await setDoc(userRef, userData);
+  //     // Lưu trữ thông tin người dùng lên Firestore
+  //     const userData = {
+  //       name,
+  //       email,
+  //       phone,
+  //       address,
+  //       // ... other user data you might want to store
+  //       status: 0, // for example, default user role
+  //     };
+  //     const userRef = doc(db, 'users', uid);
+  //     await setDoc(userRef, userData);
 
-      console.log('User registered with UID:', uid);
+  //     console.log('User registered with UID:', uid);
 
-      // Redirect user to a different page or show a success message
-      alert('Đăng ký thành công!');
+  //     // Redirect user to a different page or show a success message
+  //     alert('Đăng ký thành công!');
+  //     navigate('/signin'); // navigate to sign-in page after successful registration
+  //   }  catch (error) {
+  //     console.error('Error during sign up:', error);
+  //     if (error.code === 'auth/email-already-in-use') {
+  //         alert('Email này đã được sử dụng. Vui lòng chọn một email khác hoặc đăng nhập.');
+  //     } else {
+  //         alert(error.message);
+  //     }
+  // }
+  // };
+// đăng ký backend
+const handleSignup = async () => {
+  try {
+    const registrationData = {
+      email,
+      password,
+      nameAccount: name,
+      phone,
+      address,
+      
+      // ... other necessary fields
+    };
+
+    const response = await axios.post(`${BaseUrl}/register`, registrationData);
+
+    if (response.data.status === "1") {
+      console.log("Đăng ký thành công!");
+      console.log("Thông tin tài khoản:", response.data.account);
       navigate('/signin'); // navigate to sign-in page after successful registration
-    }  catch (error) {
-      console.error('Error during sign up:', error);
-      if (error.code === 'auth/email-already-in-use') {
-          alert('Email này đã được sử dụng. Vui lòng chọn một email khác hoặc đăng nhập.');
-      } else {
-          alert(error.message);
-      }
+    } else {
+      console.error(response.data.message);
+      alert(response.data.message); // Alert message from the server
+    }
+  } catch (error) {
+    console.error("Có lỗi khi gửi request đến backend:", error);
+    alert("Có lỗi xảy ra!");
   }
-  };
-
+};
 
 
   return (
@@ -78,7 +106,7 @@ function Register() {
             </div>
           </form>
           <div className="form-link">
-            <span>Bạn đã có tài khoản? <Link to="/signin">Đăng nhập</Link></span>
+            <span>Bạn đã có tài khoản? <Link to="/signup">Đăng nhập</Link></span>
           </div>
           <div className="form-link">
             <Link to="/">Thoát</Link>

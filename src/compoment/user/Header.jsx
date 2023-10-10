@@ -49,8 +49,8 @@ function Header({ isLoggedIn }) {
                         </div>
                     </div>
                     <div className="bar__user">
-                        <div className="bar__user-login"><Link to="/signin">Đăng nhập</Link></div>
-                        <div className="bar__user-regis"><Link to="/signup">Đăng ký</Link></div>
+                        <div className="bar__user-login"><Link to="/signup">Đăng nhập</Link></div>
+                        <div className="bar__user-regis"><Link to="/signin">Đăng ký</Link></div>
                     </div>
                 </div> ): null
                 }

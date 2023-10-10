@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./css/Signup.css";
 import { Link, useNavigate } from 'react-router-dom';
-
+import axios from "axios";
 import { auth, db } from '../../firebaseConfig'
 
 import {
@@ -15,6 +15,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { loginSuccess, logout } from '../../redux/actions';
 import { doc, getDoc } from 'firebase/firestore';
+import BaseUrl from '../../utils/BaseUrl';
 
 
 
@@ -49,36 +50,57 @@ function Signin() {
       alert(error.message);
     }
   };
+// hàm đăng nhập firebase
+  // const handleLogin = async () => {
+  //   try {
+  //     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  //     console.log("Đăng nhập thành công với UID:", userCredential.user.uid);
+  //     dispatch(loginSuccess());  // Update the login state
 
-  const handleLogin = async () => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log("Đăng nhập thành công với UID:", userCredential.user.uid);
-      dispatch(loginSuccess());  // Update the login state
+  //     // Truy xuất thông tin người dùng từ Firestore để xác định quyền của họ
+  //     const docRef = doc(db, "users", userCredential.user.uid);
+  //     const docSnap = await getDoc(docRef);
 
-      // Truy xuất thông tin người dùng từ Firestore để xác định quyền của họ
-      const docRef = doc(db, "users", userCredential.user.uid);
-      const docSnap = await getDoc(docRef);
+  //     if (docSnap.exists()) {
+  //       const userData = docSnap.data();
+  //       const userStatus = userData.status;
+  //       if (userStatus === 1) { // Admin
+  //         navigate("/admin");
+  //       } else if (userStatus === 2) { // Seller
+  //         navigate("/seller");
+  //       } else { // Default: User
+  //         navigate("/");
+  //       }
+  //     } else {
+  //       console.error("Không tìm thấy thông tin người dùng trong Firestore");
+  //     }
+  //     alert('Đăng nhập thành công');
+  //   } catch (error) {
+  //     console.error("Error during email sign-in:", error);
+  //     alert(error.message);
+  //   }
+  // };
 
-      if (docSnap.exists()) {
-        const userData = docSnap.data();
-        const userStatus = userData.status;
-        if (userStatus === 1) { // Admin
-          navigate("/admin");
-        } else if (userStatus === 2) { // Seller
-          navigate("/seller");
-        } else { // Default: User
-          navigate("/");
-        }
-      } else {
-        console.error("Không tìm thấy thông tin người dùng trong Firestore");
-      }
-      alert('Đăng nhập thành công');
-    } catch (error) {
-      console.error("Error during email sign-in:", error);
-      alert(error.message);
-    }
-  };
+// hàm đăng nhập backend
+const handleLogin =async(e) => {
+ 
+  e.preventDefault();
+  let regObj = { email:email.toLowerCase(), password};
+  try{
+    const res= await axios.post(BaseUrl+'account/login', regObj);  
+      
+    if(res?.data.status==='1') { 
+     sessionStorage.setItem('user',res?.data.account.id);
+     if(res?.data.account.typeAccount<2) navigate("/"); 
+     else if(res?.data.account.typeAccount<3) navigate("/seller");
+     else navigate('/admin')}
+    else alert(res?.data.message);
+  }catch(err){
+    
+    alert('Khong co ket noi');
+  }
+};
+
 
   const handleForgotPassword = () => {
     sendPasswordResetEmail(auth, email)
@@ -106,7 +128,7 @@ function Signin() {
     return () => unsubscribe();
   }, [dispatch]);
 
-
+  
 
   return (
     <section className="container forms">
@@ -130,7 +152,7 @@ function Signin() {
             </div>
           </form>
           <div className="form-link">
-            <span>Bạn chưa có tài khoản? <Link to="/signup">Đăng ký</Link></span>
+            <span>Bạn chưa có tài khoản? <Link to="/signin">Đăng ký</Link></span>
           </div>
           <div className="form-link">
             <Link to="/">Thoát</Link>

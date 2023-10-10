@@ -1,7 +1,15 @@
 import React from 'react'
 import "./css/Booking.css"
 import { offers1 } from '../../assets/listImage'
+import { useLocation } from 'react-router-dom';
+
+
 export default function Booking() {
+
+    const location = useLocation();
+    const tourBooking = location.state?.tourBooking;
+    console.log(tourBooking);
+
     return (
         <div className="main-booking ">
             <div className="main_offers-booking">

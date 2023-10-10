@@ -68,13 +68,13 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup" element={<Signin />} />
+          <Route path="/signin" element={<Signup />} />
 
 
-          <Route path="/tourDetails" element={<TourDetails />} />
+          <Route path="/tourDetails/:tourId" element={<TourDetails />} />
           <Route path="/personalInformation" element={<PersonalInformation />} />
-          <Route path="/booking" element={<Booking />} />
+          <Route path="/booking/:tourId" element={<Booking />} />
           <Route path="/historyBooking" element={<HistoryBooking />} />
           <Route path="/mytour" element={<MyTour />} />
 
