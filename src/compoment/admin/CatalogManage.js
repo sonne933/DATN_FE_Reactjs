@@ -20,31 +20,31 @@ export default function CatalogManage() {
     const [editingCatalogId, setEditingCatalogId] = useState(null);
     const [deletingCatalogId, setDeletingCatalogId] = useState(null);
 
-    const addNewCatalog = async (e) => {
-        e.preventDefault();
-        try {
-            let imageURL = '';
-            if (newCatalogImg) {
-                imageURL = await uploadImageAndGetURL(newCatalogImg);
-            }
-            const newCatalog = {
-                name: newCatalogName,
-                content: newCatalogContent,
-                image: imageURL,
-                status: true
-            };
-            await addDoc(collection(db, "catalogs"), newCatalog);
-            alert("Danh mục mới đã được thêm thành công!");
-            setNewCatalogName('');
-            setNewCatalogContent('');
-            setNewCatalogImg(null);
-            closeAddForm();
-            window.location.reload();
-        } catch (error) {
-            console.error("Lỗi khi thêm danh mục mới:", error);
-            alert("Có lỗi xảy ra khi thêm mới. Vui lòng thử lại.");
-        }
-    };
+    // const addNewCatalog = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         let imageURL = '';
+    //         if (newCatalogImg) {
+    //             imageURL = await uploadImageAndGetURL(newCatalogImg);
+    //         }
+    //         const newCatalog = {
+    //             name: newCatalogName,
+    //             content: newCatalogContent,
+    //             image: imageURL,
+    //             status: true
+    //         };
+    //         await addDoc(collection(db, "catalogs"), newCatalog);
+    //         alert("Danh mục mới đã được thêm thành công!");
+    //         setNewCatalogName('');
+    //         setNewCatalogContent('');
+    //         setNewCatalogImg(null);
+    //         closeAddForm();
+    //         window.location.reload();
+    //     } catch (error) {
+    //         console.error("Lỗi khi thêm danh mục mới:", error);
+    //         alert("Có lỗi xảy ra khi thêm mới. Vui lòng thử lại.");
+    //     }
+    // };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -157,58 +157,58 @@ export default function CatalogManage() {
         setShowDeleteModal(true);
     };
     // hàm sửa catalog của firebase
-    const handleEditSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            let imageURL = newCatalogImg;
-            if (typeof newCatalogImg !== 'string') {  // Kiểm tra nếu newCatalogImg không phải là URL
-                imageURL = await uploadImageAndGetURL(newCatalogImg);
-            }
-            const updatedCatalog = {
-                name: newCatalogName,
-                content: newCatalogContent,
-                image: imageURL,
-            };
-            const catalogRef = doc(db, "catalogs", editingCatalogId);
-            await updateDoc(catalogRef, updatedCatalog);
-            alert("Danh mục đã được cập nhật thành công!");
-            closeModal();
-            window.location.reload();
-        } catch (error) {
-            console.error("Lỗi khi cập nhật danh mục:", error);
-            alert("Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.");
-        }
-    };
+    // const handleEditSubmit = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         let imageURL = newCatalogImg;
+    //         if (typeof newCatalogImg !== 'string') {  // Kiểm tra nếu newCatalogImg không phải là URL
+    //             imageURL = await uploadImageAndGetURL(newCatalogImg);
+    //         }
+    //         const updatedCatalog = {
+    //             name: newCatalogName,
+    //             content: newCatalogContent,
+    //             image: imageURL,
+    //         };
+    //         const catalogRef = doc(db, "catalogs", editingCatalogId);
+    //         await updateDoc(catalogRef, updatedCatalog);
+    //         alert("Danh mục đã được cập nhật thành công!");
+    //         closeModal();
+    //         window.location.reload();
+    //     } catch (error) {
+    //         console.error("Lỗi khi cập nhật danh mục:", error);
+    //         alert("Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.");
+    //     }
+    // };
     // hàm xóa catalog của firbase
-    const handleDelete = async () => {
-        try {
-            const catalogRef = doc(db, "catalogs", deletingCatalogId);
-            await deleteDoc(catalogRef);
-            alert("Danh mục đã được xóa thành công!");
-            closeModal();
-            window.location.reload();
-        } catch (error) {
-            console.error("Lỗi khi xóa danh mục:", error);
-            alert("Có lỗi xảy ra khi xóa. Vui lòng thử lại.");
-        }
-    };
-    // check trạng thái
-    const handleSwitchClick = async (id) => {
-        const catalogRef = doc(db, "catalogs", id);
-        const catalog = catalogs.find(c => c.id === id);
-        const newStatus = !catalog.status;
+    // const handleDelete = async () => {
+    //     try {
+    //         const catalogRef = doc(db, "catalogs", deletingCatalogId);
+    //         await deleteDoc(catalogRef);
+    //         alert("Danh mục đã được xóa thành công!");
+    //         closeModal();
+    //         window.location.reload();
+    //     } catch (error) {
+    //         console.error("Lỗi khi xóa danh mục:", error);
+    //         alert("Có lỗi xảy ra khi xóa. Vui lòng thử lại.");
+    //     }
+    // };
+    // check trạng thái firebase
+    // const handleSwitchClick = async (id) => {
+    //     const catalogRef = doc(db, "catalogs", id);
+    //     const catalog = catalogs.find(c => c.id === id);
+    //     const newStatus = !catalog.status;
 
-        try {
-            await updateDoc(catalogRef, {
-                status: newStatus
-            });
-            // Cập nhật state
-            setCatalogs(prevState => prevState.map(c => c.id === id ? { ...c, status: newStatus } : c));
-        } catch (error) {
-            console.error("Lỗi khi cập nhật trạng thái:", error);
-            alert("Có lỗi xảy ra khi cập nhật trạng thái. Vui lòng thử lại.");
-        }
-    };
+    //     try {
+    //         await updateDoc(catalogRef, {
+    //             status: newStatus
+    //         });
+    //         // Cập nhật state
+    //         setCatalogs(prevState => prevState.map(c => c.id === id ? { ...c, status: newStatus } : c));
+    //     } catch (error) {
+    //         console.error("Lỗi khi cập nhật trạng thái:", error);
+    //         alert("Có lỗi xảy ra khi cập nhật trạng thái. Vui lòng thử lại.");
+    //     }
+    // };
     return (
         <main>
             <div className="header_admin">
@@ -270,7 +270,7 @@ export default function CatalogManage() {
                         Tên danh mục: <input type="text" id="name"  value={newCatalogName} onChange={(e) => setNewCatalogName(e.target.value)} /><br /><br />
                         Nội dung: <textarea id="details"  defaultValue={""} value={newCatalogContent} onChange={(e) => setNewCatalogContent(e.target.value)}/><br /><br />
                         Hình ảnh: <input type="file" id="image" onChange={handleImageChange} /><br /><br />
-                        <button type="submit" className="btnluu" onClick={handleEditSubmit}>Lưu</button>
+                        <button type="submit" className="btnluu" >Lưu</button>
                         <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
                     </form>
                 </div>
@@ -280,7 +280,7 @@ export default function CatalogManage() {
                 <div className="modal-content">
                     <span className="close-btn" onClick={closeModal}>×</span>
                     <h2>Bạn có muốn xóa không?</h2>
-                    <button className="btnxoa"onClick={handleDelete}>Xóa</button>
+                    <button className="btnxoa">Xóa</button>
                     <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
                 </div>
             </div>
@@ -295,7 +295,7 @@ export default function CatalogManage() {
                         Nội dung: <textarea id="content" placeholder="Nội dung" defaultValue={""} value={newCatalogContent} onChange={(e) => setNewCatalogContent(e.target.value)} /><br /><br />
                         Hình ảnh:
                         <input type="file" id="image" onChange={handleImageChange} /><br /><br />
-                        <button type="submit" className="btnluu" onClick={addNewCatalog}>Thêm mới</button>
+                        <button type="submit" className="btnluu" >Thêm mới</button>
                         {/* <button type="button" class="close-btn">Thoát</button> */}
                     </form>
                 </div>
@@ -307,7 +307,7 @@ export default function CatalogManage() {
                         <i className="bx bx-receipt" />
                         <h3>Danh Sách Danh Mục</h3>
                         <i className="bx bx-filter" />
-                        <button className="btn add-new-btn " onClick={openAddForm}>
+                        <button className="btn add-new-btn " >
                             Thêm mới
                         </button>
                     </div>
@@ -333,7 +333,7 @@ export default function CatalogManage() {
                                     </td>
                                     <td>
 
-                                        <label className={`switch ${catalog.status ? 'active-admin' : ''}`} onClick={() => handleSwitchClick(catalog.id)}>
+                                        <label className={`switch ${catalog.status ? 'active-admin' : ''}`} >
                                             <input type="checkbox" checked={catalog.status} readOnly onClick={e => e.stopPropagation()} />
                                             <span className="slider_admin"></span>
                                         </label>

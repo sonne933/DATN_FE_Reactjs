@@ -14,11 +14,16 @@ function Register() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const navigate = useNavigate();  // Gọi hook
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
+  const [isRePasswordVisible, setRePasswordVisibility] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisibility(prevVisibility => !prevVisibility);
+  };
+  const toggleRePasswordVisibility = () => {
+    setRePasswordVisibility(prevVisibility => !prevVisibility);
   };
   // đăng ký firebase
   // const handleSignup = async () => {
@@ -86,6 +91,7 @@ const handleSignup = async () => {
     nameAccount: name,
     email,
     password,
+    rePassword: rePassword,
     phoneNumber: phone,
     address,
     // ... other necessary fields
@@ -137,6 +143,10 @@ const handleSignup = async () => {
             <div className="field input-field">
               <input type={isPasswordVisible ? "text" : "password"} placeholder="Nhập mật khẩu" name='password' className="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               <i className={isPasswordVisible ? "bx bx-hide eye-icon" : "bx bx-show eye-icon"}  onClick={togglePasswordVisibility} />
+            </div>
+            <div className="field input-field">
+              <input type={isRePasswordVisible ? "text" : "password"} placeholder="Nhập lại mật khẩu" name='repassword' className="password" value={rePassword} onChange={(e) => setRePassword(e.target.value)} />
+              <i className={isRePasswordVisible ? "bx bx-hide eye-icon" : "bx bx-show eye-icon"}  onClick={toggleRePasswordVisibility} />
             </div>
             <div className="field button-field">
               <button >Đăng ký</button>
