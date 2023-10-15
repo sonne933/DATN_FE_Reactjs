@@ -4,6 +4,7 @@ import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "firebase
 import { db } from '../../firebaseConfig';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import BaseUrl from '../../utils/BaseUrl';
+import axios from 'axios';
 
 export default function CatalogManage() {
 
@@ -77,6 +78,40 @@ export default function CatalogManage() {
 
 
 
+    const handleSubmit = async () => {
+        
+            try {
+                const formData = new FormData();
+                formData.append('name', newCatalogName);
+                formData.append('content', newCatalogContent);
+                if (newCatalogImg) {
+                    formData.append('image', newCatalogImg);
+                }
+                formData.append('status', true); // Bạn có thể điều chỉnh giá trị này dựa trên yêu cầu của bạn
+    
+                const response = await axios.post(`${BaseUrl}/category`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+    
+                if (response.data.status === "1") {
+                    alert.success("Thêm mới thành công");
+                    alert(response.data.message);
+                    setNewCatalogName('');
+                    setNewCatalogContent('');
+                    setNewCatalogImg(null);
+                    closeAddForm();
+                    window.location.reload();
+                } else {
+                    alert(response.data.message);
+                }
+            } catch (error) {
+                console.error("Lỗi khi thêm danh mục mới:", error);
+            }
+        
+    };
+    
     const [catalogs, setCatalogs] = useState([]);
     // xuất dữ liệu firebase
     // const fetchCatalogsFromFirebase = async () => {
@@ -93,8 +128,8 @@ export default function CatalogManage() {
 
     //     loadCatalogs();
     // }, []);
-     // Lấy danh mục từ server
-     const fetchCategoriesFromServer = async () => {
+    // Lấy danh mục từ server
+    const fetchCategoriesFromServer = async () => {
         try {
             const response = await fetch(`${BaseUrl}category`);
             const data = await response.json();
@@ -122,9 +157,9 @@ export default function CatalogManage() {
         setShowAddForm(false);
     };
 
-   
 
-    
+
+
 
     const closeModal = () => {
         setShowEditForm(false);
@@ -267,8 +302,8 @@ export default function CatalogManage() {
                     <span className="close-btn" onClick={closeModal}>×</span>
                     <h2>Sửa Thông Tin</h2>
                     <form>
-                        Tên danh mục: <input type="text" id="name"  value={newCatalogName} onChange={(e) => setNewCatalogName(e.target.value)} /><br /><br />
-                        Nội dung: <textarea id="details"  defaultValue={""} value={newCatalogContent} onChange={(e) => setNewCatalogContent(e.target.value)}/><br /><br />
+                        Tên danh mục: <input type="text" id="name" value={newCatalogName} onChange={(e) => setNewCatalogName(e.target.value)} /><br /><br />
+                        Nội dung: <textarea id="details" defaultValue={""} value={newCatalogContent} onChange={(e) => setNewCatalogContent(e.target.value)} /><br /><br />
                         Hình ảnh: <input type="file" id="image" onChange={handleImageChange} /><br /><br />
                         <button type="submit" className="btnluu" >Lưu</button>
                         <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
@@ -292,10 +327,11 @@ export default function CatalogManage() {
                     <h2>Thêm Mới Danh Mục</h2>
                     <form>
                         Danh mục: <input type="text" id="category" placeholder="Danh mục" value={newCatalogName} onChange={(e) => setNewCatalogName(e.target.value)} /><br /><br />
-                        Nội dung: <textarea id="content" placeholder="Nội dung" defaultValue={""} value={newCatalogContent} onChange={(e) => setNewCatalogContent(e.target.value)} /><br /><br />
+                        Nội dung: <textarea id="details" value={newCatalogContent} onChange={(e) => setNewCatalogContent(e.target.value)} />
+                        
                         Hình ảnh:
                         <input type="file" id="image" onChange={handleImageChange} /><br /><br />
-                        <button type="submit" className="btnluu" >Thêm mới</button>
+                        <button type="submit" className="btnluu" onClick={handleSubmit}>Thêm mới</button>
                         {/* <button type="button" class="close-btn">Thoát</button> */}
                     </form>
                 </div>
@@ -307,7 +343,7 @@ export default function CatalogManage() {
                         <i className="bx bx-receipt" />
                         <h3>Danh Sách Danh Mục</h3>
                         <i className="bx bx-filter" />
-                        <button className="btn add-new-btn " >
+                        <button className="btn add-new-btn " onClick={openAddForm} >
                             Thêm mới
                         </button>
                     </div>

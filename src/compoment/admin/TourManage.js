@@ -3,6 +3,8 @@ import { profile } from '../../assets/listImage';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import BaseUrl from '../../utils/BaseUrl';
+import axios from 'axios';
 
 export default function TourManage() {
 
@@ -13,6 +15,26 @@ export default function TourManage() {
 
 
     const [catalogs, setCatalogs] = useState([]);
+    
+    // Lấy danh mục từ server
+    const fetchCategoriesFromServer = async () => {
+        try {
+            const response = await fetch(`${BaseUrl}category`);
+            const data = await response.json();
+            return data.content;  // Giả sử dữ liệu categories được trả về trong trường 'content' của đối tượng phản hồi
+        } catch (error) {
+            console.error("Lỗi khi lấy dữ liệu từ server:", error);
+            return [];
+        }
+    };
+    useEffect(() => {
+        const loadCategories = async () => {
+            const categoriesData = await fetchCategoriesFromServer();
+            setCatalogs(categoriesData);
+        };
+
+        loadCategories();
+    }, []);
 
 
     const [newTourName, setNewTourName] = useState('');
@@ -25,7 +47,7 @@ export default function TourManage() {
     const [newTourSchedule, setNewTourSchedule] = useState('1day');
     const [newTourDetailedSchedule, setNewTourDetailedSchedule] = useState('');
     const [newTourCatalog, setNewTourCatalog] = useState('');  // Dựa trên các danh mục bạn có
-    const [tours, setTours] = useState([]);
+   
 
     const [selectedImageNames, setSelectedImageNames] = useState([]);
     const [editingTour, setEditingTour] = useState(null);
@@ -59,33 +81,109 @@ export default function TourManage() {
         const urls = await Promise.all(uploadPromises);
         return urls;
     };
+    // const addNewTour = async (e) => {
+    //     e.preventDefault();
+
+    //     let imageUrls = [];
+    //     if (newTourImages.length) {
+    //         imageUrls = await uploadImagesAndGetURLs(newTourImages);
+    //     }
+
+    //     const newTour = {
+    //         name: newTourName,
+    //         location: newTourLocation,
+    //         content: newTourContent,
+    //         price: newTourPrice,
+    //         discount: newTourDiscount,
+    //         images: imageUrls,
+    //         departureDate: newTourDepartureDate,
+    //         schedule: newTourSchedule,
+    //         detailedSchedule: newTourDetailedSchedule,
+    //         catalog: newTourCatalog,
+    //         status: true
+    //     };
+
+    //     try {
+    //         await addDoc(collection(db, "tours"), newTour);
+    //         alert("Tour mới đã được thêm thành công!");
+    //         // Reset state
+    //         setNewTourName('');
+    //         setNewTourLocation('');
+    //         setNewTourContent('');
+    //         setNewTourPrice('');
+    //         setNewTourDiscount('5');
+
+    //         setNewTourDepartureDate('');
+    //         setNewTourSchedule('1day');
+    //         setNewTourDetailedSchedule('');
+    //         setNewTourCatalog('');
+    //         closeModal();
+    //         window.location.reload();
+    //     } catch (error) {
+    //         console.error("Lỗi khi thêm tour mới:", error);
+    //         alert("Có lỗi xảy ra khi thêm mới. Vui lòng thử lại.");
+    //     }
+    // };
+
+    // const handleEditSubmit = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         let imageUrls = editingTour.images;
+    //         if (newTourImages.length) {
+    //             imageUrls = await uploadImagesAndGetURLs(newTourImages);
+    //         }
+
+    //         const updatedTour = {
+    //             name: newTourName,
+    //             location: newTourLocation,
+    //             content: newTourContent,
+    //             price: newTourPrice,
+    //             discount: newTourDiscount,
+    //             images: imageUrls,
+    //             departureDate: newTourDepartureDate,
+    //             schedule: newTourSchedule,
+    //             detailedSchedule: newTourDetailedSchedule,
+    //             catalog: newTourCatalog,
+    //         };
+
+    //         const tourRef = doc(db, "tours", editingTour.id);
+    //         await updateDoc(tourRef, updatedTour);
+
+    //         alert("Tour đã được cập nhật thành công!");
+    //         closeModal();
+    //         window.location.reload();
+    //     } catch (error) {
+    //         console.error("Lỗi khi cập nhật tour:", error);
+    //         alert("Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.");
+    //     }
+    // };
     const addNewTour = async (e) => {
         e.preventDefault();
-
+    
         let imageUrls = [];
         if (newTourImages.length) {
             imageUrls = await uploadImagesAndGetURLs(newTourImages);
         }
-
+    
         const newTour = {
-            name: newTourName,
-            location: newTourLocation,
-            content: newTourContent,
+            title: newTourName,
+            address: newTourLocation,
+            describe: newTourContent,
             price: newTourPrice,
-            discount: newTourDiscount,
-            images: imageUrls,
+            sale: newTourDiscount,
+            image: imageUrls,
             departureDate: newTourDepartureDate,
             schedule: newTourSchedule,
-            detailedSchedule: newTourDetailedSchedule,
+            hanhtrinh: newTourDetailedSchedule,
             catalog: newTourCatalog,
             status: true
         };
-
+    
         try {
-            await addDoc(collection(db, "tours"), newTour);
-            alert("Tour mới đã được thêm thành công!");
-            // Reset state
-            setNewTourName('');
+            const response = await axios.post(`${BaseUrl}tour`, newTour);
+            if (response.data.success) {
+                alert("Tour mới đã được thêm thành công!");
+                // ... (tiếp tục như ban đầu)setNewTourName('');
             setNewTourLocation('');
             setNewTourContent('');
             setNewTourPrice('');
@@ -97,58 +195,29 @@ export default function TourManage() {
             setNewTourCatalog('');
             closeModal();
             window.location.reload();
+            } else {
+                throw new Error(response.data.message || "Lỗi không xác định.");
+            }
         } catch (error) {
             console.error("Lỗi khi thêm tour mới:", error);
             alert("Có lỗi xảy ra khi thêm mới. Vui lòng thử lại.");
         }
     };
+    
+    
+    // const handleDelete = async () => {
+    //     try {
+    //         const tourRef = doc(db, "tours", editingTour.id);
+    //         await deleteDoc(tourRef);
 
-    const handleEditSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            let imageUrls = editingTour.images;
-            if (newTourImages.length) {
-                imageUrls = await uploadImagesAndGetURLs(newTourImages);
-            }
-
-            const updatedTour = {
-                name: newTourName,
-                location: newTourLocation,
-                content: newTourContent,
-                price: newTourPrice,
-                discount: newTourDiscount,
-                images: imageUrls,
-                departureDate: newTourDepartureDate,
-                schedule: newTourSchedule,
-                detailedSchedule: newTourDetailedSchedule,
-                catalog: newTourCatalog,
-            };
-
-            const tourRef = doc(db, "tours", editingTour.id);
-            await updateDoc(tourRef, updatedTour);
-
-            alert("Tour đã được cập nhật thành công!");
-            closeModal();
-            window.location.reload();
-        } catch (error) {
-            console.error("Lỗi khi cập nhật tour:", error);
-            alert("Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.");
-        }
-    };
-
-    const handleDelete = async () => {
-        try {
-            const tourRef = doc(db, "tours", editingTour.id);
-            await deleteDoc(tourRef);
-
-            alert("Tour đã được xóa thành công!");
-            closeModal();
-            window.location.reload();
-        } catch (error) {
-            console.error("Lỗi khi xóa tour:", error);
-            alert("Có lỗi xảy ra khi xóa. Vui lòng thử lại.");
-        }
-    };
+    //         alert("Tour đã được xóa thành công!");
+    //         closeModal();
+    //         window.location.reload();
+    //     } catch (error) {
+    //         console.error("Lỗi khi xóa tour:", error);
+    //         alert("Có lỗi xảy ra khi xóa. Vui lòng thử lại.");
+    //     }
+    // };
 
     // Event handlers
     const openAddForm = () => {
@@ -158,17 +227,20 @@ export default function TourManage() {
 
 
     const openEditForm = (tourId) => {
-        const selectedTour = tours.find(tour => tour.id === tourId);
-        setNewTourName(selectedTour.name);
-        setNewTourLocation(selectedTour.location);
-        setNewTourContent(selectedTour.content);
-        setNewTourPrice(selectedTour.price);
-        setNewTourDiscount(selectedTour.discount);
-        setNewTourDepartureDate(selectedTour.departureDate);
-        setNewTourSchedule(selectedTour.schedule);
-        setNewTourDetailedSchedule(selectedTour.detailedSchedule);
-        setNewTourCatalog(selectedTour.catalog);
-        setEditingTour(selectedTour);
+        const openEditForm = (tourId) => {
+            const selectedTour = tours.find(tour => tour.id === tourId);
+            setNewTourName(selectedTour.title);
+            setNewTourLocation(selectedTour.address);
+            setNewTourContent(selectedTour.describe);
+            setNewTourPrice(selectedTour.price);
+            setNewTourDiscount(selectedTour.sale);
+            setNewTourDepartureDate(selectedTour.departureDate);
+            setNewTourSchedule(selectedTour.schedule);
+            setNewTourDetailedSchedule(selectedTour.detailedSchedule);
+            setNewTourCatalog(selectedTour.catalog);
+            setEditingTour(selectedTour);
+            setShowEditForm(true);
+        };
         setShowEditForm(true);
     };
 
@@ -191,58 +263,77 @@ export default function TourManage() {
         }
     };
 
-    useEffect(() => {
-        const fetchCatalogs = async () => {
-            const catalogsCollection = collection(db, "catalogs");
-            const catalogsSnapshot = await getDocs(catalogsCollection);
-            const catalogsList = catalogsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setCatalogs(catalogsList);
-        };
+    // useEffect(() => {
+    //     const fetchCatalogs = async () => {
+    //         const catalogsCollection = collection(db, "catalogs");
+    //         const catalogsSnapshot = await getDocs(catalogsCollection);
+    //         const catalogsList = catalogsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    //         setCatalogs(catalogsList);
+    //     };
 
-        fetchCatalogs();
+    //     fetchCatalogs();
 
-        const fetchTours = async () => {
-            const toursCollection = collection(db, "tours");
-            const toursSnapshot = await getDocs(toursCollection);
-            const toursList = toursSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setTours(toursList);
-        };
+    //     const fetchTours = async () => {
+    //         const toursCollection = collection(db, "tours");
+    //         const toursSnapshot = await getDocs(toursCollection);
+    //         const toursList = toursSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    //         setTours(toursList);
+    //     };
 
-        fetchTours();
+    //     fetchTours();
 
-        window.addEventListener('click', handleWindowClick);
-        return () => {
-            window.removeEventListener('click', handleWindowClick);
-        };
-
-
+    //     window.addEventListener('click', handleWindowClick);
+    //     return () => {
+    //         window.removeEventListener('click', handleWindowClick);
+    //     };
 
 
-    }, []);
 
-    const handleSwitchClick = async (tourId, newStatus) => {
+
+    // }, []);
+
+    // const handleSwitchClick = async (tourId, newStatus) => {
+    //     try {
+    //         const tourRef = doc(db, "tours", tourId);
+    //         await updateDoc(tourRef, {
+    //             status: newStatus
+    //         });
+
+    //         // Cập nhật state trên client
+    //         setTours(prevTours => {
+    //             return prevTours.map(tour => {
+    //                 if (tour.id === tourId) {
+    //                     return { ...tour, status: newStatus };
+    //                 }
+    //                 return tour;
+    //             });
+    //         });
+    //     } catch (error) {
+    //         console.error("Error updating tour status:", error);
+    //         alert("Có lỗi xảy ra khi cập nhật trạng thái. Vui lòng thử lại.");
+    //     }
+    // };
+
+    // lấy dữ liệu từ backend
+    const [tours, setTours] = useState([]);
+    const fetchTourFromServer = async () => {
         try {
-            const tourRef = doc(db, "tours", tourId);
-            await updateDoc(tourRef, {
-                status: newStatus
-            });
-
-            // Cập nhật state trên client
-            setTours(prevTours => {
-                return prevTours.map(tour => {
-                    if (tour.id === tourId) {
-                        return { ...tour, status: newStatus };
-                    }
-                    return tour;
-                });
-            });
+            const response = await fetch(`${BaseUrl}tour`);
+            const data = await response.json();
+            return data.content;  // Giả sử dữ liệu categories được trả về trong trường 'content' của đối tượng phản hồi
         } catch (error) {
-            console.error("Error updating tour status:", error);
-            alert("Có lỗi xảy ra khi cập nhật trạng thái. Vui lòng thử lại.");
+            console.error("Lỗi khi lấy dữ liệu từ server:", error);
+            return [];
         }
     };
+    useEffect(() => {
+        const loadTour = async () => {
+            const toursData = await fetchTourFromServer();
+            setTours(toursData);
+        };
 
-
+        loadTour();
+    }, []);
 
 
 
@@ -309,7 +400,7 @@ export default function TourManage() {
 
                         <label>Lịch trình chi tiết:</label>
                         <textarea id="detailedSchedule" value={newTourDetailedSchedule} onChange={(e) => setNewTourDetailedSchedule(e.target.value)}></textarea><br /><br />
-                        <button type="submit" className="btnluu" onClick={handleEditSubmit}>Lưu</button>
+                        <button type="submit" className="btnluu" >Lưu</button>
                         <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
                     </form>
                 </div>
@@ -319,7 +410,7 @@ export default function TourManage() {
                 <div className="modal-content">
                     <span className="close-btn" onClick={closeModal}>×</span>
                     <h2>Bạn có muốn xóa không?</h2>
-                    <button className="btnxoa" onClick={handleDelete}>Xóa</button>
+                    <button className="btnxoa">Xóa</button>
                     <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
                 </div>
             </div>
@@ -392,6 +483,7 @@ export default function TourManage() {
                 </div>
             </div>
             {/* end new item */}
+          
             <div className="bottom-data_admin">
                 <div className="orders_admin">
                     <div className="header_admin">
@@ -420,18 +512,21 @@ export default function TourManage() {
 
                                 <tr key={tour.id}>
                                     <td>{index + 1}</td>
-                                    <td>{tour.name}</td>
+                                    <td>{tour.title}</td>
                                     <td id="noidungTour">
-                                        {tour.content}
+                                        {tour.describe}
+                                    </td>
+                                    <td>
+                                        {tour.image.length}
                                     </td>
                                     <td>
                                         {tour.price}
                                     </td>
                                     <td>
-                                        <button>Xem chi tiết</button>
+                                        <button onClick={openEditForm}>Xem chi tiết</button>
                                     </td>
                                     <td>
-                                        <label className={`switch ${tour.status ? 'active-admin' : ''}`} onClick={() => handleSwitchClick(tour.id, !tour.status)}>
+                                        <label className={`switch ${tour.status ? 'active-admin' : ''}`} >
                                             <input type="checkbox" checked={tour.status} readOnly onClick={e => e.stopPropagation()} />
                                             <span className="slider_admin"></span>
                                         </label>

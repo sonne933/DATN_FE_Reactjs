@@ -2,10 +2,43 @@ import React, { Component } from 'react';
 import { footer_blog_1, logo } from '../../assets/listImage';
 
 class Footer extends Component {
+    state = {
+        isChatVisible: false
+    }
+
+    // Hàm để thay đổi trạng thái của isChatVisible
+    toggleChat = () => {
+        this.setState(prevState => ({
+            isChatVisible: !prevState.isChatVisible
+        }));
+    }
     render() {
+      
         return (
+            <React.Fragment>
+                {/* Khi isChatVisible là true, hiển thị cửa sổ chat */}
+                
             <footer className="footer">
-                <button onclick="topFunction()" id="back_top" title="Go to top"><i className="fas fa-rocket" /></button>
+                <button id="back_top" title="Go to top"onClick={this.toggleChat}><i class='bx bx-message-rounded-dots'></i></button>
+                {this.state.isChatVisible &&
+                    <div className="chat-container-user">
+                        <div className="chat-box-user">
+                            <div className="chat-header-user">
+                                <h2>Chat với nhân viên tư vấn</h2>
+                            </div>
+                            <div className="chat-messages-user">
+                                <p className="message-user received">Xin chào!</p>
+                                <p className="message-user sent">Chào bạn, bạn có khỏe không?</p>
+                                <p className="message-user received">Mình khỏe, cảm ơn bạn!</p>
+                                {/* Các tin nhắn khác */}
+                            </div>
+                            <div className="chat-input-user">
+                                <input type="text" placeholder="Nhập tin nhắn..." />
+                                <button>Gửi</button>
+                            </div>
+                        </div>
+                    </div>
+                }
                 <div className="box footer__box">
                     <div className="footer__about">
                         <div className="footer__logo">
@@ -81,7 +114,7 @@ class Footer extends Component {
                     </div>
                 </div>
             </footer>
-
+            </React.Fragment>
         );
     }
 }
