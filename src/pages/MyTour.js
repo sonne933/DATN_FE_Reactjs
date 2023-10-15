@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import './css/MyTour.css'
-import { bana, hoian, phuquoc } from '../../assets/listImage'
+import { bana, hoian, phuquoc } from '../assets/listImage'
 export default function MyTour() {
     // Khởi tạo các refs
     const menuItemsRef = useRef(null);

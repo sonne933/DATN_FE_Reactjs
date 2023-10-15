@@ -2,6 +2,8 @@ import {  Route, Routes, Router, useLocation } from "react-router-dom";
 import { Provider, useSelector } from 'react-redux';
 import './App.css';
 import store from "./redux/store";
+import '../node_modules/react-toastify/dist/ReactToastify.css';
+import VerifyPage from "./pages/user/VerifyPage";
 
 import Header from './compoment/user/Header';
 import Home from './compoment/user/Home';
@@ -11,16 +13,16 @@ import About from "./compoment/user/About";
 import Offers from "./compoment/user/Offers";
 import Blog from "./compoment/user/Blog";
 import Contact from "./compoment/user/Contact";
-import Signin from "./page/user/Signin";
+import Signin from "./pages/Signin";
 
-import Signup from "./page/user/Signup";
-import BookingNoSignup from "./page/user/BookingNoSignup";
-import Search from "./page/user/Search";
-import TourDetails from "./page/user/TourDetails";
-import PersonalInformation from "./page/user/PersonalInformation";
-import Booking from "./page/user/Booking";
-import HistoryBooking from "./page/user/HistoryBooking";
-import MyTour from "./page/user/MyTour";
+import Signup from "./pages/Signup";
+import BookingNoSignup from "./pages/BookingNoSignup";
+import Search from "./pages/Search";
+import TourDetails from "./pages/TourDetails";
+import PersonalInformation from "./pages/PersonalInformation";
+import Booking from "./pages/Booking";
+import HistoryBooking from "./pages/HistoryBooking";
+import MyTour from "./pages/MyTour";
 
 import Accountmanage from "./compoment/admin/Accountmanage";
 import AdminLayout from "./layout/AdminLayout";
@@ -47,7 +49,7 @@ function App() {
   // const isLoggedIn = useSelector(state => state.isLoggedIn);
   // const userRole = useSelector(state => state.userRole);
 
-  const isAuthPage = ['/signin', '/signup',
+  const isAuthPage = ['/signin', '/signup', '/verify',
    '/admin', '/admin/accountmanage' ,'/admin/catalogmanage','/admin/tourmanage','/admin/servicemanage',
     '/seller','/seller/tourmanage','/seller/schedulemanage','/seller/requesttour','/seller/billmanage',
     '/seller/chatbox','/seller/statistical'
@@ -70,6 +72,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/signup" element={<Signin />} />
           <Route path="/signin" element={<Signup />} />
+          <Route path="/verify" element={<VerifyPage/>}/>
 
 
           <Route path="/tourDetails/:tourId" element={<TourDetails />} />

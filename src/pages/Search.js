@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./css/Search.css"
-import { offers1, offers2, offers3, offers4 } from '../../assets/listImage'
-import BaseUrl from '../../utils/BaseUrl';
+import { offers1, offers2, offers3, offers4 } from '../assets/listImage'
+import BaseUrl from '../utils/BaseUrl';
 import { Link } from 'react-router-dom';
 
 

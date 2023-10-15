@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./css/BookingNoSignup.css";
-import { offers1, offers2, offers3, offers4 } from '../../assets/listImage';
+import { offers1, offers2, offers3, offers4 } from '../assets/listImage';
 class BookingNoSignup extends Component {
     render() {
         return (

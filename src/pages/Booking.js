@@ -1,6 +1,6 @@
 import React from 'react'
 import "./css/Booking.css"
-import { offers1 } from '../../assets/listImage'
+import { offers1 } from '../assets/listImage'
 import { useLocation } from 'react-router-dom';
 
 

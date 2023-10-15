@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './css/TourDetails.css'
 // import './css/TourDetails.js'
-import { bana, hoian, phuquoc } from '../../assets/listImage'
+import { bana, hoian, phuquoc } from '../assets/listImage'
 import { Link, useLocation, useParams } from 'react-router-dom';
-import BaseUrl from '../../utils/BaseUrl';
+import BaseUrl from '../utils/BaseUrl';
 
 export default function TourDetails() {
     const location = useLocation();
