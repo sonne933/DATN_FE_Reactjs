@@ -831,3 +831,142 @@ font-size: 15px;
 .btn-huydon:hover{
     background-color: rgb(236, 106, 106);
 }
+
+.chat-container-seller {
+    margin-top: 20px;
+    /* width: 900px; */
+    height: 500px;
+    display: flex;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.user-list-seller {
+    width: 300px;
+    border-right: 1px solid #ccd0d5;
+    background-color: #f7f7f8;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-list-header-seller {
+    padding: 12px 20px;
+    background-color:#f7f7f8;
+    color: #040404;
+    /* border-bottom: 1px solid var(--border-color); */
+    position: relative;
+}
+.chat-header-seller {
+    padding: 12px 20px;
+    background-color:#f7f7f8;
+    color: #040404;
+    /* border-bottom: 1px solid #ccd0d5; */
+    position: relative;
+}
+.search-input-sellerchat {
+    width: 90%;
+    padding: 8px 12px;
+    margin: 12px auto;
+    border: 1px solid #e4e6eb;
+    border-radius: 18px;
+    outline: none;
+}
+
+.user-list-seller ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}
+
+.user-list-seller li {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.user-list-seller li:hover {
+    background-color: #e4e6eb;
+}
+
+.user-list-seller li img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.chat-box-seller {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f7f7f8;
+}
+
+.chat-messages-seller {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccd0d5;
+    position: relative;
+}
+
+.chat-input-seller {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-input-seller input {
+    width: 80%;
+    padding: 10px;
+    border-radius: 18px;
+    border: 1px solid #e4e6eb;
+    outline: none;
+}
+
+.chat-input-seller button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #0084ff;
+    color: #fff;
+    border-radius: 18px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.chat-input-seller button:hover {
+    background-color: darken(#0084ff, 10%);
+}
+
+/* Tin nhắn */
+.message-seller {
+    padding: 8px 15px;
+    border-radius: 18px;
+    display: inline-block;
+    margin: 4px;
+    transition: background-color 0.3s;
+    font-weight: 500;
+    clear: both;
+    max-width: 70%;
+}
+
+.message-seller.sent {
+    background-color: #0084ff;
+    color: #fff;
+    float: right;
+    border-bottom-right-radius: 2px;
+    margin-right: 20px;
+}
+
+.message-seller.received {
+    background-color: #e4e6eb;
+    float: left;
+    border-bottom-left-radius: 2px;
+    margin-left: 20px;
+}

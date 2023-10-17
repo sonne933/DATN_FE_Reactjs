@@ -94,12 +94,7 @@ return (
           <span>Đăng nhập với Facebook</span>
         </a>
       </div>
-      <div className="media-options">
-        <a href="#" className="field google" >
-          <i class='bx bxl-google google-icon'></i>
-          <span>Đăng nhập với Google</span>
-        </a>
-      </div>
+     
     </div>
 
 

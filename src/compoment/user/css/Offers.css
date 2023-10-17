@@ -190,7 +190,7 @@
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-column: 1/13;
-    padding-bottom: 110px;
+    padding-bottom: 120px;
 }
 
 .offers_sorting_container {

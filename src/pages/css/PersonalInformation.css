@@ -10,10 +10,10 @@
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-column: 5/13;
-    padding-top: 105px;
+    padding-top: 70px;
     padding-bottom: 43px;
-    background: white;
-    height: 1100px;
+    /* background: white; */
+    /* height: 1100px; */
     /* background-color: #684386; */
   }
   .left_main-personalInformation{
