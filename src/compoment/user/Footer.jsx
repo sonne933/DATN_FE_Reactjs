@@ -1,26 +1,28 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { footer_blog_1, logo } from '../../assets/listImage';
+import { connect } from 'react-redux';
 
-class Footer extends Component {
-    state = {
-        isChatVisible: false
-    }
+function Footer({ isLoggedIn }) {
+   
+    const [isChatVisible, setIsChatVisible] = useState(false);
+    
+    // const isLoggedIn = useSelector(state => state.isLoggedIn);
 
     // Hàm để thay đổi trạng thái của isChatVisible
-    toggleChat = () => {
-        this.setState(prevState => ({
-            isChatVisible: !prevState.isChatVisible
-        }));
+    const toggleChat = () => {
+        setIsChatVisible(prevState => !prevState);
+
     }
-    render() {
-      
-        return (
-            <React.Fragment>
-                {/* Khi isChatVisible là true, hiển thị cửa sổ chat */}
-                
+    console.log(isLoggedIn);
+    return (
+        <React.Fragment>
+            {/* Khi isChatVisible là true, hiển thị cửa sổ chat */}
+
             <footer className="footer">
-                <button id="back_top" title="Go to top"onClick={this.toggleChat}><i class='bx bx-message-rounded-dots'></i></button>
-                {this.state.isChatVisible &&
+            {isLoggedIn ? (
+                    <button id="back_top" title="Go to top" onClick={toggleChat}><i className='bx bx-message-rounded-dots'></i></button>
+                ): null}
+                {isChatVisible &&
                     <div className="chat-container-user">
                         <div className="chat-box-user">
                             <div className="chat-header-user">
@@ -114,9 +116,10 @@ class Footer extends Component {
                     </div>
                 </div>
             </footer>
-            </React.Fragment>
-        );
-    }
+        </React.Fragment>
+    );
 }
-
-export default Footer;
+const mapStateToProps = state => ({
+    isLoggedIn: state.isLoggedIn // Đảm bảo rằng state.isLoggedIn trỏ đến đúng trường trong state Redux của bạn
+});
+export default connect(mapStateToProps)(Footer);

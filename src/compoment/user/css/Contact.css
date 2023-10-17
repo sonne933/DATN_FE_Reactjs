@@ -1,10 +1,4 @@
-.main {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-column: 1/13;
-    grid-row: 2;
-   
-}
+
 .contact_form_container {
     margin-top: 60px;
     display: grid;

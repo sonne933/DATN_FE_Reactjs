@@ -1,8 +1,8 @@
 
 .main_offers_tour-details {
-    /* display: grid; */
-    /* grid-template-columns: repeat(12, 1fr); */
-    /* grid-column: 1/13; */
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-column: 1/13;
     padding-top: 100px;
     padding-bottom: 43px;
     background: #f3f6f9;
