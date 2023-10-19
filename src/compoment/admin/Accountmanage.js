@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import './Admin.css'
 import { profile } from '../../assets/listImage'
-
+import axios from 'axios';
 import BaseUrl from "../../utils/BaseUrl"
 export default function Accountmanage() {
   const [activeStatus, setActiveStatus] = useState({});
 
   const [accounts, setAccounts] = useState([]);
-
+  const [switch3Active, setSwitch3Active] = useState(true);
+  const [showAddForm, setShowAddForm] = useState(false);
+    const [showEditForm, setShowEditForm] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+  
 
   
   useEffect(() => {
@@ -31,44 +35,40 @@ export default function Accountmanage() {
 
 // điều kiện tài khoản
 const displayAccountType = (type) => {
+  
   switch(type) {
-    case 0:
-      return 'User';
     case 1:
+      return 'User';
+    case 3:
       return 'Admin';
     case 2:
       return 'Seller';
     default:
       return 'Unknown';
   }
+  
 };
-// check trạng thái
-const handleSwitchClick = async (accountId) => {
-  const currentStatus = activeStatus[accountId];
-  const updatedStatus = !currentStatus;
-  try {
-      const response = await fetch(`${BaseUrl}account/changestatus`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-              id: accountId,
-              status: updatedStatus
-          })
-      });
-
-      if (response.ok) {
-          setActiveStatus(prevState => ({
-              ...prevState,
-              [accountId]: updatedStatus
-          }));
-      } else {
-          console.error("Error updating status on the server.");
-      }
-  } catch (error) {
-      console.error("Error updating status:", error);
+const closeModal = () => {
+  setShowEditForm(false);
+  setShowDeleteModal(false);
+  setShowAddForm(false);
+};
+const handleWindowClick = (event) => {
+  if (event.target.id === 'addForm' || event.target.id === 'editForm' || event.target.id === 'deleteModal') {
+      closeModal();
   }
 };
+useEffect(() => {
+  window.addEventListener('click', handleWindowClick);
+  return () => {
+      window.removeEventListener('click', handleWindowClick);
+  };
+}, []);
 
+
+const handleSwitch3Click = () => {
+  setSwitch3Active(prevState => !prevState);
+};
 
 
 
@@ -150,9 +150,9 @@ const handleSwitchClick = async (accountId) => {
                 <td>{account.timeLogin}</td>
                 <td>{displayAccountType(account.typeAccount)}</td>
                 <td>
-                  <label className={`switch ${activeStatus[account.id] ? 'active-admin' : ''}`} onClick={() => handleSwitchClick(account.id)}>
+                  <label className={`switch ${switch3Active[account.id] ? 'active-admin' : ''}`} onClick={() => handleSwitch3Click(account.id)}>
 
-                    <input type="checkbox" checked={activeStatus[account.id]} readOnly onClick={e => e.stopPropagation()} />
+                    <input type="checkbox" checked={switch3Active[account.id]} readOnly onClick={e => e.stopPropagation()} />
                     <span className="slider_admin"></span>
                   </label>
                 </td>
