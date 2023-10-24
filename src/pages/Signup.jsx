@@ -7,6 +7,10 @@ import BaseUrl from '../utils/BaseUrl';
 import { Spin } from "antd";
 import isEmpty from "validator/lib/isEmpty";
 import isEmail from "validator/lib/isEmail";
+import { LoginSocialFacebook } from 'reactjs-social-login';
+import { loginSuccess, logout } from '../redux/actions';
+import { useDispatch } from 'react-redux';
+
 
 function Register() {
   const [nameAccount, setNameAccount] = useState("");
@@ -19,10 +23,13 @@ function Register() {
   const [status, setStt] = useState(1);
   const [loading,setLoading] =useState(false)
   const [validator, setVadidator] = useState("")
+  const [profile, setProfile] = useState(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();  // Gọi hook
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const [isRePasswordVisible, setRePasswordVisibility] = useState(false);
 
+  // hàm giúp hiển thị mật khẩu
   const togglePasswordVisibility = () => {
     setPasswordVisibility(prevVisibility => !prevVisibility);
   };
@@ -69,10 +76,9 @@ function Register() {
     return true
   }
   
-  
+  // hàm đăng ký backend
   const handleSignup = async (e) => {
     e.preventDefault();
-
   const isValid = validateAll()
   if(!isValid) return;
     setLoading(true)
@@ -88,6 +94,27 @@ function Register() {
       setLoading(false)
     }
   };
+
+  // hàm đăng nhập =fb backend
+  const handleLoginFB = async (response)=>{
+    const userfb = {idFacebook: response.data.id, nameAccount:response.data.name,image:response.data.url,typeAccount: 1};
+    try{
+      setLoading(true)
+      const r = await axios.post(BaseUrl+'account/loginFB', userfb);
+      if(r?.data.status=="0")
+      {
+        toast.error(r?.data.message)
+        setLoading(false)
+      }else{
+        sessionStorage.setItem('user',r?.data.account.id);
+        dispatch(loginSuccess(r?.data.account));
+        navigate("/");
+      }
+    }catch(err){
+      setLoading(false)
+      console.log(err);
+    }
+  }
 
   return (
     // Signup Form
@@ -135,12 +162,18 @@ function Register() {
           </div>
         </div>
         <div className="line" />
-        <div className="media-options">
-          <a href="#" className="field facebook">
-            <i className="bx bxl-facebook facebook-icon" />
-            <span>Đăng nhập với Facebook</span>
-          </a>
-        </div>
+        <LoginSocialFacebook appId='6762725937139885'
+          fieldsProfile='name,picture'
+          onResolve={(response) => {setProfile(response.data);handleLoginFB(response);}}
+          onReject={(error)=>{alert("Login Facebook thất bại!");}}
+          >
+          <div className="media-options">
+            <a href="#" className="field facebook" >
+              <i className="bx bxl-facebook facebook-icon" />
+              <span>Đăng nhập với Facebook</span>
+            </a>
+          </div>
+      </LoginSocialFacebook>
         
       </div>
     </section>
