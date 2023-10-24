@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
-
+import BaseUrl from '../../utils/BaseUrl';
 export default function ServiceManage() {
     const [showAddForm, setShowAddForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [switch1Active, setSwitch1Active] = useState(true);  // Ví dụ switch1 ban đầu được bật
-    const [switch2Active, setSwitch2Active] = useState(false); // Ví dụ switch2 ban đầu được tắt
-    const [switch3Active, setSwitch3Active] = useState(true);  // Ví dụ switch3 ban đầu được bật
+
 
     // Event handlers
     const openAddForm = () => {
@@ -42,18 +40,31 @@ export default function ServiceManage() {
         };
     }, []);
 
-    // check trạng thái
-    const handleSwitch1Click = () => {
-        setSwitch1Active(prevState => !prevState);
+  
+
+
+// lấy dữ liệu từ be
+const [services, setServices] = useState([]);
+
+    const fetchServiceFromServer = async () => {
+        try {
+            const response = await fetch(`${BaseUrl}service/all`);
+            const data = await response.json();
+            return data.content;  
+        } catch (error) {
+            console.error("Lỗi khi lấy dữ liệu từ server:", error);
+            return [];
+        }
     };
 
-    const handleSwitch2Click = () => {
-        setSwitch2Active(prevState => !prevState);
-    };
+    useEffect(() => {
+        const loadServices = async () => {
+            const serviceData = await fetchServiceFromServer();
+            setServices(serviceData);
+        };
 
-    const handleSwitch3Click = () => {
-        setSwitch3Active(prevState => !prevState);
-    };
+        loadServices();
+    }, []);
     return (
         <main>
             <div className="header_admin">
@@ -156,15 +167,16 @@ export default function ServiceManage() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Khách sạn</td>
-                                <td>Khách sạn Tú Tam kỳ</td>
+                        {services.map((service, index) => (
+                            <tr key={service.id}>
+                                <td>{index + 1}</td>
+                                <td>{service.name}</td>
+                                <td>{service.describle}</td>
                                 <td>
-                                    <label className={`switch ${switch3Active ? 'active-admin' : ''}`} onClick={handleSwitch3Click}>
-                                        <input type="checkbox" checked={switch3Active} readOnly onClick={e => e.stopPropagation()} />
-                                        <span className="slider_admin"></span>
-                                    </label>
+                                <label className={`switch ${service.status ? 'active-admin' : ''}`} >
+                                            <input type="checkbox" checked={service.status} readOnly onClick={e => e.stopPropagation()} />
+                                            <span className="slider_admin"></span>
+                                        </label>
                                 </td>
                                 <td>
                                     <button className="btn edit-btn" onClick={openEditForm}>
@@ -175,6 +187,7 @@ export default function ServiceManage() {
                                     </button>
                                 </td>
                             </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>

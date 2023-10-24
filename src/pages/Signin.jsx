@@ -12,7 +12,7 @@ import {
   signInWithEmailAndPassword
 } from 'firebase/auth';
 
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { loginSuccess, logout } from '../redux/actions';
 import { doc, getDoc } from 'firebase/firestore';
 import BaseUrl from '../utils/BaseUrl';
@@ -20,7 +20,7 @@ import { Spin } from "antd";
 
 
 
-function Signin() {
+function Signin({ isLoggedIn }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -28,6 +28,29 @@ function Signin() {
   const [loading,setLoading]=useState(false)
 
 // hàm đăng nhập backend
+// const handleLogin = async (e) => {
+//   setLoading(true)
+//   e.preventDefault();
+//   let regObj = { email: email.toLowerCase(), password };
+//   try {
+//     const res = await axios.post(BaseUrl + 'account/login', regObj);
+//     setLoading(false) 
+//     if (res?.data.status === '1') {
+//       sessionStorage.setItem('user', res?.data.account.id);
+//       dispatch(loginSuccess(res?.data.account));  // <---- Update this line
+
+//       if (res?.data.account.typeAccount < 2) navigate("/");
+//       else if (res?.data.account.typeAccount < 3) navigate("/seller");
+//       else navigate('/admin');
+//     } else {
+//       alert(res?.data.message);
+//     }
+//   }catch (err) {
+//     setLoading(false)
+//     alert('Khong co ket noi');
+//   }
+// };
+
 const handleLogin = async (e) => {
   setLoading(true)
   e.preventDefault();
@@ -36,11 +59,14 @@ const handleLogin = async (e) => {
     const res = await axios.post(BaseUrl + 'account/login', regObj);
     setLoading(false) 
     if (res?.data.status === '1') {
-      sessionStorage.setItem('user', res?.data.account.id);
-      dispatch(loginSuccess(res?.data.account));  // <---- Update this line
+      sessionStorage.setItem('isLoggedIn', 'true');
+      const userData = res?.data.account;
+      // Lưu toàn bộ thông tin người dùng vào sessionStorage
+      sessionStorage.setItem('user', JSON.stringify(userData));
+      dispatch(loginSuccess(userData));
 
-      if (res?.data.account.typeAccount < 2) navigate("/");
-      else if (res?.data.account.typeAccount < 3) navigate("/seller");
+      if (userData.typeAccount < 2) navigate("/");
+      else if (userData.typeAccount < 3) navigate("/seller");
       else navigate('/admin');
     } else {
       alert(res?.data.message);
@@ -51,12 +77,30 @@ const handleLogin = async (e) => {
   }
 };
 
-
 const [isPasswordVisible, setPasswordVisibility] = useState(false);
 
 const togglePasswordVisibility = () => {
   setPasswordVisibility(prevVisibility => !prevVisibility);
 };
+useEffect(() => {
+  const loggedInUserJSON = sessionStorage.getItem('user');
+  if (loggedInUserJSON) {
+      const userData = JSON.parse(loggedInUserJSON);
+      if (!isLoggedIn) { // chỉ cập nhật trạng thái nếu người dùng chưa đăng nhập
+          dispatch(loginSuccess(userData));
+      }
+      // Điều hướng người dùng dựa trên loại tài khoản của họ
+      if (userData.typeAccount < 2) navigate("/");
+      else if (userData.typeAccount < 3) navigate("/seller");
+      else navigate('/admin');
+  }
+}, [dispatch, navigate, isLoggedIn]);  // thêm isLoggedIn vào dependencies của useEffect
+
+
+
+
+
+
 
 return (
   <Spin className='mt-40 pt-40' spinning={loading}>
@@ -104,4 +148,8 @@ return (
 }
 
 
-export default Signin;
+const mapStateToProps = state => ({
+  isLoggedIn: state.isLoggedIn
+});
+
+export default connect(mapStateToProps)(Signin);

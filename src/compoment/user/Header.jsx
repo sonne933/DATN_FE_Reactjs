@@ -2,7 +2,7 @@ import React, {   useState } from 'react';
 import logo from "../../assets/images/logo.png"
 import user from "../../assets/images/admin.jpg"
 import { Link,  useNavigate } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/actions';
 import { auth } from '../../firebaseConfig';
 
@@ -23,17 +23,32 @@ function Header({ isLoggedIn }) {
    
 
     const handleLogout = () => {
+        // 1. Đăng xuất từ Firebase
         auth.signOut().then(() => {
-            navigate("/");
+            
+            // 2. Xóa thông tin người dùng khỏi sessionStorage
+            sessionStorage.removeItem('user');
+            sessionStorage.removeItem('isLoggedIn');
+            // 3. Cập nhật trạng thái đăng nhập trong Redux Store
             dispatch(logout());
+            
+            // 4. Điều hướng người dùng về trang chính
+            navigate("/");
+    
         }).catch((error) => {
             console.error("Error signing out: ", error);
         });
     };
+  
+    
+    const isUserLoggedIn = useSelector(state => state.isLoggedIn) || sessionStorage.getItem('isLoggedIn') === 'true';
+    
+    
+    
     return (
         <header className="header">
             {/* Top Bar */}
-            {!isLoggedIn ? (<div className="top_bar">
+            {!isUserLoggedIn  ? (<div className="top_bar">
                 <div className="bar__info">
                     <div className="phone">+84 79 292 9292</div>
                     <div className="social">
@@ -64,7 +79,7 @@ function Header({ isLoggedIn }) {
                     </ul>
                 </div>
                 <div className="main_nav__search">
-                    {isLoggedIn ? (<div className="user-menu">
+                    {isUserLoggedIn  ? (<div className="user-menu">
                         <img src={user} alt="User" className="user-image" onClick={toggleMenu}  />
                         <div className="dropdown-menu" style={{ display: isOpen ? 'block' : 'none' }} >
                             <Link to="/mytour">Quản lý tour</Link>
