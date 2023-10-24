@@ -307,7 +307,7 @@ export default function CatalogManage() {
                         <i className="bx bx-receipt" />
                         <h3>Danh Sách Danh Mục</h3>
                         <i className="bx bx-filter" />
-                        <button className="btn add-new-btn " >
+                        <button className="btn add-new-btn " onClick={openAddForm} >
                             Thêm mới
                         </button>
                     </div>
