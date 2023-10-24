@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
+import BaseUrl from '../../utils/BaseUrl';
 
-import BaseUrl from '../../util/BaseUrl';
 
 import { Button, Table, Modal, Input, Drawer, Space, Checkbox, Select, Upload, Form, Radio, Switch, Avatar, Row, Col } from "antd";
 
