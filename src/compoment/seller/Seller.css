@@ -882,11 +882,12 @@ font-size: 15px;
 }
 
 .user-list-seller li {
-    padding: 12px 20px;
+    padding: 12px 50px;
     display: flex;
     align-items: center;
     cursor: pointer;
     transition: background-color 0.2s;
+    font-size: 20px;
 }
 
 .user-list-seller li:hover {
@@ -953,7 +954,9 @@ font-size: 15px;
     transition: background-color 0.3s;
     font-weight: 500;
     clear: both;
-    max-width: 70%;
+    width: auto; /* Đặt chiều ngang cố định là 300px */
+    height: auto; /* Đặt chiều cao tự động dựa trên nội dung */
+    box-sizing: border-box; /* Đảm bảo rằng padding và border được tính vào tổng chiều ngang và chiều dài */
 }
 
 .message-seller.sent {

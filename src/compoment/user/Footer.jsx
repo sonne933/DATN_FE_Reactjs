@@ -1,42 +1,127 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { footer_blog_1, logo } from '../../assets/listImage';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
+import { db } from '../../firebaseConfig'
+import { collection, query, onSnapshot, orderBy, serverTimestamp, addDoc, where, doc, setDoc } from 'firebase/firestore';
+import { setRoomId } from '../../redux/actions';
+
 
 function Footer({ isLoggedIn }) {
-   
+    const isUserLoggedIn = useSelector(state => state.isLoggedIn) || sessionStorage.getItem('isLoggedIn') === 'true';
     const [isChatVisible, setIsChatVisible] = useState(false);
-    
-    // const isLoggedIn = useSelector(state => state.isLoggedIn);
+    const [messages, setMessages] = useState([]);
+    const [mess, setMess] = useState('');
+    const [currentRoomId, setCurrentRoomId] = useState(null);
 
-    // Hàm để thay đổi trạng thái của isChatVisible
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const initiateChatRoom = async (userId, userName) => {
+        try {
+            const chatDocRef = doc(collection(db, 'chat'), userId);
+            await setDoc(chatDocRef, {
+                user: userId,
+                userName: userName
+            });
+            console.log("Chat room initiated successfully.");
+        } catch (error) {
+            console.error("Error initiating chat room: ", error);
+        }
+    };
+
+    useEffect(() => {
+        const userRoomQuery = query(collection(db, 'chat'), where('user', '==', user));
+        const unsubscribe = onSnapshot(userRoomQuery, snapshot => {
+            if (!snapshot.empty) {
+                const doc = snapshot.docs[0];
+                setCurrentRoomId(doc.id);
+            }
+        });
+        return () => unsubscribe();
+    }, [user]);
+
     const toggleChat = () => {
-        setIsChatVisible(prevState => !prevState);
+        setIsChatVisible(prev => !prev);
+    };
 
+    const handleSend = async roomId => {
+        if (!mess.trim()) {
+            alert('Vui lòng nhập tin nhắn!');
+            return;
+        }
+        try {
+            if (!roomId) {
+                await initiateChatRoom(user.id, user.nameAccount); // Gọi hàm khởi tạo phòng chat tại đây
+                setCurrentRoomId(user.id);
+            }
+            await addDoc(collection(db, 'chat', roomId || user.id, 'messages'), {
+                uid: user.id,
+                name: user.nameAccount,
+                status: "0",
+                text: mess.trim(),
+                timestamp: serverTimestamp(),
+            });
+            setMess('');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        if (currentRoomId) {
+            const messagesQuery = query(collection(db, 'chat', currentRoomId, 'messages'), orderBy('timestamp'));
+            const unsubscribe = onSnapshot(messagesQuery, snapshot => {
+                const fetchedMessages = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setMessages(fetchedMessages);
+            });
+            return () => unsubscribe();
+        }
+    }, [currentRoomId]);
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            handleSend(isUserLoggedIn.roomchat);
+            event.preventDefault();
+        }
     }
-    console.log(isLoggedIn);
+    const endOfMessagesRef = useRef(null);
+    useEffect(() => {
+        endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
     return (
         <React.Fragment>
             {/* Khi isChatVisible là true, hiển thị cửa sổ chat */}
 
             <footer className="footer">
-            {isLoggedIn ? (
+                {isUserLoggedIn ? (
                     <button id="back_top" title="Go to top" onClick={toggleChat}><i className='bx bx-message-rounded-dots'></i></button>
-                ): null}
+                ) : null}
                 {isChatVisible &&
                     <div className="chat-container-user">
                         <div className="chat-box-user">
                             <div className="chat-header-user">
                                 <h2>Chat với nhân viên tư vấn</h2>
                             </div>
-                            <div className="chat-messages-user">
-                                <p className="message-user received">Xin chào!</p>
-                                <p className="message-user sent">Chào bạn, bạn có khỏe không?</p>
-                                <p className="message-user received">Mình khỏe, cảm ơn bạn!</p>
-                                {/* Các tin nhắn khác */}
+                            <div className="chat-messages-user clearfix">
+                                {messages.map((message, index) => (
+                                    <p
+                                        key={message.id}
+                                        className={`message-user ${message.uid === user.id ? 'sent' : 'received'}`}
+                                        ref={index === messages.length - 1 ? endOfMessagesRef : null}
+                                    >
+                                        <strong>{message.name}:</strong> {message.text}
+                                    </p>
+                                ))}
                             </div>
                             <div className="chat-input-user">
-                                <input type="text" placeholder="Nhập tin nhắn..." />
-                                <button>Gửi</button>
+                                <input
+                                    value={mess}
+                                    onChange={e => setMess(e.target.value)}
+                                    placeholder="Nhập tin nhắn..."
+                                    onKeyPress={handleKeyPress}
+                                />
+                                <button onClick={() => handleSend(isUserLoggedIn.roomchat)}>Gửi</button>
                             </div>
                         </div>
                     </div>
@@ -122,4 +207,7 @@ function Footer({ isLoggedIn }) {
 const mapStateToProps = state => ({
     isLoggedIn: state.isLoggedIn // Đảm bảo rằng state.isLoggedIn trỏ đến đúng trường trong state Redux của bạn
 });
+
+
+
 export default connect(mapStateToProps)(Footer);

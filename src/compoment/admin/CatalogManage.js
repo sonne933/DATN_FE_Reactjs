@@ -307,7 +307,7 @@ export default function CatalogManage() {
                         <i className="bx bx-receipt" />
                         <h3>Danh Sách Danh Mục</h3>
                         <i className="bx bx-filter" />
-                        <button className="btn add-new-btn " >
+                        <button className="btn add-new-btn " onClick={openAddForm} >
                             Thêm mới
                         </button>
                     </div>
@@ -332,7 +332,6 @@ export default function CatalogManage() {
                                         <img src={catalog.image} alt={`Hình ảnh của ${catalog.name}`} width="100" />
                                     </td>
                                     <td>
-
                                         <label className={`switch ${catalog.status ? 'active-admin' : ''}`} >
                                             <input type="checkbox" checked={catalog.status} readOnly onClick={e => e.stopPropagation()} />
                                             <span className="slider_admin"></span>
