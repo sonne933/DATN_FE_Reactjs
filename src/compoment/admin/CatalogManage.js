@@ -332,7 +332,6 @@ export default function CatalogManage() {
                                         <img src={catalog.image} alt={`Hình ảnh của ${catalog.name}`} width="100" />
                                     </td>
                                     <td>
-
                                         <label className={`switch ${catalog.status ? 'active-admin' : ''}`} >
                                             <input type="checkbox" checked={catalog.status} readOnly onClick={e => e.stopPropagation()} />
                                             <span className="slider_admin"></span>

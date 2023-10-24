@@ -32,9 +32,9 @@ export default function Accountmanage() {
 // điều kiện tài khoản
 const displayAccountType = (type) => {
   switch(type) {
-    case 0:
-      return 'User';
     case 1:
+      return 'User';
+    case 3:
       return 'Admin';
     case 2:
       return 'Seller';
