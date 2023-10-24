@@ -8,7 +8,7 @@
   
   
   .main_offers-search {
-    margin-top: 50px;
+    margin-top: 30px;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-column: 1/13;

@@ -66,7 +66,7 @@ function App() {
           <Route index element={<Main />} />
           <Route path="/about" element={<About />} />
           <Route path="/offers" element={<Offers />} />
-          <Route path="/bookingNoSignup" element={<BookingNoSignup />} />
+          
           <Route path="/search" element={<Search />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
@@ -77,6 +77,7 @@ function App() {
 
           <Route path="/tourDetails/:tourId" element={<TourDetails />} />
           <Route path="/personalInformation" element={<PersonalInformation />} />
+          <Route path="/bookingNoSignup" element={<BookingNoSignup />} />
           <Route path="/booking/:tourId" element={<Booking />} />
           <Route path="/historyBooking" element={<HistoryBooking />} />
           <Route path="/mytour" element={<MyTour />} />

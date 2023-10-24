@@ -73,7 +73,8 @@ function Header({ isLoggedIn }) {
                         <li className="main_nav__item"><Link to="/">TRANG CHỦ</Link></li>
                         <li className="main_nav__item"><Link to="about">GIỚI THIỆU</Link></li>
                         <li className="main_nav__item"><Link to="offers">ƯU ĐÃI</Link></li>
-                        <li className="main_nav__item"><Link to="bookingNoSignup">ĐẶT TOUR</Link></li>
+                        {/* <li className="main_nav__item"><Link to={isLoggedIn ? "booking" : "bookingNoSignup"}>ĐẶT TOUR</Link></li> */}
+                        <li className="main_nav__item"><Link to={"bookingNoSignup"}>ĐẶT TOUR</Link></li>
                         <li className="main_nav__item"><Link to="blog">TIN TỨC</Link></li>
                         <li className="main_nav__item"><Link to="contact">LIÊN HỆ</Link></li>
                     </ul>
