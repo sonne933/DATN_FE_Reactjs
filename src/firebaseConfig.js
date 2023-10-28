@@ -1,10 +1,7 @@
 
-import firebase from 'firebase/app';
-import { initializeApp } from 'firebase/app';
-import 'firebase/auth';  // Nếu bạn sử dụng authentication
-import { getAuth } from 'firebase/auth';
-import 'firebase/firestore';  // Nếu bạn sử dụng Cloud Firestore
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCWnczijRqN82PNHh5JH-8j3YjmG_zuMGU",
@@ -17,8 +14,7 @@ const firebaseConfig = {
     measurementId: "G-07X0E36P9S"
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore();
-const auth = getAuth();
-export {firebaseApp,auth,db};
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
+export const storage = getStorage(app);

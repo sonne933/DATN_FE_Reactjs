@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
-
 import BaseUrl from '../../utils/BaseUrl';
 
 
@@ -119,7 +118,6 @@ function ListAccount() {
      
     return <>
     <main>
-    
     <div className="header_admin">
         <div className="left_admin">
           <h1 className="title-heading">Quản Lý Tài Khoản</h1>
@@ -132,7 +130,7 @@ function ListAccount() {
           </ul>
         </div>
       </div>
-            {/* Insights */}
+      {/* Insights */}
       <ul className="insights_admin">
         <li>
           <i className="bx bx-user-circle" />
@@ -159,6 +157,7 @@ function ListAccount() {
             <p>Seller</p>
           </span>
         </li>
+        
       </ul>
       {/* End of Insights */}
     </main>

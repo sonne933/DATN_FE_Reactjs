@@ -4,7 +4,7 @@ import user from "../../assets/images/admin.jpg"
 import { Link,  useNavigate } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import { logout } from '../../redux/actions';
-import { auth } from '../../firebaseConfig';
+// import { auth } from '../../firebaseConfig';
 
 
 
@@ -22,14 +22,14 @@ function Header({ isLoggedIn }) {
     
    
 
-    const handleLogout = () => {
-        auth.signOut().then(() => {
-            navigate("/");
-            dispatch(logout());
-        }).catch((error) => {
-            console.error("Error signing out: ", error);
-        });
-    };
+    // const handleLogout = () => {
+    //     auth.signOut().then(() => {
+    //         navigate("/");
+    //         dispatch(logout());
+    //     }).catch((error) => {
+    //         console.error("Error signing out: ", error);
+    //     });
+    // };
     return (
         <header className="header">
             {/* Top Bar */}
@@ -70,7 +70,7 @@ function Header({ isLoggedIn }) {
                             <Link to="/mytour">Quản lý tour</Link>
                             <Link to="/historyBooking">Lịch sử tour</Link>
                             <Link to="/personalInformation">Quản lý thông tin cá nhân</Link>
-                            <a href="#"onClick={handleLogout}>Đăng xuất</a>
+                            {/* <a href="#"onClick={handleLogout}>Đăng xuất</a> */}
                         </div>
                     </div> ) : null}
                     <form action><input className="input_search" type="text" /></form>
