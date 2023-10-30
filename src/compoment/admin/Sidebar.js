@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import "./Admin.css"
 import { logout } from '../../redux/actions';
-import { auth } from '../../firebaseConfig';
 import { useDispatch } from 'react-redux';
 
 export default function Sidebar() {
@@ -12,14 +11,7 @@ export default function Sidebar() {
   const dispatch = useDispatch();
 
 
-  const handleLogout = () => {
-    auth.signOut().then(() => {
-      navigate("/");
-      dispatch(logout());
-    }).catch((error) => {
-      console.error("Error signing out: ", error);
-    });
-  };
+ 
 
   const isActive = (path) => location.pathname === path; // Hàm này kiểm tra xem pathname hiện tại có phải là path được truyền vào hay không
   return (
@@ -44,11 +36,11 @@ export default function Sidebar() {
             <i className="bx bx-analyse" />Quản Lý Danh Mục
           </Link>
         </li>
-        <li className={isActive("/admin/tourmanage") ?"active-admin" : ""}>
+        {/* <li className={isActive("/admin/tourmanage") ?"active-admin" : ""}>
           <Link to="/admin/tourmanage" className="title_sidemenu">
             <i className="bx bx-map-pin" />Quản Lý Tour
           </Link>
-        </li>
+        </li> */}
         <li className={isActive("/admin/servicemanage") ?"active-admin" : ""}>
           <Link to="/admin/servicemanage" className="title_sidemenu">
             <i className="bx bx-message-square-dots" />Quản Lý Dịch Vụ
@@ -62,10 +54,10 @@ export default function Sidebar() {
       </ul>
       <ul className="side-menu_admin">
         <li>
-          <a href="#" onClick={handleLogout} className="logout">
+          {/* <a href="#" onClick={handleLogout} className="logout">
             <i className="bx bx-log-out-circle" />
             Logout
-          </a>
+          </a> */}
         </li>
       </ul>
     </div>

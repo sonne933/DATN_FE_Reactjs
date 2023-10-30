@@ -4,7 +4,7 @@ import user from "../../assets/images/admin.jpg"
 import { Link,  useNavigate } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/actions';
-import { auth } from '../../firebaseConfig';
+// import { auth } from '../../firebaseConfig';
 
 
 
@@ -22,23 +22,23 @@ function Header({ isLoggedIn }) {
     
    
 
-    const handleLogout = () => {
-        // 1. Đăng xuất từ Firebase
-        auth.signOut().then(() => {
+    // const handleLogout = () => {
+    //     // 1. Đăng xuất từ Firebase
+    //     auth.signOut().then(() => {
             
-            // 2. Xóa thông tin người dùng khỏi sessionStorage
-            sessionStorage.removeItem('user');
-            sessionStorage.removeItem('isLoggedIn');
-            // 3. Cập nhật trạng thái đăng nhập trong Redux Store
-            dispatch(logout());
+    //         // 2. Xóa thông tin người dùng khỏi sessionStorage
+    //         sessionStorage.removeItem('user');
+    //         sessionStorage.removeItem('isLoggedIn');
+    //         // 3. Cập nhật trạng thái đăng nhập trong Redux Store
+    //         dispatch(logout());
             
-            // 4. Điều hướng người dùng về trang chính
-            navigate("/");
+    //         // 4. Điều hướng người dùng về trang chính
+    //         navigate("/");
     
-        }).catch((error) => {
-            console.error("Error signing out: ", error);
-        });
-    };
+    //     }).catch((error) => {
+    //         console.error("Error signing out: ", error);
+    //     });
+    // };
   
     
     const isUserLoggedIn = useSelector(state => state.isLoggedIn) || sessionStorage.getItem('isLoggedIn') === 'true';
@@ -85,7 +85,7 @@ function Header({ isLoggedIn }) {
                             <Link to="/mytour">Quản lý tour</Link>
                             <Link to="/historyBooking">Lịch sử tour</Link>
                             <Link to="/personalInformation">Quản lý thông tin cá nhân</Link>
-                            <a href="#"onClick={handleLogout}>Đăng xuất</a>
+                            {/* <a href="#"onClick={handleLogout}>Đăng xuất</a> */}
                         </div>
                     </div> ) : null}
                     <form action><input className="input_search" type="text" /></form>

@@ -1,198 +1,243 @@
+
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify';
 import BaseUrl from '../../utils/BaseUrl';
-export default function ServiceManage() {
-    const [showAddForm, setShowAddForm] = useState(false);
-    const [showEditForm, setShowEditForm] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Button, Table, Modal, Input, Drawer, Space, Checkbox, Select, Upload, Form, Radio, Row, Col } from "antd";
+import { storage } from '../../firebaseConfig';
+import TextArea from 'antd/es/input/TextArea';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import CreateService from './CreateService';
 
 
-    // Event handlers
-    const openAddForm = () => {
-        setShowAddForm(true);
-    };
+function ListCategory() {
+    const [loading,setLoading] =useState(true);
+    const [id,setId] =useState(null);
+    const [name,setName] =useState(null);
+    const [describle,setDescrible] =useState(null)
+    const [status,setStatus]=useState(true);
+    const [icon,setIcon] =useState(null);
+    const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
+    const columns = [
+      {
+        title: 'STT',
+        render: (record) => {
+          return (<>{services.indexOf(record)+1}</>);
+        },
+        width:'3%',  
+      },
+        {
+          title: 'Tên dịch vụ',
+          dataIndex: 'name',
+        },
+        {
+          title: 'Mô tả',
+          dataIndex: 'describle',
+        },
+        {
+          title: 'Hình ảnh',
+          render: (record) => {
+            return (
+              <>
+               <img src={record.icon} width='70px' height='50px'></img>
+              </>
+            );
+          },
+        },
+        {
+          title: 'Trạng thái',
+          render: (record) => {
+            return (
+              record.status?<>Mở</>:<>Khóa</>
+            )}
+        },
+        {
+            key: "5",
+            title: "Actions",
+            render: (record) => {
+              return (
+                <>
+                  <EditOutlined
+                  onClick={() => {
+                  showDrawer(record)
+                }}
+                style={{ color: "green", marginLeft: 12,fontSize: '20px'}}
+                  />
+                  <DeleteOutlined
+                    onClick={() => {
+                        console.log(record.id)
+                      deleteHandle(record.id);
+                    }}
+                    style={{ color: "red", marginLeft: 12 ,fontSize: '20px'}}
+                  />
+                </>
+              );
+            },
+          },
+      ];      
+      const showDrawer =(record) => {
+        setId(record.id)
+        setIcon(record.icon);
+        setName(record.name)
+        setDescrible(record.describle);
+        setStatus(record.status);
+        console.log(record.status)
+        setOpen(true);
+      };
+   
+    const [services, setServices] = useState([]);
+   // const [categories,setCategories] = useState([]);
 
-
-
-    const openEditForm = () => {
-        setShowEditForm(true);
-    };
-
-    const openDeleteModal = () => {
-        setShowDeleteModal(true);
-    };
-
-    const closeModal = () => {
-        setShowEditForm(false);
-        setShowDeleteModal(false);
-        setShowAddForm(false);
-    };
-
-    const handleWindowClick = (event) => {
-        if (event.target.id === 'addForm' || event.target.id === 'editForm' || event.target.id === 'deleteModal') {
-            closeModal();
-        }
-    };
-
-    useEffect(() => {
-        window.addEventListener('click', handleWindowClick);
-        return () => {
-            window.removeEventListener('click', handleWindowClick);
-        };
+    const  deleteHandle= async(e)=>{
+        if(window.confirm("Xác nhận xóa")){
+        const xoa = await axios.delete(BaseUrl+'service/'+e)
+        fetchData()
+        toast.success(xoa?.data);
+        }  
+      }
+    
+    async function fetchData() {
+      try {  
+        const categorie = await axios.get(BaseUrl+'service/all')
+        setServices(categorie?.data)
+        setLoading(false)
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    useState(() => {
+      fetchData();
     }, []);
+    const handleSubmit=async()=>{
 
-  
-
-
-// lấy dữ liệu từ be
-const [services, setServices] = useState([]);
-
-    const fetchServiceFromServer = async () => {
-        try {
-            const response = await fetch(`${BaseUrl}service/all`);
-            const data = await response.json();
-            return data.content;  
-        } catch (error) {
-            console.error("Lỗi khi lấy dữ liệu từ server:", error);
-            return [];
+    }
+    
+    const customUpload = async({ onError, onSuccess, file }) => {
+        const fileName = `uploads/images/${Date.now()}-${file.name}`;
+        const imageRef = ref(storage, fileName);
+      await uploadBytes(imageRef, file)
+        .then(() => {
+          getDownloadURL(imageRef)
+            .then((url) => {                         
+              setIcon(url);
+            })
+            .catch((error) => {
+              console.log(error.message, "error getting the image url");
+            });
+          setIcon(null);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+      }
+    
+      const handSubmit = async(e)=>{
+        e.preventDefault();
+        if(window.confirm("Xác nhận cập nhật")){
+        let regObj = {id,name,describle,icon,status};
+        try{
+          console.log(regObj);
+            const res= await axios.put(BaseUrl+'service', regObj);    
+            console.log(res?.data);  
+             toast.success("thanh cong")
+             fetchData()
+             setOpen(false)
+          }catch(err){alert('Khong co ket noi');}
         }
-    };
-
-    useEffect(() => {
-        const loadServices = async () => {
-            const serviceData = await fetchServiceFromServer();
-            setServices(serviceData);
-        };
-
-        loadServices();
-    }, []);
-    return (
-        <main>
-            <div className="header_admin">
-                <div className="left_admin">
-                    <h1 className="title-heading">Quản Lý Dịch Vụ</h1>
-                    <ul className="breadcrumb">
-                        <li><a href="#">
-                            Admin
-                        </a></li>
-                        /
-                        <li><a href="#" className="active">Quản Lý Dịch Vụ</a></li>
-                    </ul>
-                </div>
+      }
+      const callbackFunction = (childData) => {
+        if(childData){
+              fetchData()
+        }
+        setOpen2(false)
+      }
+      const uploadButton = (
+        <div>
+          <div className="ant-upload-text">Upload</div>
+        </div>
+        );
+    return <>
+    <Row style={{marginBottom:15}}>
+    <Col span={21} ><h2 style={{fontSize:20,textAlign:'center',color:'royalblue'}}>DANH SÁCH DỊCH VỤ</h2></Col>
+      <Col span={3}>
+        <Button type='primary' onClick={()=>{setOpen2(true)}}>Thêm mới</Button>
+       {/* {ids==null||ids.length==0?<></>:<Button type='primary' onClick={()=>{deleteList(ids)}}>Xóa</Button>} */}
+      </Col>
+    </Row>
+      <Table  columns={columns} dataSource={services} loading={loading}/> 
+      <Modal
+        title="Chỉnh sửa danh mục"
+        okText='Save'
+        okType='primary'
+        centered
+        open={open}
+        onOk={(e) => handSubmit(e)}
+        onCancel={() => setOpen(false)}
+        width={1000}   
+      >         
+        
+      <Form
+        labelCol={{ span: 4 }}
+        wrapperCol={{ span: 14 }}
+        layout="horizontal"
+        style={{ maxWidth: 600 }}
+      >
+       
+        <Form.Item label="Tên dịch vụ">
+          <Input value={name} onChange={(e)=>{setName(e.target.value)}} />
+        </Form.Item>
+                 
+        <Form.Item label="Mô tả" onChange={(e)=>{setDescrible(e.target.value)}}>
+          <TextArea rows={4} value={describle}/>
+        </Form.Item>
+       
+        <Form.Item label="Hình Ảnh" valuePropName="fileList">
+          <Upload maxCount="1" fileList={[{url:icon}]} listType="picture-card"
+           showUploadList={false}
+           customRequest={customUpload}>
+            <div>
+              {icon ? <img src={icon} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
             </div>
-            {/* Insights */}
-            <ul className="insights_admin">
-                <li>
-                    <i className="bx bx-building-house" />
-                    <span className="info">
-                        <h3>
-                            1,074
-                        </h3>
-                        <p>Khách sạn</p>
-                    </span>
-                </li>
-                <li><i className="bx bx-car" />
-                    <span className="info">
-                        <h3>
-                            3,944
-                        </h3>
-                        <p>Xe</p>
-                    </span>
-                </li>
-                <li><i className="bx bx-bowl-hot" />
-                    <span className="info">
-                        <h3>
-                            14,721
-                        </h3>
-                        <p>Ăn uống</p>
-                    </span>
-                </li>
-            </ul>
-            {/* End of Insights */}
-            {/* model edit and delete */}
-            {/* Form Edit */}
-            <div id="editForm" className="modal" style={{ display: showEditForm ? 'block' : 'none' }}>
-                <div className="modal-content">
-                    <span className="close-btn" onClick={closeModal}>×</span>
-                    <h2>Sửa Thông Tin</h2>
-                    <form>
-                        Tên dịch vụ: <input type="text" id="name" placeholder="Tên" /><br /><br />
-                        Nội dung: <textarea id="details" placeholder="Chi tiết" defaultValue={""} /><br /><br />
-                        <button type="submit" className="btnluu">Lưu</button>
-                        <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
-                    </form>
-                </div>
-            </div>
-            {/* Modal Delete Confirmation */}
-            <div id="deleteModal" className="modal" style={{ display: showDeleteModal ? 'block' : 'none' }}>
-                <div className="modal-content">
-                    <span className="close-btn" onClick={closeModal}>×</span>
-                    <h2>Bạn có muốn xóa không?</h2>
-                    <button className="btnxoa">Xóa</button>
-                    <button type="button" className="close-btn" onClick={closeModal}>Thoát</button>
-                </div>
-            </div>
-            {/*end model edit and delete */}
-            {/* model newitem */}
-            <div id="addForm" className="modal" style={{ display: showAddForm ? 'block' : 'none' }}>
-                <div className="modal-content">
-                    <span className="close-btn" onClick={closeModal}>×</span>
-                    <h2>Thêm Mới Dịch Vụ</h2>
-                    <form>
-                        Tên dịch vụ: <input type="text" id="category" placeholder="Tên dịch vụ" /><br /><br />
-                        Nội dung: <textarea id="content" placeholder="Nội dung" defaultValue={""} /><br /><br />
-                        <button type="submit" className="btnluu">Thêm mới</button>
-                        {/* <button type="button" class="close-btn">Thoát</button> */}
-                    </form>
-                </div>
-            </div>
-            {/* end new item */}
-            <div className="bottom-data_admin">
-                <div className="orders_admin">
-                    <div className="header_admin">
-                        <i className="bx bx-receipt" />
-                        <h3>Danh Sách Dịch Vụ</h3>
-                        <i className="bx bx-filter" />
-                        <button className="btn add-new-btn " onClick={openAddForm}>
-                            Thêm mới
-                        </button>
-                    </div>
-                    <table className="tatle_admin">
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Tên dịch vụ</th>
-                                <th>Nội dung</th>
-                                <th>Trạng thái</th>
-                                <th>Hoạt động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {services.map((service, index) => (
-                            <tr key={service.id}>
-                                <td>{index + 1}</td>
-                                <td>{service.name}</td>
-                                <td>{service.describle}</td>
-                                <td>
-                                <label className={`switch ${service.status ? 'active-admin' : ''}`} >
-                                            <input type="checkbox" checked={service.status} readOnly onClick={e => e.stopPropagation()} />
-                                            <span className="slider_admin"></span>
-                                        </label>
-                                </td>
-                                <td>
-                                    <button className="btn edit-btn" onClick={openEditForm}>
-                                        <i className="bx bx-edit" />
-                                    </button>
-                                    <button className="btn delete-btn" onClick={openDeleteModal}>
-                                        <i className="bx bx-trash" />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
-
-    )
+          </Upload>
+        </Form.Item>
+        <Form.Item label="Status">
+        <Radio.Group
+        options={[
+          {
+            label: 'Mở',
+            value: true,
+          },
+          {
+            label: 'Khóa',
+            value: false,
+          },
+        ]}
+        onChange={(e)=>setStatus(e.target.value)}
+        value={status}
+        optionType="button"
+        buttonStyle="solid"
+        />
+        </Form.Item>
+      </Form>
+      </Modal>
+      <Modal
+        title={"Thêm mới Dịch vụ "}
+        footer={null}
+        okText=''
+        cancelText='Thoát'
+        okType='ghost'
+        centered
+        open={open2}
+        onOk={handleSubmit}
+        onCancel={() => setOpen2(false)}
+        width={800}   
+      >         
+      <CreateService  parentCallback={callbackFunction}/>
+      
+      </Modal>
+      </>
 }
+
+export default ListCategory
