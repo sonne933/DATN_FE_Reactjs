@@ -1,165 +1,355 @@
-import React, { useEffect, useState } from 'react'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
+import BaseUrl from "../../utils/BaseUrl";
 
-export default function RequestTourSeller() {
+import {
+  Table,
+  Select,
+  Switch,
+  Avatar,
+  Button,
+  Row,
+  Col,
+  Drawer,
+  Input,
+  message,
+} from "antd";
+import DetailPeople from "../../compoment/seller/DetailPeople";
+import DetailTour from "../../compoment/seller/DetailSchedule";
+import { toast } from "react-toastify";
+import { DeleteOutline } from "@mui/icons-material";
+import CountDown from "../../compoment/seller/CountSchedule";
+import {
+  CalendarOutlined,
+  CarOutlined,
+  StarTwoTone,
+  CloseOutlined,
+} from "@ant-design/icons";
+import TextArea from "antd/es/input/TextArea";
 
-  const [showCancelModal, setShowCancelModal] = useState(false);
-  const [showAcceptModal, setShowAcceptModal] = useState(false);
+function ChotTourPage() {
+  const [loading, setLoading] = useState(true);
+  const [schedule, setSchedules] = useState([]);
+  const [loadingstatus, setLoadingStatus] = useState(false);
+  const [loai, setLoai] = useState("0");
+  const [id, setId] = useState("");
+  const [open, setOpen] = useState(false);
+  const [lydo, setLydo] = useState("");
+  const columns = [
+    {
+      title: "Tour",
+      render: (record) => {
+        return (
+          <>
+            <DetailTour idTour={record.idTour} />
+          </>
+        );
+      },
+      width: "20%",
+      ellipsis: true,
+    },
+    {
+      title: "Hướng dẫn viên",
+      render: (record) => {
+        return (
+          <>
+            {record.tourGuide}
+            <br />
+            {record.phone}
+          </>
+        );
+      },
 
-  const openCancelModal = () => {
-    setShowCancelModal(true);
-  };
+      width: "12%",
+    },
+    {
+      title: "Xuất phát",
+      render: (record) => {
+        return (
+          <>
+            <Row>
+              {" "}
+              <Col>
+                <CalendarOutlined style={{ fontSize: 18 }} />
+                {"        " + record.dayStart}
+                <br />
+                <CarOutlined style={{ fontSize: 18 }} />
+                {"       " + record.addressStart}
+              </Col>
+              <Col push={4}>
+                <CountDown dayStart={record.dayStart} />
+              </Col>
+            </Row>
+          </>
+        );
+      },
+      width: "25%",
+    },
+    {
+      title: "Số lượng người",
+      render: (record) => {
+        return (
+          <>
+            <DetailPeople idSchedule={record.id} />
+          </>
+        );
+      },
+      width: "15%",
+    },
+    {
+      title: "Dự kiến",
+      dataIndex: "expectedPeople",
+      width: "5%",
+    },
 
-  const openAcceptModal = () => {
-    setShowAcceptModal(true);
-  };
+    {
+      title: "Loại tour",
+      render: (record) => {
+        return (
+          <>
+            {record.type === "HT"
+              ? "Hệ thống"
+              : record.type === "YC"
+              ? "Yêu cầu"
+              : ""}
+          </>
+        );
+      },
+      width: "8%",
+    },
 
-  const closeModal = () => {
-    
-    setShowCancelModal(false);
-    setShowAcceptModal(false)
-  };
-  const handleWindowClick = (event) => {
-    if (event.target.id === 'cancelModal' ||event.target.id === 'acceeptModal') {
-      closeModal();
+    {
+      title: "Thao tác",
+      render: (record) => {
+        return (
+          <>
+            {record.progress == 0 ? (
+              <>
+                <Button
+                  onClick={() => {
+                    changeProgress(record.id, 1);
+                  }}
+                >
+                  {" "}
+                  Chốt tour
+                </Button>{" "}
+              </>
+            ) : (
+              <></>
+            )}
+            {record.progress == 1 ? (
+              <Button
+                onClick={() => {
+                  changeProgress(record.id, 0);
+                }}
+                style={{ color: "blueviolet" }}
+              >
+                {" "}
+                Mở đặt
+              </Button>
+            ) : (
+              <></>
+            )}
+            {record.progress == 1 ? (
+              <Button
+                onClick={() => {
+                  changeProgress(record.id, 2);
+                }}
+                style={{ color: "blueviolet" }}
+              >
+                {" "}
+                Xuất phát
+              </Button>
+            ) : (
+              <></>
+            )}
+            {record.progress == 2 ? (
+              <Button
+                onClick={() => {
+                  changeProgress(record.id, 3);
+                }}
+                style={{ color: "blueviolet" }}
+              >
+                {" "}
+                Hoàn thành
+              </Button>
+            ) : (
+              <></>
+            )}
+          </>
+        );
+      },
+      width: "8%",
+    },
+    {
+      title: "Hủy",
+
+      render: (record) => {
+        return (
+          <>
+            {loai === "0" || loai === "1" ? (
+              <CloseOutlined
+                onClick={() => {
+                  setId(record.id);
+                  setOpen(true);
+                }}
+              />
+            ) : (
+              <></>
+            )}
+          </>
+        );
+      },
+      width: "5%",
+    },
+  ];
+  const changeProgress = async (id, progress) => {
+    if (window.confirm("Xác nhận")) {
+      try {
+        const del = await axios.put(
+          BaseUrl + "schedule/changeprogress/" + id + "/" + progress
+        );
+        message.success("Thành công !");
+        fetchData(loai);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
-  useEffect(() => {
-    window.addEventListener('click', handleWindowClick);
-    return () => {
-        window.removeEventListener('click', handleWindowClick);
-    };
-}, []);
+  const deleteHandle = async (id) => {
+    if (window.confirm("Xác nhận xóa")) {
+      try {
+        const del = await axios.delete(BaseUrl + "schedule/" + id);
+        if (del?.data.status == "0") toast.error(del?.data.message);
+        else {
+          fetchData(loai);
+          toast.success(del?.data.message);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+  const handleHuyTour = async (id) => {
+    if (lydo == null || lydo === "") toast.warning("Vui lòng nhập lý do");
+    else
+      try {
+        const stt = await axios.put(
+          BaseUrl + "schedule/huytour/" + id + "/" + lydo
+        );
+        if (stt?.data.status === "1") {
+          fetchData(loai);
+          toast.success("Hủy tour thành công");
+          setOpen(false);
+        } else toast.error("Không thành công");
+      } catch (error) {
+        console.error(error);
+      }
+  };
+  const handleChange = async (id, status) => {
+    let reg = { status, id };
+    try {
+      const stt = await axios.put(BaseUrl + "schedule/changestatus", reg);
+      status == false
+        ? toast.success("Chốt tour thành công")
+        : toast.success("Mở đặt tour thành công");
+    } catch (error) {
+      console.error(error);
+    }
+    fetchData(loai);
+  };
+  const onChange = async (checked, id) => {};
+  async function fetchData(loai) {
+    try {
+      setLoading(true);
+      const account = await axios.get(BaseUrl + "schedule/progress/" + loai);
+      setSchedules(account.data);
+      console.log(account.data);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useState(() => {
+    fetchData(loai);
+  }, []);
+
   return (
-    <main>
-    <div className="header-seller">
-      <div className="left-seller">
-        <h1>Yêu Cầu Đặt Tour</h1>
-        <ul className="breadcrumb">
-          <li><a href="#">
-              Seller
-            </a></li>
-          /
-          <li><a href="#" className="active">Yêu Cầu Đặt Tour</a></li>
-        </ul>
-      </div>
-    </div>
-    {/* Insights */}
-    {/* End of Insights */}
-    {/* Form Edit */}
-     {/* Modal cancel Confirmation */}
-     <div id="cancelModal" className="modal-seller" style={{ display: showCancelModal ? 'block' : 'none' }}>
-        <div className="modal-content-seller">
-          <span className="close-btn"onClick={closeModal}>×</span>
-          <h2>Xác nhận hủy?</h2>
-          <button className="btnxoa">Hủy</button>
-          <button type="button" className="close-btn"onClick={closeModal}>Thoát</button>
-        </div>
-      </div>
-        {/* Modal accept Confirmation */}
-     <div id="acceeptModal" className="modal-seller" style={{ display: showAcceptModal ? 'block' : 'none' }}>
-        <div className="modal-content-seller">
-          <span className="close-btn"onClick={closeModal}>×</span>
-          <h2>Xác nhận Yêu cầu Tour?</h2>
-          <button className="edit-btn">Chấp nhận</button>
-          <button type="button" className="close-btn"onClick={closeModal}>Thoát</button>
-        </div>
-      </div>
-      {/*end model cancel */}
-    <div className="bottom-data-seller">
-      <div className="orders-seller">
-        <div className="header-seller">
-          <i className="bx bx-receipt" />
-          <h3>Danh sách yêu cầu</h3>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>STT</th>
-              <th>Thông tin người đặt</th>
-              <th>Tour </th>
-              <th>Xuất phát</th>
-              <th>Kết thúc</th>
-              <th>Số lượng </th>
-              <th>Trạng thái</th>
-              <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td id="noidungTour">
-                <i className="bx bx-user" /> <span>Nguyễn Ngọc Tú</span> <br />
-                <i className="bx bx-envelope" /> <span>nguyetu85242@gmail.com</span> <br />
-                <i className="bx bx-phone" /> <span>0356918267</span> <br />
-              </td>
-              <td id="noidungTour">
-                <i className="bx bxs-heart" /><span>Tour du lịch Châu Âu </span> <br />
-                <i className="bx bxs-location-plus" /> <span>Pháp-Đức-Bỉ</span>
-              </td>
-              <td>
-                <i className="bx bx-calendar" /> <span>25/09/2023</span> <br />
-                <i className="bx bx-car" /> <span>Đà Nẵng</span>
-              </td>
-              <td>
-                <i className="bx bx-time-five" /> <span>Đã kết thúc</span>
-              </td>
-              <td>
-                3 
-              </td>
-              <td>
-                <span>Chưa phê duyệt</span>
-              </td>
-              <td>
-                <button className="btn edit-btn" onClick={openAcceptModal}>
-                  Chấp nhận
-                </button>
-                <br />
-                <button className="btn huy-btn" onClick={openCancelModal}>
-                  Hủy
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td id="noidungTour">
-                <i className="bx bx-user" /> <span>Võ Hoàng Anh</span> <br />
-                <i className="bx bx-envelope" /> <span>vohaonganh@gmail.com</span> <br />
-                <i className="bx bx-phone" /> <span>0123456789</span> <br />
-              </td>
-              <td id="noidungTour">
-                <i className="bx bxs-heart" /> <span>Tour du lịch Quy Nhơn Phú Yên</span> <br />
-                <i className="bx bxs-location-plus" /> <span>Quy Nhơn-Phú Yên</span>
-              </td>
-              <td>
-                <i className="bx bx-calendar" /> <span>27/09/2023</span> <br />
-                <i className="bx bx-car" /> <span>Hà Nội</span>
-              </td>
-              <td>
-                <i className="bx bx-time-five" /> <span>Đã kết thúc</span>
-              </td>
-              <td>
-                5
-              </td>
-              <td>
-                <span>Chưa phê duyệt</span>
-              </td>
-              <td>
-                <button className="btn edit-btn"onClick={openAcceptModal}>
-                  Chấp nhận
-                </button>
-                <br />
-                <button className="btn huy-btn"onClick={openCancelModal}>
-                  Hủy
-                </button>
-              </td>
-            </tr>
-            {/* Thêm các dòng dữ liệu khác tương tự ở đây */}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
-  
-  )
+    <>
+      <Select
+        value={loai}
+        onChange={(value) => {
+          setLoai(value);
+          fetchData(value);
+        }}
+        options={[
+          {
+            value: "0",
+            label: "Chưa chốt",
+          },
+          {
+            value: "1",
+            label: "Đã chốt",
+          },
+          {
+            value: "2",
+            label: "Đang khởi hành",
+          },
+          {
+            value: "3",
+            label: "Đã hoàn thành",
+          },
+          {
+            value: "4",
+            label: "Đã hủy",
+          },
+        ]}
+      ></Select>
+      <h1>
+        Danh sách lịch trình{" "}
+        {loai === "0"
+          ? "Đang mở đặt"
+          : loai === "1"
+          ? "Đã chốt"
+          : loai === "2"
+          ? "Đang khởi hành"
+          : loai === "3"
+          ? "Đã hoàn thành"
+          : "Đã hủy"}
+      </h1>
+      <Table
+        rowKey={schedule.idSchedule}
+        columns={columns}
+        dataSource={schedule}
+        loading={loading}
+      />
+      <Drawer
+        title="Hủy Tour"
+        placement="right"
+        onClose={() => {
+          setOpen(false);
+        }}
+        open={open}
+      >
+        <p>{id}</p>
+        Nhập lý do hủy:
+        <TextArea
+          value={lydo}
+          onChange={(e) => {
+            setLydo(e.target.value);
+          }}
+        ></TextArea>
+        <Button
+          onClick={() => {
+            handleHuyTour(id);
+          }}
+        >
+          Xác nhận hủy
+        </Button>
+      </Drawer>
+    </>
+  );
 }
+
+export default ChotTourPage;

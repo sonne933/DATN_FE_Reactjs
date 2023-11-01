@@ -1,12 +1,12 @@
-import {  Route, Routes, Router, useLocation } from "react-router-dom";
-import { Provider, useSelector } from 'react-redux';
-import './App.css';
+import { Route, Routes, Router, useLocation } from "react-router-dom";
+import { Provider, useSelector } from "react-redux";
+import "./App.css";
 import store from "./redux/store";
-import '../node_modules/react-toastify/dist/ReactToastify.css';
+import "../node_modules/react-toastify/dist/ReactToastify.css";
 import VerifyPage from "./pages/user/VerifyPage";
 
-import Header from './compoment/user/Header';
-import Home from './compoment/user/Home';
+import Header from "./compoment/user/Header";
+import Home from "./compoment/user/Home";
 import Footer from "./compoment/user/Footer";
 import Main from "./compoment/user/Main";
 import About from "./compoment/user/About";
@@ -41,28 +41,35 @@ import BillManageSeller from "./compoment/seller/BillManageSeller";
 import ChatboxSeller from "./compoment/seller/ChatboxSeller";
 import StatisticalSeller from "./compoment/seller/StatisticalSeller";
 
-
-
-
 function App() {
   const location = useLocation();
   // const isLoggedIn = useSelector(state => state.isLoggedIn);
   // const userRole = useSelector(state => state.userRole);
 
-  const isAuthPage = ['/signin', '/signup', '/verify',
-   '/admin', '/admin/accountmanage' ,'/admin/catalogmanage','/admin/tourmanage','/admin/servicemanage',
-    '/seller','/seller/tourmanage','/seller/schedulemanage','/seller/requesttour','/seller/billmanage',
-    '/seller/chatbox','/seller/statistical'
-].includes(location.pathname);
+  const isAuthPage = [
+    "/signin",
+    "/signup",
+    "/verify",
+    "/admin",
+    "/admin/accountmanage",
+    "/admin/catalogmanage",
+    "/admin/tourmanage",
+    "/admin/servicemanage",
+    "/seller",
+    "/seller/tourmanage",
+    "/seller/schedulemanage",
+    "/seller/requesttour",
+    "/seller/billmanage",
+    "/seller/chatbox",
+    "/seller/statistical",
+  ].includes(location.pathname);
 
   return (
     <Provider store={store}>
-
       <div id="wrapper">
         {!isAuthPage && <Header />}
-        
-        <Routes>
 
+        <Routes>
           <Route index element={<Main />} />
           <Route path="/about" element={<About />} />
           <Route path="/offers" element={<Offers />} />
@@ -72,27 +79,24 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/signup" element={<Signin />} />
           <Route path="/signin" element={<Signup />} />
-          <Route path="/verify" element={<VerifyPage/>}/>
-
+          <Route path="/verify" element={<VerifyPage />} />
 
           <Route path="/tourDetails/:tourId" element={<TourDetails />} />
-          <Route path="/personalInformation" element={<PersonalInformation />} />
+          <Route
+            path="/personalInformation"
+            element={<PersonalInformation />}
+          />
           <Route path="/booking/:tourId" element={<Booking />} />
           <Route path="/historyBooking" element={<HistoryBooking />} />
           <Route path="/mytour" element={<MyTour />} />
 
-
-
-
-
           {/* Admin */}
-          <Route path="/admin" element={<AdminLayout/>}>
+          <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<MainAdmin />} />
             <Route path="accountmanage" element={<Accountmanage />} />
             <Route path="catalogmanage" element={<CatalogManage />} />
             <Route path="tourmanage" element={<TourManage />} />
             <Route path="servicemanage" element={<ServiceManage />} />
-
           </Route>
           {/* Seller */}
           <Route path="/seller" element={<SellerLayout />}>
@@ -103,17 +107,12 @@ function App() {
             <Route path="billmanage" element={<BillManageSeller />} />
             <Route path="chatbox" element={<ChatboxSeller />} />
             <Route path="statistical" element={<StatisticalSeller />} />
-           
           </Route>
         </Routes>
-        
-
 
         {!isAuthPage && <Footer />}
-
       </div>
     </Provider>
-
   );
 }
 
