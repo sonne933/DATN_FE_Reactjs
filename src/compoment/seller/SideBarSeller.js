@@ -1,10 +1,33 @@
 import { Link, useLocation } from "react-router-dom";
+import {
+  DownOutlined,
+  SmileOutlined,
+  UserOutlined,
+  NotificationTwoTone,
+} from "@ant-design/icons";
 
 import React, { useEffect, useState } from "react";
 
 export default function SideBarSeller() {
   const location = useLocation();
   const isActive = (path) => location.pathname === path; // Hàm này kiểm tra xem pathname hiện tại có phải là path được truyền vào hay không
+  const items = [
+    {
+      key: "3",
+      danger: true,
+      label: (
+        <Link
+          to="/signup"
+          onClick={() => {
+            sessionStorage.removeItem("user");
+          }}
+        >
+          Thoát
+        </Link>
+      ),
+      icon: <SmileOutlined />,
+    },
+  ];
   return (
     <div className="sidebar-seller">
       <Link to="/seller" className="logo">
@@ -61,12 +84,29 @@ export default function SideBarSeller() {
         </li>
       </ul>
       <ul className="side-menu-seller">
-        <li>
-          <a href="#" className="logout">
-            <i className="bx bx-log-out-circle" />
-            Logout
+        {items.map((item) => (
+          <a
+            href="#"
+            className="logout"
+            key={item.key}
+            style={{
+              textDecoration: "none",
+              display: "block",
+              padding: "10px 15px",
+              margin: "5px 0",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              background: "#fff",
+              color: "#333",
+              fontSize: "16px",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            {item.icon}
+            {item.label}
           </a>
-        </li>
+        ))}
       </ul>
     </div>
   );
