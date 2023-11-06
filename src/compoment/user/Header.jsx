@@ -10,39 +10,22 @@ import { logout } from '../../redux/actions';
 
 function Header({ isLoggedIn }) {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    
-   
+    const navigate = useNavigate(); 
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsOpen(prevState => !prevState);
     }
 
-    
-   
-
-    // const handleLogout = () => {
-    //     // 1. Đăng xuất từ Firebase
-    //     auth.signOut().then(() => {
-            
-    //         // 2. Xóa thông tin người dùng khỏi sessionStorage
-    //         sessionStorage.removeItem('user');
-    //         sessionStorage.removeItem('isLoggedIn');
-    //         // 3. Cập nhật trạng thái đăng nhập trong Redux Store
-    //         dispatch(logout());
-            
-    //         // 4. Điều hướng người dùng về trang chính
-    //         navigate("/");
-    
-    //     }).catch((error) => {
-    //         console.error("Error signing out: ", error);
-    //     });
-    // };
+    // Hàm đăng xuất
+    const handleLogout = () => {
+        // Xóa thông tin người dùng khỏi sessionStorage
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('isLoggedIn');
+        window.location.href = '/';
+    };
   
-    
     const isUserLoggedIn = useSelector(state => state.isLoggedIn) || sessionStorage.getItem('isLoggedIn') === 'true';
-    
     
     
     return (
@@ -85,7 +68,7 @@ function Header({ isLoggedIn }) {
                             <Link to="/mytour">Quản lý tour</Link>
                             <Link to="/historyBooking">Lịch sử tour</Link>
                             <Link to="/personalInformation">Quản lý thông tin cá nhân</Link>
-                            {/* <a href="#"onClick={handleLogout}>Đăng xuất</a> */}
+                            <a href="#" onClick={handleLogout}>Đăng xuất</a>
                         </div>
                     </div> ) : null}
                     <form action><input className="input_search" type="text" /></form>
