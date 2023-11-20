@@ -71,12 +71,12 @@ export default function Sidebar() {
             Quản Lý Dịch Vụ
           </Link>
         </li>
-        <li className={isActive("/admin/statistical") ? "active-admin" : ""}>
+        {/* <li className={isActive("/admin/statistical") ? "active-admin" : ""}>
           <Link href="/admin/statistical" className="title_sidemenu">
             <i className="bx bx-bar-chart-alt-2" />
             Thống Kê
           </Link>
-        </li>
+        </li> */}
       </ul>
       <ul className="side-menu_admin">
         {items.map((item) => (

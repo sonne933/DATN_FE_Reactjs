@@ -1,36 +1,45 @@
-import React from 'react'
-import "./css/PersonalInformation.css"
+import React from "react";
+import "./css/PersonalInformation.css";
 export default function PersonalInformation() {
-    return (
-        <div className="main-personalInformation">
-            <div className="main_offers-personalInformation">
-                <div className="left_main-personalInformation">
-                    <div className="user-form">
-                        <h2>Thông tin người dùng</h2>
-                        <label htmlFor="name">Tên:</label>
-                        <input type="text" id="name" defaultValue="Nguyễn Văn An" />
-                        <label htmlFor="birthdate">Ngày sinh:</label>
-                        <input type="date" id="birthdate" defaultValue="2001-01-01" />
-                        <label htmlFor="address">Địa chỉ:</label>
-                        <input type="text" id="address" defaultValue="123 Lê Lợi, Đà Nẵng" />
-                        <label htmlFor="email">Email:</label>
-                        <input type="email" id="email" defaultValue="nguyenvanan123@email.com" />
-                        <label htmlFor="phone">Số điện thoại:</label>
-                        <input type="tel" id="phone" defaultValue="0123456789" />
-                        <button type="submit">Cập nhật</button>
-                        <hr /> {/* Dòng kẻ ngang để phân cách giữa thông tin người dùng và phần đổi mật khẩu */}
-                        <h2>Đổi mật khẩu</h2>
-                        <label htmlFor="currentPassword">Mật khẩu hiện tại:</label>
-                        <input type="password" id="currentPassword" />
-                        <label htmlFor="newPassword">Mật khẩu mới:</label>
-                        <input type="password" id="newPassword" />
-                        <label htmlFor="confirmNewPassword">Xác nhận mật khẩu mới:</label>
-                        <input type="password" id="confirmNewPassword" />
-                        <button type="submit">Cập nhật</button>
-                    </div>
-                </div>
-            </div>
-            <footer className="footer">
+  return (
+    <div className="main-personalInformation">
+      <div className="main_offers-personalInformation">
+        <div className="left_main-personalInformation">
+          <div className="user-form">
+            <h2>Thông tin người dùng</h2>
+            <label htmlFor="name">Tên:</label>
+            <input type="text" id="name" defaultValue="Nguyễn Văn An" />
+            <label htmlFor="birthdate">Ngày sinh:</label>
+            <input type="date" id="birthdate" defaultValue="2001-01-01" />
+            <label htmlFor="address">Địa chỉ:</label>
+            <input
+              type="text"
+              id="address"
+              defaultValue="123 Lê Lợi, Đà Nẵng"
+            />
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              defaultValue="nguyenvanan123@email.com"
+            />
+            <label htmlFor="phone">Số điện thoại:</label>
+            <input type="tel" id="phone" defaultValue="0123456789" />
+            <button type="submit">Cập nhật</button>
+            <hr />{" "}
+            {/* Dòng kẻ ngang để phân cách giữa thông tin người dùng và phần đổi mật khẩu */}
+            <h2>Đổi mật khẩu</h2>
+            <label htmlFor="currentPassword">Mật khẩu hiện tại:</label>
+            <input type="password" id="currentPassword" />
+            <label htmlFor="newPassword">Mật khẩu mới:</label>
+            <input type="password" id="newPassword" />
+            <label htmlFor="confirmNewPassword">Xác nhận mật khẩu mới:</label>
+            <input type="password" id="confirmNewPassword" />
+            <button type="submit">Cập nhật</button>
+          </div>
+        </div>
+      </div>
+      {/* <footer className="footer">
                 <button onclick="topFunction()" id="back_top" title="Go to top"><i className="fas fa-rocket" /></button>
                 <div className="box footer__box">
                     <div className="footer__about">
@@ -107,8 +116,7 @@ export default function PersonalInformation() {
                         </ul>
                     </div>
                 </div>
-            </footer>
-        </div>
-
-    )
+            </footer> */}
+    </div>
+  );
 }

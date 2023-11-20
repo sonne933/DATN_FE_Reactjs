@@ -3633,37 +3633,11 @@
     src: url("../font/beyond_the_mountains.otf") format("truetype"), url("../font/beyond_the_mountains.ttf") format("opentype");
 } */
 
-html {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    font-size: 62.5%;
-}
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
-    text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
-}
 
-body {
-    min-height: 100vh;
-    font-family: "Opensan", sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    background: #FFffff;
-    color: #a5a5a5;
-}
 
-div {
-    display: block;
-    position: relative;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
+
+
 
 ul {
     list-style: none;
@@ -3693,16 +3667,6 @@ p a {
     transition: all 200ms ease;
 }
 
-a,
-a:hover,
-a:visited,
-a:active,
-a:link {
-    text-decoration: none;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
-    text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
-}
 
 h1 {
     font-size: 48px;
