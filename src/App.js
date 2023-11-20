@@ -17,6 +17,7 @@ import Signin from "./pages/Signin";
 
 import Signup from "./pages/Signup";
 import BookingNoSignup from "./pages/BookingNoSignup";
+import Filtertour from "./pages/user/Filtertour";
 import Search from "./pages/Search";
 import TourDetails from "./pages/TourDetails";
 import PersonalInformation from "./pages/PersonalInformation";
@@ -74,6 +75,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/offers" element={<Offers />} />
           <Route path="/bookingNoSignup" element={<BookingNoSignup />} />
+          <Route path="/filterTour" element={<Filtertour />} />
           <Route path="/search" element={<Search />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />

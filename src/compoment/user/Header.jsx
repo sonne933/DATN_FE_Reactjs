@@ -57,6 +57,7 @@ function Header({ isLoggedIn }) {
                         <li className="main_nav__item"><Link to="about">GIỚI THIỆU</Link></li>
                         <li className="main_nav__item"><Link to="offers">ƯU ĐÃI</Link></li>
                         <li className="main_nav__item"><Link to="bookingNoSignup">ĐẶT TOUR</Link></li>
+                        <li className="main_nav__item"><Link to="filterTour">DAT TOUR</Link></li>
                         <li className="main_nav__item"><Link to="blog">TIN TỨC</Link></li>
                         <li className="main_nav__item"><Link to="contact">LIÊN HỆ</Link></li>
                     </ul>
