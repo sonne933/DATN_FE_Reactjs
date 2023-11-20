@@ -1,9 +1,16 @@
-import { Route, Routes, Router, useLocation } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  Router,
+  useLocation,
+  BrowserRouter,
+} from "react-router-dom";
 import { Provider, useSelector } from "react-redux";
 import "./App.css";
 import store from "./redux/store";
 import "../node_modules/react-toastify/dist/ReactToastify.css";
 import VerifyPage from "./pages/user/VerifyPage";
+import { ToastContainer, toast } from "react-toastify";
 
 import Header from "./compoment/user/Header";
 import Home from "./compoment/user/Home";
@@ -40,6 +47,7 @@ import RequestTourSeller from "./compoment/seller/RequestTourSeller";
 import BillManageSeller from "./compoment/seller/BillManageSeller";
 import ChatboxSeller from "./compoment/seller/ChatboxSeller";
 import StatisticalSeller from "./compoment/seller/StatisticalSeller";
+import AuthorizedPage from "./pages/AuthorizedPage";
 
 function App() {
   const location = useLocation();
@@ -67,8 +75,8 @@ function App() {
   return (
     <Provider store={store}>
       <div id="wrapper">
+        <ToastContainer></ToastContainer>
         {!isAuthPage && <Header />}
-
         <Routes>
           <Route index element={<Main />} />
           <Route path="/about" element={<About />} />
@@ -80,6 +88,7 @@ function App() {
           <Route path="/signup" element={<Signin />} />
           <Route path="/signin" element={<Signup />} />
           <Route path="/verify" element={<VerifyPage />} />
+          <Route path="/authorized" element={<AuthorizedPage />} />
 
           <Route path="/tourDetails/:tourId" element={<TourDetails />} />
           <Route

@@ -6,7 +6,7 @@ import { Col, DatePicker, Divider, Input, Row, Select } from "antd";
 import { useState } from "react";
 import DoanhThuTheoNgay from "./DoanhThuTheoNgay";
 import DoanhThuTheoThangChart from "./DoanhThuTheoThangChart";
-export default function MainAdmin() {
+function Thongke() {
   var today = new Date();
   const [tongquat, setTongquat] = useState();
   const [year, setYear] = useState("2023");
@@ -67,3 +67,5 @@ export default function MainAdmin() {
     </div>
   );
 }
+
+export default Thongke;
