@@ -3636,7 +3636,7 @@
 html {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    font-size: 62.5%;
+    /* font-size: 62.5%; */
 }
 
 * {
@@ -3968,7 +3968,7 @@ h6 {
     grid-column: 1/13;
     grid-template-columns: repeat(12, 1fr);
     align-items: center;
-    height: 10rem;
+    height: 5rem;
 }
 
 .main_nav__logo {

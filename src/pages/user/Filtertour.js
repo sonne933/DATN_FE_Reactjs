@@ -19,7 +19,7 @@ import { TbBeach, TbMountain } from "react-icons/tb";
 import BaseUrl from "../../utils/BaseUrl";
 import { FaUtensils } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import LazyLoad from "react-lazy-load";
+import LazyLoad from "react-lazyload";
 const { Option } = Select;
 
 const Tour = ({ id, title, image, address , price, inteval, sale }) => (
@@ -106,7 +106,8 @@ const Filtertour = () => {
         getItem(<Link onClick={()=>{setAddress(null);fetchData(null,null,gt,lt,sort)}}>Tất cả tour</Link>, "1", <UnorderedListOutlined />),
         ,getItem("Điểm đến", "sub2", <MdLocationPin/>, [
           getItem(
-            <Input onPressEnter={(e)=>{fetchData(e.target.value,idCategory,gt,lt,sort);setIdCategory([])}}  value={address} onChange={(e)=>{setAddress(e.target.value);}}></Input>,
+            <Input onPressEnter={(e)=>{fetchData(e.target.value,idCategory,gt,lt,sort);setIdCategory([])}}  value={address} onChange={(e)=>{setAddress(e.target.value);}} 
+            style={{padding: '4px 11px', borderWidth: '1px', borderStyle: 'solid', borderColor: '#d9d9d9', borderRadius: '6px', margin: 0, fontSize: '14px',}}></Input>,
             "99"
           ),
           getItem(

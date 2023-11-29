@@ -49,7 +49,7 @@ function Header({ isLoggedIn }) {
             </div> ): null
             }
             <div className="main_nav">
-                <div className="main_nav__logo"><Link to="/"><img src={logo} alt="logo" /> TOUR VIET</Link>
+                <div className="main_nav__logo"><Link to="/"><img src={logo} style={{maxWidth: 'none', height: 'auto', display: 'inline', verticalAlign: 'baseline',}} alt="logo" /> TOUR VIET</Link>
                 </div>
                 <div className="main_nav__menu">
                     <ul className="main_nav__list">
