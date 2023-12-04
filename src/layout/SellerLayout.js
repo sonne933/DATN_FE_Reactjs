@@ -111,7 +111,7 @@ const SellerLayout = ({ title = "Title", className, children }) => {
     getItem(
       <Badge count={countrequest}>
         <Link
-          style={{ color: "HighlightText" }}
+          style={{ color: "#000000" }}
           to={"request"}
           onClick={() => {
             setPath("request");
@@ -138,7 +138,7 @@ const SellerLayout = ({ title = "Title", className, children }) => {
     getItem(
       <Badge count={count}>
         <Link
-          style={{ color: "HighlightText" }}
+          style={{ color: "#000000" }}
           to={"listinvoice"}
           onClick={() => {
             xem();
@@ -244,6 +244,7 @@ const SellerLayout = ({ title = "Title", className, children }) => {
         <Layout>
           {contextHolder}
           <Sider
+            theme="light"
             breakpoint="lg"
             collapsedWidth="0"
             onBreakpoint={(broken) => {
@@ -263,11 +264,11 @@ const SellerLayout = ({ title = "Title", className, children }) => {
               }}
             >
               {" "}
-              Travel-app
+              TourViet
             </div>
 
             <Menu
-              theme="dark"
+              theme="light"
               mode="inline"
               defaultSelectedKeys={["listtour"]}
               items={items}
@@ -312,9 +313,7 @@ const SellerLayout = ({ title = "Title", className, children }) => {
               style={{
                 textAlign: "center",
               }}
-            >
-              Ant Design ©2023 Created by Ant UED
-            </Footer>
+            ></Footer>
           </Layout>
         </Layout>
       ) : (

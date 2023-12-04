@@ -102,7 +102,7 @@ const AdminLayout = ({ title = "Title", className, children }) => {
       ),
     ]),
 
-    getItem("Files", "9", <FileOutlined />),
+    getItem("", "9"),
   ];
 
   const check = async () => {
@@ -132,6 +132,7 @@ const AdminLayout = ({ title = "Title", className, children }) => {
       {open ? (
         <Layout>
           <Sider
+            theme="light"
             breakpoint="lg"
             collapsedWidth="0"
             onBreakpoint={(broken) => {
@@ -151,11 +152,11 @@ const AdminLayout = ({ title = "Title", className, children }) => {
               }}
             >
               {" "}
-              Travel-app
+              TourViet
             </div>
 
             <Menu
-              theme="dark"
+              theme="light"
               mode="inline"
               defaultSelectedKeys={["listtour"]}
               items={items}
@@ -200,9 +201,7 @@ const AdminLayout = ({ title = "Title", className, children }) => {
               style={{
                 textAlign: "center",
               }}
-            >
-              Ant Design ©2023 Created by Ant UED
-            </Footer>
+            ></Footer>
           </Layout>
         </Layout>
       ) : (
