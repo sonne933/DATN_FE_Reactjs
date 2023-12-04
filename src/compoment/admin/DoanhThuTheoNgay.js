@@ -17,6 +17,7 @@ import {
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import BaseUrl from "../../utils/BaseUrl";
+
 import axios from "axios";
 import { Spin } from "antd";
 ChartJS.register(

@@ -47,7 +47,7 @@ import { TbBeach, TbMountain } from "react-icons/tb";
 import BaseUrl from "../../utils/BaseUrl";
 import { FaUtensils } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import LazyLoad from "react-lazy-load";
+import LazyLoad from "react-lazyload";
 const { Option } = Select;
 
 const Tour = ({ id, title, image, address, price, inteval, sale }) => (
@@ -81,18 +81,18 @@ const Tour = ({ id, title, image, address, price, inteval, sale }) => (
         </div>
         <div className="px-1 text-sm font-[500]">{address}</div>
         {/* <div className="flex items-center px-1 text-sm font-[500]">
-                    <span className="mr-2">Phương tiện: </span>
-                    
-                </div> */}
+                      <span className="mr-2">Phương tiện: </span>
+                      
+                    </div> */}
         <div className="flex text-yellow-500">
           <Rate value={5} disabled></Rate>
         </div>
         <div className="flex justify-around p-1">
           {/* <MdCheckCircle size={15} />
-                    <FaUtensils size={15} />
-                    <BsShieldFillCheck size={15} />
-                    <BsTicketPerforatedFill size={15} />
-                    <BsBusFront /> */}
+                      <FaUtensils size={15} />
+                      <BsShieldFillCheck size={15} />
+                      <BsTicketPerforatedFill size={15} />
+                      <BsBusFront /> */}
         </div>
         <div className="text-sm font-[500] text-red-600 p-1">
           {new Intl.NumberFormat("vi-VN", {
@@ -335,8 +335,7 @@ const Filtertour = () => {
   };
 
   return (
-    // <div className="flex mt-24">
-    <div className="flex" style={{ paddingTop: "120px" }}>
+    <div className="flex mt-24">
       <div className="absolute md:relative" style={{ width: 256 }}>
         <div>
           <h2 className="flex items-center mb-3 text-md uppercase font-[600] text-maintext">
@@ -415,7 +414,7 @@ const Filtertour = () => {
               <LazyLoad
                 key={item.id}
                 height={100}
-                // offset={[-100,100]}
+                offset={[-100, 100]}
                 placeholder={<Skeleton />}
               >
                 <Tour key={item.id} {...item} />

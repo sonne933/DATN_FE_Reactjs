@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import DatePicker from "react-day-select";
 import "react-datepicker/dist/react-datepicker.css";
-import LazyLoad from "react-lazy-load";
+import LazyLoad from "react-lazyload";
 import axios from "axios";
 import BaseUrl from "../../utils/BaseUrl";
 const Loading = () => (

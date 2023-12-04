@@ -22,9 +22,9 @@ body{
   background-color: rgba(240, 248, 255, 0.5);
 }
 .dark .active {
-  border-bottom: 4px solid #0284c7;
+  border-bottom: 4px solid #7802c7;
   transition: all 0.3s linear;
-  color: #0284c7;
+  color: #5702c7;
 }
 .section-banner {
   display: flex;
@@ -91,7 +91,7 @@ body{
 }
 .ant-btn-primary{
   -webkit-appearance: button;
-  background-color: #0284c7;
+  background-color: #b9b9b9;
   background-image: none;
 }
 

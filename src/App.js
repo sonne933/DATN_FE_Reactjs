@@ -1,129 +1,109 @@
-import {
-  Route,
-  Routes,
-  Router,
-  useLocation,
-  BrowserRouter,
-} from "react-router-dom";
-import { Provider, useSelector } from "react-redux";
-import "./App.css";
-import store from "./redux/store";
-import "../node_modules/react-toastify/dist/ReactToastify.css";
-import VerifyPage from "./pages/user/VerifyPage";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { CheckoutSuccess } from "./pages/user/CheckoutSuccess";
+import VerifyPage from "./pages/user/VerifyPage";
 
-import Header from "./compoment/user/Header";
-import Home from "./compoment/user/Home";
-import Footer from "./compoment/user/Footer";
-import Main from "./compoment/user/Main";
-import About from "./compoment/user/About";
-import Offers from "./compoment/user/Offers";
-import Blog from "./compoment/user/Blog";
-import Contact from "./compoment/user/Contact";
-import Signin from "./pages/Signin";
+import HomePage from "./pages/user/HomePage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import BookingPage from "./pages/user/BookingPage";
+import IntroducePage from "./pages/user/IntroducePage";
+import CreateTourPage from "./pages/seller/CreateTourPage";
+import ListTourPage from "./pages/seller/ListTourPage";
 
-import Signup from "./pages/Signup";
-import BookingNoSignup from "./pages/BookingNoSignup";
-import Filtertour from "./pages/user/Filtertour";
-import Search from "./pages/Search";
-import TourDetails from "./pages/TourDetails";
-import PersonalInformation from "./pages/PersonalInformation";
-import Booking from "./pages/Booking";
-import HistoryBooking from "./pages/HistoryBooking";
-import MyTour from "./pages/MyTour";
+import DetailTourPage from "./pages/user/DetailTourPage";
+import ListCategory from "./pages/admin/ListCategory";
+import ListServices from "./pages/admin/ListServices";
+import SearchPage from "./pages/user/SearchPage";
 
-import Accountmanage from "./compoment/admin/Accountmanage";
-import AdminLayout from "./layout/AdminLayout";
-import MainAdmin from "./compoment/admin/MainAdmin";
-import Sidebar from "./compoment/admin/Sidebar";
-import NavAdmin from "./compoment/admin/NavAdmin";
-import CatalogManage from "./compoment/admin/CatalogManage";
-import TourManage from "./compoment/admin/TourManage";
-import ServiceManage from "./compoment/admin/ServiceManage";
+import SchedulePage from "./pages/seller/SchedulePage";
+import { useState } from "react";
+import { useEffect } from "react";
+import UserLayout from "./layout/UserLayout";
 import SellerLayout from "./layout/SellerLayout";
-import MainSeller from "./compoment/seller/MainSeller";
-import TourManageSeller from "./compoment/seller/TourManageSeller";
-import ScheduleManageSeller from "./compoment/seller/ScheduleManageSeller";
-import RequestTourSeller from "./compoment/seller/RequestTourSeller";
-import BillManageSeller from "./compoment/seller/BillManageSeller";
-import ChatboxSeller from "./compoment/seller/ChatboxSeller";
-import StatisticalSeller from "./compoment/seller/StatisticalSeller";
+import AdminLayout from "./layout/AdminLayout";
+import NotFoundPage from "./pages/NotFoundPage";
 import AuthorizedPage from "./pages/AuthorizedPage";
+import ChatBoxPage from "./pages/seller/ChatBoxPage";
+import Filtertour from "./pages/user/Filtertour";
+import Profile from "./pages/user/Profile";
+import Weather from "./pages/user/Weather";
+import ListInvoice from "./pages/seller/ListInvoice";
+import ListAccount from "./pages/admin/ListAccount";
+import ThongKeTourPage from "./pages/admin/ThongKeTourPage";
+import ThongKeTaiKhoanPage from "./pages/admin/ThongKeTaiKhoanPage";
+import ThongKeDoanhThuPage from "./pages/admin/ThongKeDoanhThuPage";
+import ChotTourPage from "./pages/seller/ChotTourPage";
+import HistoryBookingPage from "./pages/user/HistoryBookingPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import BookingSuccess from "./pages/user/BookingSuccess";
+import MyTour from "./compoment/user/MyTour";
+import LichTour from "./compoment/seller/LichTour";
+import RequestPage from "./pages/seller/RequestPage";
+import News from "./pages/user/News";
+import Tinchinh from "./pages/user/Tinchinh";
 
 function App() {
-  const location = useLocation();
-  // const isLoggedIn = useSelector(state => state.isLoggedIn);
-  // const userRole = useSelector(state => state.userRole);
-
-  const isAuthPage = [
-    "/signin",
-    "/signup",
-    "/verify",
-    "/admin",
-    "/admin/accountmanage",
-    "/admin/catalogmanage",
-    "/admin/tourmanage",
-    "/admin/servicemanage",
-    "/seller",
-    "/seller/tourmanage",
-    "/seller/schedulemanage",
-    "/seller/requesttour",
-    "/seller/billmanage",
-    "/seller/chatbox",
-    "/seller/statistical",
-  ].includes(location.pathname);
-
+  const [user, setUser] = useState(0);
+  useEffect(() => {}, []);
   return (
-    <Provider store={store}>
-      <div id="wrapper">
-        <ToastContainer></ToastContainer>
-        {!isAuthPage && <Header />}
+    <div>
+      <ToastContainer></ToastContainer>
+
+      <BrowserRouter>
         <Routes>
-          <Route index element={<Main />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/offers" element={<Offers />} />
-          <Route path="/bookingNoSignup" element={<BookingNoSignup />} />
-          <Route path="/filterTour" element={<Filtertour />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/signup" element={<Signin />} />
-          <Route path="/signin" element={<Signup />} />
+          <Route path="/test" element={<LichTour />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/verify" element={<VerifyPage />} />
+          <Route path="/forgot" element={<ForgotPassword />} />
           <Route path="/authorized" element={<AuthorizedPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/" element={<UserLayout />}>
+            <Route index element={<HomePage />} />
 
-          <Route path="/tourDetails/:tourId" element={<TourDetails />} />
-          <Route
-            path="/personalInformation"
-            element={<PersonalInformation />}
-          />
-          <Route path="/booking/:tourId" element={<Booking />} />
-          <Route path="/historyBooking" element={<HistoryBooking />} />
-          <Route path="/mytour" element={<MyTour />} />
-
-          {/* Admin */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<MainAdmin />} />
-            <Route path="accountmanage" element={<Accountmanage />} />
-            <Route path="catalogmanage" element={<CatalogManage />} />
-            <Route path="tourmanage" element={<TourManage />} />
-            <Route path="servicemanage" element={<ServiceManage />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="/introduce" element={<IntroducePage />} />
+            <Route path="weather" element={<Weather />} />
+            <Route path="home" element={<HomePage />} />
+            <Route path="detailtour" element={<DetailTourPage />} />
+            <Route path="booking" element={<BookingPage />} />
+            <Route path="checkoutsuccess" element={<CheckoutSuccess />} />
+            <Route path="search" element={<SearchPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+            <Route path="filter" element={<Filtertour />} />
+            <Route path="history" element={<HistoryBookingPage />} />
+            <Route path="bookingsuccess" element={<BookingSuccess />} />
+            <Route path="mytour" element={<MyTour />} />
+            <Route path="news" element={<News />} />
+            <Route path="news/tinchinh" element={<Tinchinh />} />
           </Route>
-          {/* Seller */}
-          <Route path="/seller" element={<SellerLayout />}>
-            <Route index element={<MainSeller />} />
-            <Route path="tourmanage" element={<TourManageSeller />} />
-            <Route path="schedulemanage" element={<ScheduleManageSeller />} />
-            <Route path="requesttour" element={<RequestTourSeller />} />
-            <Route path="billmanage" element={<BillManageSeller />} />
-            <Route path="chatbox" element={<ChatboxSeller />} />
-            <Route path="statistical" element={<StatisticalSeller />} />
+          <Route path="/admin/" element={<AdminLayout />}>
+            <Route index element={<ListCategory />} />
+            <Route path="category" element={<ListCategory />} />
+            <Route path="service" element={<ListServices />} />
+            <Route path="account" element={<ListAccount />} />
+
+            <Route path="thongketour" element={<ThongKeTourPage />} />
+            <Route path="thongketaikhoan" element={<ThongKeTaiKhoanPage />} />
+            <Route path="thongkedoanhthu" element={<ThongKeDoanhThuPage />} />
+          </Route>
+          <Route path="/seller/" element={<SellerLayout />}>
+            <Route index element={<ListTourPage />} />
+            <Route path="listtour" element={<ListTourPage />} />
+            <Route path="schedule" element={<SchedulePage />} />
+            <Route path="chottour" element={<ChotTourPage />} />
+            <Route path="chatbox" element={<ChatBoxPage />} />
+            <Route path="listinvoice" element={<ListInvoice />} />
+            <Route path="request" element={<RequestPage />} />
+            <Route path="thongkedoanhthu" element={<ThongKeDoanhThuPage />} />
+            <Route path="thongketour" element={<ThongKeTourPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
-
-        {!isAuthPage && <Footer />}
-      </div>
-    </Provider>
+      </BrowserRouter>
+    </div>
   );
 }
 

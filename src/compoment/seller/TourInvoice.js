@@ -11,7 +11,7 @@ import {
   CarOutlined,
   ClockCircleOutlined,
 } from "@ant-design/icons";
-import CountDown from "../../compoment/user/CountDown";
+import CountDown from "../user/CountDown";
 
 function TourInvoice(props) {
   const [loading, setLoading] = useState(true);
