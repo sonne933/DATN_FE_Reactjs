@@ -26,11 +26,13 @@ import BaseUrl from "../../utils/BaseUrl";
 import { useState } from "react";
 import { useEffect } from "react";
 import ItemTour from "../../compoment/user/ItemTour";
+
 import Recommend from "../../compoment/user/Recommend";
 import Hero from "../../compoment/user/Hero";
 import Post24h from "../../compoment/user/Post24h";
 import { Badge, Col, Rate, Row } from "antd";
 import data from "../../data.json";
+import SlideUser from "../../compoment/user/SliedeUser";
 function HomePage() {
   const [tour, setTour] = useState([]);
   const [category, setCategory] = useState([]);
@@ -57,7 +59,8 @@ function HomePage() {
 
   return (
     <>
-      <Hero></Hero>
+      {/* <Hero></Hero> */}
+      <SlideUser></SlideUser>
       <div className="my-4 flex flex-col sm:flex-row flex-wrap justify-center md:justify-between">
         {category.map((item) => {
           return (

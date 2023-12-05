@@ -130,24 +130,38 @@ function Header() {
       title: "Đặt tour",
       link: "booking",
       path: "filter",
-     
+
     },
     {
       id: 4,
       title: "Tìm kiếm",
       link: "Search",
       path: "search?key=",
-      
+
     },
     {
       id: 3,
       title: "Giới thiệu",
       link: "introduce",
       path: "introduce",
-      
+
     },
-    
+
   ];
+  const [activeLink, setActiveLink] = useState("");
+
+  useEffect(() => {
+    // Khi trang tải lại, kiểm tra localStorage và thiết lập trạng thái "active" nếu cần
+    const storedActiveLink = localStorage.getItem("activeLink");
+    setActiveLink(storedActiveLink);
+  }, []);
+
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
+    setActive(link);
+    // Lưu trạng thái "active" vào localStorage
+    localStorage.setItem("activeLink", link);
+  };
   const logout = (e) => {
     sessionStorage.removeItem("user");
     //Navigate("login");
@@ -167,12 +181,11 @@ function Header() {
           {links.map(({ id, title, link, path, icon }) => (
             <li
               key={id}
-              className={`${
-                id === 1 ? "active" : ""
-              } flex items-center justify-center px-4 mx-1 cursor-pointer capitalize font-medium text-base text-white dark:text-lime-200 hover:scale-105 duration-200 main-text ${link}`}
+              className={`${link === activeLink ? "active" : ""
+                } flex items-center justify-center px-4 mx-1 cursor-pointer capitalize font-medium text-base text-white dark:text-lime-200 hover:scale-105 duration-200 main-text ${link}`}
             >
               <Link
-                onClick={() => setActive(link)}
+                onClick={() => handleLinkClick(link)}
                 to={path}
                 smooth
                 duration={500}
@@ -188,13 +201,13 @@ function Header() {
             className={`hidden xl:flex items-center justify-center px-4 mx-1 cursor-pointer capitalize font-medium text-base text-white dark:text-lime-200 hover:scale-105 duration-200 main-text news`}
           >
             <Link
-              onClick={() => setActive("news")}
+              onClick={() => handleLinkClick("news")}
               to="news"
               smooth
               duration={500}
               className="flex items-center"
             >
-            Tin Tức
+              Tin Tức
             </Link>
           </li>
         </ul>
@@ -212,7 +225,7 @@ function Header() {
                 className="cursor-pointer capitalize font-medium py-6 hover:scale-110 duration-200"
               >
                 <Link
-                  onClick={() => setActive(link)}
+                  onClick={() => handleLinkClick("news")}
                   // to={path}
                   smooth
                   duration={500}
@@ -224,19 +237,19 @@ function Header() {
               </li>
             ))}
             <li
-            key={5}
-            className={`cursor-pointer capitalize font-medium py-6 hover:scale-110 duration-200`}
-          >
-            <Link
-              onClick={() => setActive("news")}
-              to="news"
-              smooth
-              duration={500}
-              className="flex items-center"
+              key={5}
+              className={`cursor-pointer capitalize font-medium py-6 hover:scale-110 duration-200`}
             >
-             <BiNews/>Tin Tức
-            </Link>
-          </li>
+              <Link
+                onClick={() => setActive("news")}
+                to="news"
+                smooth
+                duration={500}
+                className="flex items-center"
+              >
+                <BiNews />Tin Tức
+              </Link>
+            </li>
           </ul>
         )}
         <div className="flex absolute lg:relative top-0 right-0 text-maintext">
@@ -254,15 +267,15 @@ function Header() {
             </div>
           ) : (
             <div className="flex">
-              <div className="flex items-center pr-1">
-                <BiLogIn size={20} />
-                <span className="text-md font-bold mx-1">
+              <div className="flex text-white items-center">
+                <BsFillPersonFill size={20} />
+                <span className="text-md text-white font-bold mx-1">
                   <Link to="/login">Đăng nhập</Link>
                 </span>
               </div>
-              <div className="flex items-center">
+              <div className="flex text-white items-center">
                 <BsFillPersonFill size={20} />
-                <span className="text-md font-bold mx-1">
+                <span className="text-md  text-white font-bold mx-1">
                   <Link to="/register">Đăng ký</Link>
                 </span>
               </div>

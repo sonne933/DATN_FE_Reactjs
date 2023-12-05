@@ -1,6 +1,6 @@
 import logo from "./images/logo.png"
 
-import bg1 from "./images/bg1,jpg"
+import bg1 from "./bg1.jpg"
 import bana from "./images/bana-slide.jpg"
 import hoian from "./images/hoian-slide.jpg"
 import phuquoc from "./images/phuquoc_slide.jpg"

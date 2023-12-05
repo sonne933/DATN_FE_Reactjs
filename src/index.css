@@ -163,6 +163,75 @@ body{
   font-weight: 600;
   font-size: 27px;
 }
+/* silde user */
+
+.main_slide__nav {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  z-index: 11;
+  cursor: pointer;
+  font-size: 45px;
+  color: #ffffff;
+  opacity: 0.5;
+}
+
+.nav__prev {
+  left: 50px;
+}
+
+.nav__prev:hover {
+  color: orange;
+  opacity: 1;
+}
+
+.nav__next {
+  right: 50px;
+}
+
+.nav__next:hover {
+  color: orange;
+  opacity: 1;
+}
+
+.main_slide__dots {
+  position: absolute;
+  right: 50px;
+  bottom: 45px;
+  z-index: 10;
+}
+
+.customs_dot {
+  display: inline-block;
+  position: relative;
+  height: 35px;
+  line-height: 35px;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  transition: all 200ms ease;
+}
+
+.active {
+  border-radius: 25px;
+  border: solid 2px #FFFFFF;
+  padding-left: 13px;
+  padding-right: 9px;
+  margin-right: 3px;
+}
+
+.customs_dot:hover {
+  color: orange;
+}
 
 
 
