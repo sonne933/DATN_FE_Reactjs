@@ -42,9 +42,9 @@ export default function MyTour() {
     <Spin spinning={loading}>
     <Section id="recommend">
       <div className="title">
-        <h2>Recommended Destinations</h2>
+        
       </div>
-      <div className="packages">
+      <div className="packages"style={{marginTop:'70px'}}>
         <ul>
           {packages.map((pkg, index) => {
             return (

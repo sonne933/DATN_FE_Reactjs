@@ -148,7 +148,7 @@ function ForgotPassword() {
   };
   return (
     <>
-      <div className=" max-w-lg bg-slate-300 p-4 mx-auto items-center rounded-md my-10">
+      <div className=" max-w-lg bg-slate-300 p-4 mx-auto items-center rounded-md my-20 ">
         <Steps current={current} items={items} />
         <Spin spinning={loading}>
           <div style={contentStyle}>{steps[current].content}</div>

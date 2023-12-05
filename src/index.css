@@ -91,10 +91,14 @@ body{
 }
 .ant-btn-primary{
   -webkit-appearance: button;
-  background-color: #b9b9b9;
+  background-color: #2ed573;
   background-image: none;
 }
-
+.bgimage{
+  background-image: url(./assets/bg1.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
 .dropdownbtn::before {
   content: "";

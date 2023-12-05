@@ -10,7 +10,7 @@ const Hero = () => {
     <div className="w-full h-screen relative mt-24">
       <div className="hidden md:block bg-[url('./assets/trangchu.jpg')] h-[80vh] bg-center bg-cover bg-no-repeat"></div>
       <div className="absolute top-0 w-full h-full flex flex-col justify-center text-center text-white p-4">
-        <h1>First Class Travel</h1>
+        <h1>Well Come To Tour Việt</h1>
         <h2 className="py-4">Top 1% Locations Worldwide</h2>
         <div
           className="flex justify-between items-center max-w-[700px] mx-auto w-full border p-1

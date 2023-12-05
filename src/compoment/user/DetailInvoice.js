@@ -59,9 +59,9 @@ function DetailInvoice(props) {
           Mọi thắc mắc xin liên hệ qua tổng đài: 1900 3398 hoặc email:
           <a
             className="font-[600] text-base"
-            href="mailto: thanhtinhtrinhtk123@gmail.com"
+            href="mailto: baotinnguyen4@gmail.com"
           >
-            thanhtinhtrinhtk123@gmail.com
+            baotinnguyen4@gmail.com
           </a>{" "}
           để được hỗ trợ kịp thời.
         </p>

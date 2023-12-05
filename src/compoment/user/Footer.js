@@ -8,35 +8,38 @@ import {
 } from "react-icons/bs";
 import { MdLocationOn, MdMarkEmailRead } from "react-icons/md";
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo2.png";
+import logo from "../../assets/logo.png";
 function Footer() {
   return (
     <div className="bg-mainbg px-2 lg:px-28 text-white font-[500]">
       <div className="grid gap-6 grid-cols-1 md:grid-cols-4 py-6">
         <div className="box">
-          <div className="p-2">
+          <div className="p-2 flex">
             <img src={logo} width={50} />
+            <span className="self-center text-4xl font-signature font-semibold whitespace-nowrap dark:text-white">
+              Tour Việt
+            </span>
           </div>
           <p>
-            Travel app cam kết mang đến cho quý khách một chiến hành trình thú
+            Tour Việt cam kết mang đến cho quý khách một chiến hành trình thú
             vị, hấp dẫn và an toàn nhất!
           </p>
           <div className="flex justify-around items-center my-2">
             <Link to="https://www.facebook.com/">
               <BsFacebook
-                className="hover:scale-110 hover:text-yellow-400"
+                className="hover:scale-110 hover:text-blue-400"
                 size={25}
               />
             </Link>
             <Link to="https://www.facebook.com/">
               <BsInstagram
-                className="hover:scale-110 hover:text-yellow-400"
+                className="hover:scale-110 hover:text-blue-400"
                 size={25}
               />
             </Link>
             <Link to="https://www.facebook.com/">
               <BsTwitter
-                className="hover:scale-110 hover:text-yellow-400"
+                className="hover:scale-110 hover:text-blue-400"
                 size={25}
               />
             </Link>
@@ -45,24 +48,25 @@ function Footer() {
 
         <div className="flex flex-col">
           <h3 className="text-2xl">Thông Tin liên hệ</h3>
+          
           <div className="flex items-center mb-4">
-            <BsFillTelephoneForwardFill size={20} color="#ffdd20" />
+            <BsFillTelephoneForwardFill size={20} color="#fafafa" />
             <div className="px-2 hover:ml-4 transition-all">0123456789</div>
           </div>
           <div className="flex items-center mb-4">
-            <BsFillTelephoneForwardFill size={20} color="#ffdd20" />
-            <div className="px-2 hover:ml-4 transition-all">0123456789</div>
-          </div>
-          <div className="flex items-center mb-4">
-            <MdMarkEmailRead size={20} color="#ffdd20" />
+            <MdMarkEmailRead size={20} color="#fafafa" />
             <div className="px-2 hover:ml-4 transition-all">
-              pna16.word@gmail.com
+            tourvietboking@gmail.com
             </div>
           </div>
           <div className="flex items-center mb-4">
-            <MdLocationOn size={20} color="#ffdd20" />
+             <MdLocationOn size={20} color="#fafafa" />
+            <div className="px-2 hover:ml-4 transition-all">Đà Nẵng</div>
+          </div>
+          <div className="flex items-center mb-4">
+            <MdLocationOn size={20} color="#fafafa" />
             <div className="px-2 hover:ml-4 transition-all">
-              Da Nang, Quang Nam
+              TP Hồ Chí Minh
             </div>
           </div>
         </div>
@@ -70,19 +74,19 @@ function Footer() {
         <div className="flex flex-col">
           <h3 className="text-2xl">Liên kết nhanh</h3>
           <div className="flex items-center mb-4">
-            <BsArrowRight size={25} color="#ffdd20" />
+            <BsArrowRight size={25} color="#fafafa" />
             <div className="px-2 hover:ml-4 transition-all">
               <Link>Giới thiệu</Link>
             </div>
           </div>
           <div className="flex items-center mb-4">
-            <BsArrowRight size={25} color="#ffdd20" />
+            <BsArrowRight size={25} color="#fafafa" />
             <div className="px-2 hover:ml-4 transition-all">
               <Link>Booking</Link>
             </div>
           </div>
           <div className="flex items-center">
-            <BsArrowRight size={25} color="#ffdd20" />
+            <BsArrowRight size={25} color="#fafafa" />
             <div className="px-2 hover:ml-4 transition-all">
               <Link>Lịch sử đặt tour</Link>
             </div>
@@ -102,7 +106,7 @@ function Footer() {
               placeholder="Enter your email"
               className="text-white my-2 p-2 bg-transparent border-2 rounded-md focus:outline-none"
             />
-            <button className="text-white bg-gradient-to-b from-cyan-500 to to-blue-500 px-6 py-2 my-3 mx-auto fl items-center rounded-md hover:scale-105 duration-200">
+            <button className="text-white bg-gradient-to-b from-cyan-500 to to-green-500 px-6 py-2 my-3 mx-auto fl items-center rounded-md hover:scale-105 duration-200">
               Send
             </button>
           </form>

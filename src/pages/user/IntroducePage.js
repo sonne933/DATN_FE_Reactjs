@@ -1,15 +1,14 @@
 import React from "react";
-import logo1 from "../../assets/logo2.png";
-import UserLayout from "../../layout/UserLayout";
+
 
 function IntroducePage() {
   return (
     <div className="mx-auto mt-24 max-w-screen-lg bg-white shadow-lg px-2 py-3">
       <div className="flex items-center justify-center">
         <h1 className="text-2xl font-bold text-maintext uppercase text-center mx-3">
-          Giới thiệu về Travel
+          Giới thiệu về Tour Việt
         </h1>
-        <img src={logo1} className="h-12 mr-3" alt="Flowbite Logo" />
+        
       </div>
       <div>
         <h2 className="text-lg font-semibold text-mainbg uppercase">
@@ -18,26 +17,23 @@ function IntroducePage() {
         <div className="mx-4 text-sm font-[400] text-maintext">
           <div className="py-1">
             <span>Tên doanh nghiệp: </span>
-            <span className="font-[600]">Công ty cổ phần Travel</span>
+            <span className="font-[600]">Công ty cổ phần Tour Việt</span>
           </div>
           <div className="py-1">
             <span>Tên doanh nghiệp: </span>
-            <span className="font-[600]">Travel Corporation</span>
+            <span className="font-[600]">Tour Việt Company</span>
           </div>
-          <div className="py-1">
-            <span>Tên doanh nghiệp: </span>
-            <span className="font-[600]">Travel corp</span>
-          </div>
+          
           <div className="py-1">
             <span className="font-[600]">
-              Công ty cổ phần Travel (Travel booking){" "}
+              Công ty cổ phần Tour Việt {" "}
             </span>{" "}
             <span>
               đặt trụ sở chính tại TPHCM và chi nhánh ở hai thành phố lớn là Hà
               Nội và Đà Nẵng. Đặc biệt, chúng tôi đã áp dụng công nghệ mới trong
               giao dịch online qua hệ thống website:{" "}
-              <span className="font-[600]">travel.com </span> và Tổng đài tư vấn
-              24/7: <span className="font-[600]">123456789</span>
+              <span className="font-[600]">tourvietboking.com </span> và Tổng đài tư vấn
+              24/7: <span className="font-[600]">0929292929</span>
             </span>
           </div>
         </div>
@@ -50,7 +46,7 @@ function IntroducePage() {
           <div className="py-1">
             <span className="font-[600]">1. Tổ chức tour du lịch:</span>
             <span className="">
-              Công ty Cổ phần Việt Nam Booking chuyên cung cấp các tour du lịch
+              Công ty Cổ phần Tour Việt Booking chuyên cung cấp các tour du lịch
               đa dạng loại hình như du lịch nghỉ dưỡng, du lịch khám phá – trải
               nghiệm với lịch trình mới lạ hấp dẫn, dịch vụ đi kèm đạt chuẩn
               chất lượng và đặc biệt giá cả vô cùng tiết kiệm. Ngoài ra, chúng
@@ -65,11 +61,11 @@ function IntroducePage() {
             <span>
               Là thế mạnh đặc thù của chúng tôi, với phòng bán vé trực tiếp trên
               cả ba miền Bắc – Trung – Nam cùng đội ngũ tư vấn chuyên nghiệp,
-              giao vé tận nhà quý khách. Mong muốn hàng đầu của Vietnam Booking
+              giao vé tận nhà quý khách. Mong muốn hàng đầu của Tour Việt Booking
               là đem đến cho khách hàng những tấm vé máy bay giá tốt, hành trình
-              bay thuận tiện nhất. Vietnam Booking là một trong số ít những công
+              bay thuận tiện nhất. Tour Việt Booking là một trong số ít những công
               ty trở thành đại lý chính thức của các hãng hàng không nội địa
-              như: Vietnam Airlines, Vietjet Air, Jetstar Pacific. Hơn nữa,
+              như: Tour Việt Airlines, Vietjet Air, Jetstar Pacific. Hơn nữa,
               chúng tôi còn đạt được danh hiệu đại lý chuyên nghiệp theo tiêu
               chuẩn của IATA (Hiệp hội Vận tải Hàng không Quốc tế) trong lĩnh
               vực cung cấp vé máy bay của các hãng hàng không quốc tế như
@@ -82,7 +78,7 @@ function IntroducePage() {
             <span className="font-[600]">3. Tư vấn và hỗ trợ Visa</span>
             <span>
               Chúng tôi luôn sẵn sàng tư vấn, hướng dẫn quý khách có nhu cầu xin
-              visa trọn gói. Vietnam Booking có bề dày kinh nghiệm và uy tín
+              visa trọn gói. Tour Việt Booking có bề dày kinh nghiệm và uy tín
               trong lĩnh vực visa du lịch, visa thăm thân nhân và visa công tác
               cho người Việt Nam nhập cảnh vào các nước phát triển của Châu Á,
               châu Âu, Úc, Mỹ… Với tỉ lệ đậu lên đến 98%, thậm chí đối với các
@@ -97,14 +93,14 @@ function IntroducePage() {
         </h2>
         <div className="mx-4 text-sm font-[400] text-maintext">
           <div className="py-1">
-            <span className="font-[600]">01/01/2023: </span>
+            <span className="font-[600]">01/09/2023: </span>
             <span className="">
               Được đại học Duy Tân cấp Giấy chứng nhận đăng ký doanh nghiệp số
-              0308042348, Vietnam Booking thành lập văn phòng đầu tiên, đặt trụ
+              012345, Tour Việt Booking thành lập văn phòng đầu tiên, đặt trụ
               sở tại trường Đại học Duy Tân. Trong năm 2023, Travel Booking trên
               cương vị là một đại lý tour du lịch, uy tín đã chiếm trọn lòng tin
               của những khách hàng quen thuộc. Với mục tiêu và phương hướng kinh
-              doanh đúng đắn, trong năm này, Vietnam Booking đã dần có chỗ đứng
+              doanh đúng đắn, trong năm này, Tour Việt Booking đã dần có chỗ đứng
               và tạo dấu ấn mạnh mẽ.
             </span>
           </div>
@@ -119,7 +115,7 @@ function IntroducePage() {
           <div className="py-1">
             <p className="py-3">
               Lấy niềm tin của khách hàng là phương châm và thước đo chất lượng
-              dịch vụ, Vietnam Booking luôn mong muốn thương hiệu của mình được
+              dịch vụ, Tour Việt Booking luôn mong muốn thương hiệu của mình được
               gắn với uy tín và chất lượng. Ngày nay, khi thị trường luôn liên
               tục thay đổi, chúng tôi càng xác định rõ ràng mục tiêu và sứ mệnh
               của mình hơn:
@@ -147,7 +143,7 @@ function IntroducePage() {
         <div className="mx-4 text-sm font-[400] text-maintext">
           <div className="py-1">
           <ul className="px-3">
-              <li> - Mở rộng hệ thống văn phòng tới các thành phố như: Huế, Hải Phòng, Nha Trang,….</li>
+              <li> - Mở rộng hệ thống văn phòng tới các thành phố như:Đà Nẵng, Huế, Hải Phòng, Nha Trang,….</li>
               <li> - Luôn cải thiện công nghệ trong thời đại 4.0 để đem đến trải nghiệm dịch vụ tốt nhất cho khách hàng.</li>
               <li> - Nâng cao nghiệp vụ của đội ngũ nhân viên</li>
               <li> - Đơn giản hóa quy trình đặt dịch vụ nhằm giúp khách hàng tiết kiệm tối đa thời gian.</li>

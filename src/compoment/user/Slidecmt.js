@@ -11,7 +11,7 @@ function Slidecmt() {
       />
       <div className="mx-2">
         <span className="font-[500] text-xl text-maintext">
-          Thanh Tinh
+          Ngoc Tu
         </span>
         <div className="flex text-yellow-500">
           <MdOutlineStar size={20} />

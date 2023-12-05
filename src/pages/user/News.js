@@ -1,5 +1,4 @@
 import React from "react";
-import logo1 from "../../assets/logo2.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -15,7 +14,7 @@ function News() {
     <div className="pt-24">
       <div className="flex justify-center items-center">
         <h1 className="text-3xl text-maintext font-[700] px-4 uppercase4">Tin Tức</h1>
-        <img src={logo1} className="h-12 mr-3" alt="Flowbite Logo" />
+       
       </div>
       <div className="flex justify-around items-center my-6">
         <div
