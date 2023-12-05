@@ -183,11 +183,11 @@ function DetailTourPage() {
                 );
               })}
             </Swiper>
-            <div className="text-mainbg">
+            <div className="text-maintext">
               <h2 className="text-maintext font-[600] py-3">
                 Mã Tour: {tour.id}
               </h2>
-              <div className="flex justify-between text-sm my-2">
+              <div className="flex justify-between text-maintext my-2">
                 <div className="flex items-center">
                   <MdLocationOn size={20} />{" "}
                   <span className="ml-2">{tour.address}</span>
@@ -205,17 +205,7 @@ function DetailTourPage() {
                 <MdAirplanemodeActive size={20} /> */}
                 </div>
               </div>
-              <div className="flex items-center">
-                {/* <AiFillSchedule size={20} /> */}
-                <Button
-                  onClick={() => {
-                    setOpen(true);
-                  }}
-                  style={{ backgroundColor: "aqua", marginLeft: 220 }}
-                >
-                  <span className="ml-2 font-[600]">Xem thời tiết</span>
-                </Button>
-              </div>
+              
 
               <hr className="my-3" />
 
@@ -281,7 +271,7 @@ function DetailTourPage() {
               {hanhtrinh.map((item) => {
                 return (
                   <>
-                    <div className="flex flex-col text-mainbg">
+                    <div className="flex flex-col text-maintext">
                       <h3 className="text-maintext my-2 font-[500]">
                         {item.time}
                       </h3>
@@ -303,7 +293,7 @@ function DetailTourPage() {
             </p>
           </div>
           <div className="w-full my-3">
-            <div className="bg-[#12092e] p-3 h-80 mx-2">
+            <div className="bg-mainbg p-3 h-80 mx-2">
               <div className="text-xl font-[500] text-[#f8d000]">
                 {new Intl.NumberFormat("vi-VN", {
                   style: "currency",
@@ -360,7 +350,7 @@ function DetailTourPage() {
                   max={50}
                 />
               </div>
-              <div className="flex text-[#f8d000] py-2">
+              <div className="flex text-[#f81d00] py-2">
                 <MdOutlineWarningAmber size={30} />
                 <span className="ml-2 italic">
                   Quý khách vui lòng kiểm tra lại thông tin và yêu cầu trước khi
@@ -384,21 +374,18 @@ function DetailTourPage() {
                 <h2 className=" my-2 font-[600]">Hotline</h2>
                 <div className="flex items-center px-4">
                   <GiRotaryPhone size={20} />
-                  <span className="ml-2">1900 111 222</span>
+                  <span className="ml-2">0929292929</span>
                 </div>
                 <h2 className=" my-2 font-[600]">Tư Vấn Viên</h2>
                 <div className="flex items-center px-4">
                   <BsPhoneVibrate size={20} />
-                  <span className="ml-2">Mr-A : 0961964263</span>
+                  <span className="ml-2">Mr-Tú : 0123456789</span>
                 </div>
                 <div className="flex items-center px-4">
                   <BsPhoneVibrate size={20} />
-                  <span className="ml-2">Mr-A : 0961964263</span>
+                  <span className="ml-2">Mr-Anh : 0123456788</span>
                 </div>
-                <div className="flex items-center px-4">
-                  <BsPhoneVibrate size={20} />
-                  <span className="ml-2">Mr-A : 0961964263</span>
-                </div>
+                
               </div>
             </div>
             <hr className="my-3" />
@@ -419,11 +406,7 @@ function DetailTourPage() {
 
             <hr className="my-3" />
 
-            <div className="flex justify-around text-mainbg">
-              <BsFacebook size={25} />
-              <BsInstagram size={25} />
-              <BsTwitter size={25} />
-            </div>
+            
           </div>
         </div>
         <hr className="my-3" />

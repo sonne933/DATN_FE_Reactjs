@@ -140,7 +140,7 @@ function Profile() {
     </div>
   );
   return (
-    <div className="max-w-screen-md bg-sky-100 mx-auto shadow-md mt-28">
+    <div className="max-w-screen-md bg-indigo-50 mx-auto shadow-md mt-28">
       <h2 className="font-semibold text-xl uppercase p-3">Thông tin cá nhân</h2>
       <div className="flex flex-col md:flex-row px-4 py-2">
         <div className="w-36 rounded-full flex flex-col mx-auto items-center">

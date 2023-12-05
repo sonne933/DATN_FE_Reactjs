@@ -1,6 +1,6 @@
 import logo from "./images/logo.png"
 
-
+import bg1 from "./images/bg1,jpg"
 import bana from "./images/bana-slide.jpg"
 import hoian from "./images/hoian-slide.jpg"
 import phuquoc from "./images/phuquoc_slide.jpg"
@@ -47,5 +47,5 @@ import footer_blog_1 from "./images/footer_blog_1.jpg"
 export {
     logo,bana, hoian,phuquoc,intro1,intro2,intro3,offers1,offers2,offers3,offers4,hotel1,hotel2,hotel3,hotel4,footer_blog_1
     ,about_slide,intro,offers_slide,offers_1,offers_2,offers_3,offers_4,blog_1,blog_2,blog_3,latest_1,gallery_1,gallery_2,gallery_3,gallery_4,
-    gallery_5,gallery_6,admin,profile
+    gallery_5,gallery_6,admin,profile,bg1
 };

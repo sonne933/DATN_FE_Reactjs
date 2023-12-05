@@ -982,7 +982,7 @@ function BookingPage() {
                               onChange={handleTypeChange}
                             >
                               <Radio.Button value="paypal">Paypal</Radio.Button>
-                              <Radio.Button value="vnpay">VnPay</Radio.Button>
+                              
                             </Radio.Group>
 
                             <div className="p-2 rounded-md mx-4 bg-slate-100 shadow-md cursor-pointer">
@@ -991,12 +991,7 @@ function BookingPage() {
                                 className="w-24 h-12 hover:scale-105"
                               />
                             </div>
-                            <div className="p-2 rounded-md mx-4 bg-slate-100 shadow-md cursor-pointer">
-                              <img
-                                src="https://doanhnghiep.quocgiakhoinghiep.vn/wp-content/uploads/2020/07/1581089357407-1580819448160-vnpay.png"
-                                className="w-24 h-12 hover:scale-105"
-                              />
-                            </div>
+                            
                           </div>
                           <Button type="primary" htmlType="submit">
                             Xác nhận tour & Thanh toán
@@ -1006,38 +1001,30 @@ function BookingPage() {
                         <div className="flex flex-col text-maintext m-3">
                           <div className="flex w-full bg-[#f1f5f9] my-2 shadow-md">
                             <img
-                              src="https://cdn.pixabay.com/photo/2021/10/23/23/27/dead-sea-6736592_960_720.jpg"
-                              className="h-20 m-2"
+                              src="https://ik.imagekit.io/tvlk/blog/2023/10/cau-vang-da-nang-13.jpg?tr=dpr-2,w-675"
+                              className="h-20 w-40 m-2"
                             />
                             <div className="w-full">
                               <h3 className="text-xl font-[500]">Đà Nẵng</h3>
-                              <div>166 Tô hiệu, Thanh Khuê</div>
-                              <div>156 Nguyễn thị thập, Thanh Khuê</div>
+                              <div>64 Dũng Sĩ Thanh Khê</div>
+                              <div>hotline: 0929292929</div>
+                              <div>Thanh Khê Tây - Thanh Khê - Đà Nẵng</div>
                             </div>
                           </div>
                           <div className="flex w-full bg-[#f1f5f9] my-2 shadow-md">
                             <img
-                              src="https://cdn.pixabay.com/photo/2021/10/23/23/27/dead-sea-6736592_960_720.jpg"
-                              className="h-20 m-2"
+                              src="https://cdn3.ivivu.com/2022/10/cho_ben_thanh_ivivu.jpeg"
+                              className="h-20 w-40 m-2"
                             />
                             <div className="w-full">
-                              <h3 className="text-xl font-[500]">Đà Nẵng</h3>
-                              <div>166 Tô hiệu, Thanh Khuê</div>
-                              <div>156 Nguyễn thị thập, Thanh Khuê</div>
+                              <h3 className="text-xl font-[500]">TP Hồ Chí Minh</h3>
+                              <div>98 Lê Lai</div>
+                              <div>hotline: 0929292929</div>
+                              <div>Quận 1 - Tp Hồ Chí Minh</div>
                             </div>
                           </div>
 
-                          <div className="flex w-full bg-[#f1f5f9] my-2 shadow-md">
-                            <img
-                              src="https://cdn.pixabay.com/photo/2021/10/23/23/27/dead-sea-6736592_960_720.jpg"
-                              className="h-20 m-2"
-                            />
-                            <div className="w-full">
-                              <h3 className="text-xl font-[500]">Đà Nẵng</h3>
-                              <div>166 Tô hiệu, Thanh Khuê</div>
-                              <div>156 Nguyễn thị thập, Thanh Khuê</div>
-                            </div>
-                          </div>
+                         
                           <Button type="primary" htmlType="submit">
                             Xác nhận và đặt tour
                           </Button>

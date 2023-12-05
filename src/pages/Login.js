@@ -75,7 +75,7 @@ function Login() {
   };
   return (
     <Spin spinning={loading}>
-      <div className="h-[100vh] pt-10">
+      <div className="h-[100vh] pt-10 bgimage">
         <div className="max-w-screen-md bg-[#ffffff] dark:bg-[#a5d4f0] my-auto mx-auto items-center shadow-lg p-4 rounded-md">
           <div className="max-widht:400px">
             <div className="justify-center mx-auto w-[400px]">
@@ -84,7 +84,7 @@ function Login() {
               </h2>
               <div className="flex items-center justify-center ">
                 <p className="text-[#707070] dark:text-white my-4 mx-3">
-                  Chào mừng đến với <strong>Travel App</strong>
+                  Chào mừng đến với <strong>Tour Việt</strong>
                 </p>
                 {/* <img  width={"40px"} src={logo1}/> */}
               </div>

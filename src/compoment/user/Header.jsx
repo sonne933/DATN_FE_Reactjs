@@ -34,7 +34,7 @@ import {
   InfoCircleOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import logo1 from "../../assets/logo2.png";
+import logo1 from "../../assets/logo.png";
 const items = [
   {
     key: "7",
@@ -126,33 +126,27 @@ function Header() {
       icon: <MdHome size={20} />,
     },
     {
-      id: 2,
-      title: "Thời tiết",
-      link: "weather",
-      path: "weather",
-      icon: <BsFillCloudSunFill size={20} />,
-    },
-    {
-      id: 3,
-      title: "Giới thiệu",
-      link: "introduce",
-      path: "introduce",
-      icon: <RiAdvertisementFill size={20} />,
-    },
-    {
       id: 4,
       title: "Đặt tour",
       link: "booking",
       path: "filter",
-      icon: <TbBrandBooking size={20} />,
+     
     },
     {
       id: 4,
       title: "Tìm kiếm",
       link: "Search",
       path: "search?key=",
-      icon: <MdSearch size={20} />,
+      
     },
+    {
+      id: 3,
+      title: "Giới thiệu",
+      link: "introduce",
+      path: "introduce",
+      
+    },
+    
   ];
   const logout = (e) => {
     sessionStorage.removeItem("user");
@@ -165,7 +159,7 @@ function Header() {
           <a href="/" className="flex items-center">
             <img src={logo1} className="h-12 mr-3" alt="Flowbite Logo" />
             <span className="self-center text-4xl font-signature font-semibold whitespace-nowrap dark:text-white">
-              Travel
+              Tour Việt
             </span>
           </a>
         </div>
@@ -200,7 +194,7 @@ function Header() {
               duration={500}
               className="flex items-center"
             >
-             <BiNews/>Tin Tức
+            Tin Tức
             </Link>
           </li>
         </ul>

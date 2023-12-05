@@ -132,7 +132,7 @@ function Detailtour() {
             </div>
             <p className="text-sm font-[500] text-justify">
               Đặt mua tour Hà Giang 4 ngày 3 đêm từ TPHCM trọn gói giá rẻ của
-              ThanhTinh Travel quý khách sẽ được khám phá tỉnh Hà Giang nổi
+              Tour Việt quý khách sẽ được khám phá tỉnh Hà Giang nổi
               tiếng công viên địa chất toàn cầu - cao nguyên đá Đông Văn. Trải
               nghiệm nhiều hoạt động thú vị và ý nghĩa trong suốt cuộc hành
               trình
@@ -172,7 +172,7 @@ function Detailtour() {
 
           <p className="italic font-[500] text-maintext">
             Nhanh tay book ngay tour Hà Giang 4 ngày 3 đêm từ TPHCM trọn gói giá
-            tốt của ThanhTinh travel qua hotline 1900 3398 thôi nào !
+            tốt của Tour Việt qua hotline 0123456789 thôi nào !
           </p>
         </div>
         <div className="w-full my-3">
