@@ -64,7 +64,7 @@ function loc_xoa_dau(str) {
   str = str.replace(/Đ/g, "D");
   return str;
 }
-function DetailTourPage() {
+function  DetailTourPage() {
   const [loading, setLoading] = useState(true);
   const [loadingpage, setLoadingPage] = useState(true);
   var url_string = window.location;
@@ -350,7 +350,7 @@ function DetailTourPage() {
                   max={50}
                 />
               </div>
-              <div className="flex text-[#f81d00] py-2">
+              <div className="flex text-[#fff200] py-2">
                 <MdOutlineWarningAmber size={30} />
                 <span className="ml-2 italic">
                   Quý khách vui lòng kiểm tra lại thông tin và yêu cầu trước khi
@@ -367,7 +367,7 @@ function DetailTourPage() {
             <div className="my-3 mx-2">
               <div className="uppercase font-[600] flex items-center justify-center bg-mainbg text-white h-10">
                 <Button type="primary" onClick={handleRequest}>
-                  Đặt tour theo yêu{" "}
+                  Đặt tour theo yêu cầu{" "}
                 </Button>
               </div>
               <div className="text-maintext">
