@@ -61,6 +61,10 @@ function Register() {
     if (password.length < 6) {
       msg.password = "Password tối thiểu 6 kí tự";
     }
+    if (!validatePassword(password)) {
+      msg.password =
+        "Password phải bao gồm chữ viết hoa, chữ viết thường, số và ký tự đặt biệt";
+    }
     if (isEmpty(newpassword)) {
       msg.newpassword = "Nhập lại mật khẩu của bạn";
     } else if (password != newpassword) {
@@ -71,6 +75,13 @@ function Register() {
     if (Object.keys(msg).length > 0) return false;
     return true;
   };
+  function validatePassword(password) {
+    var regex = /(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*.])/;
+    if (!regex.test(password)) {
+      return false;
+    }
+    return true;
+  }
 
   const handleRegister = async (e) => {
     e.preventDefault();

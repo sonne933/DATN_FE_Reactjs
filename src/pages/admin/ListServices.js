@@ -68,7 +68,7 @@ function ListCategory() {
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Hành động",
       render: (record) => {
         return (
           <>

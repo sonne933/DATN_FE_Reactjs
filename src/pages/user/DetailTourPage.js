@@ -64,7 +64,7 @@ function loc_xoa_dau(str) {
   str = str.replace(/Đ/g, "D");
   return str;
 }
-function  DetailTourPage() {
+function DetailTourPage() {
   const [loading, setLoading] = useState(true);
   const [loadingpage, setLoadingPage] = useState(true);
   var url_string = window.location;
@@ -205,7 +205,6 @@ function  DetailTourPage() {
                 <MdAirplanemodeActive size={20} /> */}
                 </div>
               </div>
-              
 
               <hr className="my-3" />
 
@@ -341,13 +340,16 @@ function  DetailTourPage() {
                 </label>
                 <input
                   className="w-[70%] text-sm px-2"
-                  type={Number}
+                  type="number"
                   value={people}
                   onChange={(e) => {
-                    setPeople(e.target.value);
+                    const value = parseInt(e.target.value);
+                    if (value >= 1 && value <= 30) {
+                      setPeople(value);
+                    }
                   }}
                   min={1}
-                  max={50}
+                  max={30}
                 />
               </div>
               <div className="flex text-[#fff200] py-2">
@@ -385,7 +387,6 @@ function  DetailTourPage() {
                   <BsPhoneVibrate size={20} />
                   <span className="ml-2">Mr-Anh : 0123456788</span>
                 </div>
-                
               </div>
             </div>
             <hr className="my-3" />
@@ -405,8 +406,6 @@ function  DetailTourPage() {
             </div>
 
             <hr className="my-3" />
-
-            
           </div>
         </div>
         <hr className="my-3" />

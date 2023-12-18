@@ -100,7 +100,7 @@ function CreateCategory(props) {
             </div>
           </Upload>
         </Form.Item>
-        <Form.Item label="Status">
+        <Form.Item label="Trạng Thái">
           <Radio.Group
             options={[
               {

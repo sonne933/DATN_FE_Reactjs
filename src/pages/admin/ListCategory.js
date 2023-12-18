@@ -61,14 +61,14 @@ function ListCategory() {
       },
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       render: (record) => {
         return record.status ? <>Mở</> : <>Khóa</>;
       },
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Hành động",
       render: (record) => {
         return (
           <>

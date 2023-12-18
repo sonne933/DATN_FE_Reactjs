@@ -111,7 +111,7 @@ function ListAccount() {
       },
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       render: (record) => {
         return record.status ? (
           <>

@@ -109,7 +109,10 @@ function Request(props) {
                 type="number"
                 value={people}
                 onChange={(e) => {
-                  setPeople(e.target.value);
+                  const value = parseInt(e.target.value);
+                  if (value >= 1 && value <= 50) {
+                    setPeople(value);
+                  }
                 }}
                 required
               />

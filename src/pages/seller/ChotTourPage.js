@@ -104,22 +104,6 @@ function ChotTourPage() {
     },
 
     {
-      title: "Loại tour",
-      render: (record) => {
-        return (
-          <>
-            {record.type === "HT"
-              ? "Hệ thống"
-              : record.type === "YC"
-              ? "Yêu cầu"
-              : ""}
-          </>
-        );
-      },
-      width: "8%",
-    },
-
-    {
       title: "Thao tác",
       render: (record) => {
         return (
