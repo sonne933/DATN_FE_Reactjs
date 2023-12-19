@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 
 // const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ["Profile", "Logout"];
+const settings = ["Logout"];
 
 function HeaderAdmin() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);

@@ -50,16 +50,16 @@ function ListCategory() {
       title: "Nội dung",
       dataIndex: "content",
     },
-    {
-      title: "Hình ảnh",
-      render: (record) => {
-        return (
-          <>
-            <img src={record.image} width="70px"></img>
-          </>
-        );
-      },
-    },
+    // {
+    //   title: "Hình ảnh",
+    //   render: (record) => {
+    //     return (
+    //       <>
+    //         <img src={record.image} width="70px"></img>
+    //       </>
+    //     );
+    //   },
+    // },
     {
       title: "Trạng thái",
       render: (record) => {
@@ -231,7 +231,7 @@ function ListCategory() {
             <TextArea rows={4} value={content} />
           </Form.Item>
 
-          <Form.Item label="Image" valuePropName="fileList">
+          {/* <Form.Item label="Image" valuePropName="fileList">
             <Upload
               maxCount="1"
               fileList={[{ url: image }]}
@@ -247,7 +247,7 @@ function ListCategory() {
                 )}
               </div>
             </Upload>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label="Status">
             <Radio.Group
               options={[

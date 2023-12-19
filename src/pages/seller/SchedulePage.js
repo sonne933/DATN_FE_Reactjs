@@ -49,7 +49,7 @@ function SchedulePage() {
       width: "30%",
     },
     {
-      title: "Địa chỉ",
+      title: "Điểm đến",
       dataIndex: "address",
       key: "2",
     },

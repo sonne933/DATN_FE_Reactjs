@@ -83,7 +83,7 @@ function CreateCategory(props) {
           <TextArea rows={4} value={content} required />
         </Form.Item>
 
-        <Form.Item label="Hình Ảnh" valuePropName="fileList">
+        {/* <Form.Item label="Hình Ảnh" valuePropName="fileList">
           <Upload
             maxCount="1"
             fileList={[{ url: image }]}
@@ -99,7 +99,7 @@ function CreateCategory(props) {
               )}
             </div>
           </Upload>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label="Trạng Thái">
           <Radio.Group
             options={[

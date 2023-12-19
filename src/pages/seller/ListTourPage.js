@@ -61,7 +61,7 @@ function ListTourPage() {
       width: "25%",
     },
     {
-      title: "Địa chỉ",
+      title: "Điểm đến",
       dataIndex: "address",
     },
     {

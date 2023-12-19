@@ -11,15 +11,15 @@ function Header({
 
 
   const items = [
-    {
-      key: '1',
-      label: (
-        <Link to="/profile" onClick={()=>{}} >
-          Thông tin tài khoản
-        </Link>
-      ),
-      icon: <SmileOutlined />
-    },
+    // {
+    //   key: '1',
+    //   label: (
+    //     <Link to="/profile" onClick={()=>{}} >
+    //       Thông tin tài khoản
+    //     </Link>
+    //   ),
+    //   icon: <SmileOutlined />
+    // },
    
     {
       key: '3',
