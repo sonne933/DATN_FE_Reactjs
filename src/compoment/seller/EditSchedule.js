@@ -22,7 +22,7 @@ import dayjs from "dayjs";
 function EditSchedule(props) {
   const [dayStart, setDayStart] = useState("01/01/2023");
   const [tourGuide, settourGuide] = useState(null);
-  const [phone, setphone] = useState(null);
+  const [phone, setphone] = useState("");
   const [addressStart, setaddressStart] = useState(null);
   const [status, setStatus] = useState(true);
   const [expectedPeople, setExpectedPeople] = useState(1);
@@ -70,6 +70,26 @@ function EditSchedule(props) {
     fetchData(props.id);
   }, [props]);
   const dateFormat = "MM/DD/YYYY";
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleInputChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (value > 30) {
+      setErrorMessage("Số lượng người đóng góp không được vượt quá 30!");
+    } else {
+      setExpectedPeople(value);
+      setErrorMessage("");
+    }
+  };
+  const handleInputChangephone = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 9) {
+      setphone(value);
+      setErrorMessage("");
+    } else {
+      setErrorMessage("Vui lòng nhập số và không quá 9 ký tự!");
+    }
+  };
 
   return (
     <>
@@ -91,6 +111,8 @@ function EditSchedule(props) {
 
         <Form.Item label="Số điện thoại">
           <Input
+            type="tel" // Đặt kiểu là số điện thoại
+            pattern="[0-9]{10}" // Ràng buộc 10 số
             value={phone}
             onChange={(e) => {
               setphone(e.target.value);
@@ -121,12 +143,12 @@ function EditSchedule(props) {
           <Input
             type="number"
             min={1}
+            max={30}
             value={expectedPeople}
-            onChange={(e) => {
-              setExpectedPeople(e.target.value);
-            }}
+            onChange={handleInputChange}
             required
           />
+          {errorMessage && <p>{errorMessage}</p>}
         </Form.Item>
         <Form.Item label="Status">
           <Radio.Group
@@ -146,8 +168,9 @@ function EditSchedule(props) {
             buttonStyle="solid"
           />
         </Form.Item>
-        <button className="btn-primary" type="submit">Lưa thay đổi</button>
-        
+        <button className="btn-primary" type="submit">
+          Lưa thay đổi
+        </button>
       </Form>
     </>
   );

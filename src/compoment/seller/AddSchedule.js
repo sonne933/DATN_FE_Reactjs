@@ -71,6 +71,8 @@ function AddSchedule(props) {
 
         <Form.Item label="Số điện thoại">
           <Input
+            type="tel" // Đặt kiểu là số điện thoại
+            pattern="[0-9]{10}" // Ràng buộc 10 số
             value={phone}
             onChange={(e) => {
               setphone(e.target.value);
@@ -96,6 +98,7 @@ function AddSchedule(props) {
           <Input
             type="number"
             min={1}
+            max={30}
             value={expectedPeople}
             onChange={(e) => {
               setExpectedPeople(e.target.value);

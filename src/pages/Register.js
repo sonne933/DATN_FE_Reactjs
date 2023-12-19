@@ -76,7 +76,7 @@ function Register() {
     return true;
   };
   function validatePassword(password) {
-    var regex = /(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*.])/;
+    var regex = /(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*.,])/;
     if (!regex.test(password)) {
       return false;
     }
