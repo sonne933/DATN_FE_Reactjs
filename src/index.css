@@ -99,6 +99,11 @@ body{
   background-repeat: no-repeat;
   background-size: cover;
 }
+/* .bgimage2{
+  background-image: url(./assets/bg1.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
 
 .dropdownbtn::before {
   content: "";

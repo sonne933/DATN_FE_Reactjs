@@ -253,6 +253,7 @@ const SellerLayout = ({ title = "Title", className, children }) => {
             onCollapse={(collapsed, type) => {
               console.log(collapsed, type);
             }}
+           
           >
             <div
               style={{

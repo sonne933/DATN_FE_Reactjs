@@ -57,7 +57,7 @@ function TopTourChar(props) {
           labels: labels,
           datasets: [
             {
-              label: "Top " + props.top + " Tour yêu thích",
+              label: "Top " + props.top + " Tour đặt nhiều nhất",
               backgroundColor: [
                 "#3e95cd",
                 "#8e5ea2",

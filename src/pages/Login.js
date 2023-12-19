@@ -76,7 +76,7 @@ function Login() {
   return (
     <Spin spinning={loading}>
       <div className="h-[100vh] pt-10 bgimage">
-        <div className="max-w-screen-md bg-[#ffffff] dark:bg-[#a5d4f0] my-auto mx-auto items-center shadow-lg p-4 rounded-md">
+        <div className="max-w-screen-md bg-[#ffffff]  dark:bg-[#a5d4f0] my-auto mx-auto items-center p-4 shadow-lg rounded-md">
           <div className="max-widht:400px">
             <div className="justify-center mx-auto w-[400px]">
               <h2 className="font-bold dark:text-white text-3xl mb-4 text-center">

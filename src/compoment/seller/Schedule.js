@@ -170,6 +170,7 @@ function Schedule(props) {
   return (
     <>
       <Row>
+        
         <Col>
           <Select
             value={status}

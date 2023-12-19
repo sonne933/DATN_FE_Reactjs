@@ -36,9 +36,9 @@ function Header({
   return (
     <Row>
     <Col span={7} push={6}>
-      <div style={{marginTop:'10px'}}>
+      {/* <div style={{marginTop:'10px'}}>
       <Input.Search size="large" placeholder="input here" enterButton />
-      </div>
+      </div> */}
     
     </Col>
     <Col span={1} push={13}> 

@@ -68,9 +68,9 @@ function ThongKeTourPage() {
           </Card>
           {/* Tổng số tour {tongquat?tongquat.countTour:0} */}
         </Col>
-        <Col span={6} order={4}>
+        {/* <Col span={6} order={4}>
           ...
-        </Col>
+        </Col> */}
       </Row>
       <Divider orientation="left">Biểu đồ thống kê</Divider>
       <Row>

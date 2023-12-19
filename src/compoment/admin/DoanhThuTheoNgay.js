@@ -63,7 +63,7 @@ function DoanhThuTheoNgay(props) {
           {
             data: data,
             label: "Doanh thu (vnd)",
-            borderColor: "#8e5ea2",
+            borderColor: "#3e95cd",
             fill: false,
           },
         ],

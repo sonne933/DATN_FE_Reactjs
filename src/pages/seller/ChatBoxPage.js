@@ -50,7 +50,7 @@ function ChatBoxPage() {
         </Col>
 
         <Col span={12}>
-          <Row>{name ? <>Chat với {name}</> : <>Box chat</>} </Row>
+          <Row >{name ? <>Chat với {name}</> : <>Box chat </>} </Row>
           {idRoom ? <ChatBox roomchat={idRoom} /> : <></>}
         </Col>
       </Row>

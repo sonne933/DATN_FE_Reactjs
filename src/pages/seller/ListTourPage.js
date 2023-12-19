@@ -309,7 +309,7 @@ function ListTourPage() {
     <>
       <Row style={{ marginBottom: 15 }}>
         <Col span={20}>
-          <h2 style={{ fontSize: 20, textAlign: "center", color: "royalblue" }}>
+          <h2 style={{ fontSize: 30, textAlign: "center", color: "royalblue" }}>
             DANH SÁCH TOUR DU LỊCH
           </h2>
         </Col>

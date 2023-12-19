@@ -46,7 +46,7 @@ function DetailInvoice(props) {
     <Spin spinning={loading}>
       <div className="max-w-5xl mx-auto flex justify-center items-center flex-col bg-slate-50 p-4">
         <h1 className="text-maintext text-lg font-[600] ">
-          VietNam booking xin cảm ơn quý khách !
+          Tour việt xin cảm ơn quý khách !
         </h1>
         <img
           src="https://data.vietnambooking.com/business/tour/banner/banner_confirm.png"

@@ -183,7 +183,7 @@ function ListAccount() {
     <>
       <Row style={{ marginBottom: 15 }}>
         <Col span={21}>
-          <h2 style={{ fontSize: 20, textAlign: "center", color: "royalblue" }}>
+          <h2 style={{ fontSize: 30, textAlign: "center", color: "royalblue" }}>
             DANH SÁCH TÀI KHOẢN
           </h2>
         </Col>

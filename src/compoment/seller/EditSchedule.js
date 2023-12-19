@@ -146,7 +146,8 @@ function EditSchedule(props) {
             buttonStyle="solid"
           />
         </Form.Item>
-        <button type="submit">Lưa thay đổi</button>
+        <button className="btn-primary" type="submit">Lưa thay đổi</button>
+        
       </Form>
     </>
   );
